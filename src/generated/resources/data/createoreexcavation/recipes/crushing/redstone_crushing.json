@@ -1,0 +1,14 @@
+{
+  "type": "create:crushing",
+  "ingredients": [
+    {
+      "item": "createoreexcavation:raw_redstone"
+    }
+  ],
+  "results": [
+    {
+      "item": "minecraft:redstone",
+      "count": 4
+    }
+  ]
+}

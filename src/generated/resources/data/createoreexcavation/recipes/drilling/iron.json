@@ -1,0 +1,16 @@
+{
+  "type": "createoreexcavation:drilling",
+  "drill": {
+    "tag": "createoreexcavation:drills"
+  },
+  "name": "{\"translate\":\"item.minecraft.raw_iron\"}",
+  "weight": 10,
+  "ticks": 600,
+  "biomeWhitelist": "forge:is_overworld",
+  "stress": 256,
+  "output": [
+    {
+      "item": "minecraft:raw_iron"
+    }
+  ]
+}

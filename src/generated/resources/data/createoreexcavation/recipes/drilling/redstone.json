@@ -1,0 +1,16 @@
+{
+  "type": "createoreexcavation:drilling",
+  "drill": {
+    "tag": "createoreexcavation:drills"
+  },
+  "name": "{\"translate\":\"item.createoreexcavation.raw_redstone\"}",
+  "weight": 10,
+  "ticks": 600,
+  "biomeWhitelist": "forge:is_overworld",
+  "stress": 256,
+  "output": [
+    {
+      "item": "createoreexcavation:raw_redstone"
+    }
+  ]
+}

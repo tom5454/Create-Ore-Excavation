@@ -1,0 +1,43 @@
+{
+  "type": "create:mechanical_crafting",
+  "pattern": [
+    "BbPbB",
+    "beHeb",
+    "CmDmb",
+    "bsssb",
+    "BbbbB"
+  ],
+  "key": {
+    "B": {
+      "tag": "forge:storage_blocks/brass"
+    },
+    "b": {
+      "tag": "forge:plates/brass"
+    },
+    "e": {
+      "item": "create:electron_tube"
+    },
+    "H": {
+      "item": "create:hose_pulley"
+    },
+    "C": {
+      "item": "create:brass_casing"
+    },
+    "m": {
+      "item": "create:precision_mechanism"
+    },
+    "D": {
+      "item": "create:mechanical_drill"
+    },
+    "s": {
+      "item": "create:sturdy_sheet"
+    },
+    "P": {
+      "item": "create:mechanical_pump"
+    }
+  },
+  "result": {
+    "item": "createoreexcavation:extractor"
+  },
+  "acceptMirrored": true
+}

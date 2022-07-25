@@ -1,0 +1,16 @@
+{
+  "type": "createoreexcavation:drilling",
+  "drill": {
+    "tag": "createoreexcavation:drills"
+  },
+  "name": "{\"translate\":\"item.createoreexcavation.raw_diamond\"}",
+  "weight": 2,
+  "ticks": 1200,
+  "biomeWhitelist": "forge:is_overworld",
+  "stress": 512,
+  "output": [
+    {
+      "item": "createoreexcavation:raw_diamond"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "type": "create:mechanical_crafting",
+  "pattern": [
+    "BbtbB",
+    "beSeb",
+    "CmDmF",
+    "bsssb",
+    "BbbbB"
+  ],
+  "key": {
+    "B": {
+      "tag": "forge:storage_blocks/brass"
+    },
+    "b": {
+      "tag": "forge:plates/brass"
+    },
+    "e": {
+      "item": "create:electron_tube"
+    },
+    "S": {
+      "item": "create:spout"
+    },
+    "C": {
+      "item": "create:brass_casing"
+    },
+    "m": {
+      "item": "create:precision_mechanism"
+    },
+    "D": {
+      "item": "create:mechanical_drill"
+    },
+    "s": {
+      "item": "create:sturdy_sheet"
+    },
+    "F": {
+      "item": "create:brass_tunnel"
+    },
+    "t": {
+      "item": "create:copper_casing"
+    }
+  },
+  "result": {
+    "item": "createoreexcavation:drilling_machine"
+  },
+  "acceptMirrored": true
+}

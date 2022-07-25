@@ -1,0 +1,14 @@
+{
+  "type": "create:milling",
+  "ingredients": [
+    {
+      "item": "createoreexcavation:raw_redstone"
+    }
+  ],
+  "results": [
+    {
+      "item": "minecraft:redstone",
+      "count": 3
+    }
+  ]
+}

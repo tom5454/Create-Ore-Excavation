@@ -1,0 +1,25 @@
+{
+  "type": "createoreexcavation:drilling",
+  "drill": {
+    "item": "createoreexcavation:netherite_drill"
+  },
+  "name": "{\"translate\":\"ore.coe.hardenedDiamond\"}",
+  "weight": 2,
+  "ticks": 400,
+  "biomeWhitelist": "forge:is_overworld",
+  "stress": 1024,
+  "output": [
+    {
+      "item": "createoreexcavation:raw_diamond"
+    },
+    {
+      "item": "minecraft:diamond",
+      "chance": 0.1
+    }
+  ],
+  "fluid": {
+    "fluid": "minecraft:lava",
+    "nbt": {},
+    "amount": 500
+  }
+}

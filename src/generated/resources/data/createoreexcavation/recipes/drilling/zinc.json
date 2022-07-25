@@ -1,0 +1,16 @@
+{
+  "type": "createoreexcavation:drilling",
+  "drill": {
+    "tag": "createoreexcavation:drills"
+  },
+  "name": "{\"translate\":\"item.create.raw_zinc\"}",
+  "weight": 10,
+  "ticks": 600,
+  "biomeWhitelist": "forge:is_overworld",
+  "stress": 256,
+  "output": [
+    {
+      "item": "create:raw_zinc"
+    }
+  ]
+}

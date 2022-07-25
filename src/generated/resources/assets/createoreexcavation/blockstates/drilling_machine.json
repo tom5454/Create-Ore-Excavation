@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "createoreexcavation:block/drill_model"
+    },
+    "facing=south": {
+      "model": "createoreexcavation:block/drill_model",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "createoreexcavation:block/drill_model",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "createoreexcavation:block/drill_model",
+      "y": 90
+    }
+  }
+}
