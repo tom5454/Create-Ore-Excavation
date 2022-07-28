@@ -20,7 +20,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 
 
-version = '0.1.0'
+version = '0.1.1'
 group = 'com.tom5454.createoreexcavation' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'createoreexcavation'
 

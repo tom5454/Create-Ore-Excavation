@@ -61,7 +61,10 @@ public class DrillingRecipe extends ExcavatingRecipe {
 		for (int i = 0; i < size; i++)
 			output.add(ProcessingOutput.read(buffer));
 
-		drillingFluid = FluidIngredient.read(buffer);
+		if(buffer.readBoolean())
+			drillingFluid = FluidIngredient.read(buffer);
+		else
+			drillingFluid = FluidIngredient.EMPTY;
 	}
 
 	@Override
@@ -69,7 +72,12 @@ public class DrillingRecipe extends ExcavatingRecipe {
 		buffer.writeVarInt(output.size());
 		output.forEach(o -> o.write(buffer));
 
-		drillingFluid.write(buffer);
+		if(drillingFluid.getRequiredAmount() == 0) {
+			buffer.writeBoolean(false);
+		} else {
+			buffer.writeBoolean(true);
+			drillingFluid.write(buffer);
+		}
 	}
 
 	public NonNullList<ProcessingOutput> getOutput() {

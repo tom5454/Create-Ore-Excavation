@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Holder.Kind;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -101,6 +103,18 @@ public abstract class ExcavatingCategory<T extends ExcavatingRecipe> implements 
 	}
 
 	private static void listBiomes(TagKey<Biome> tag, List<Component> tooltip) {
-		Minecraft.getInstance().getConnection().registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getTag(tag).map(t -> t.stream().limit(16).map(h -> h.value().getRegistryName()).map(b -> new TranslatableComponent("biome." + b.getNamespace() + "." + b.getPath())).collect(Collectors.toList())).ifPresent(tooltip::addAll);
+		Minecraft.getInstance().getConnection().registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getTag(tag).map(t -> t.stream().limit(16).map(ExcavatingCategory::getBiomeId).map(b -> new TranslatableComponent("biome." + b.getNamespace() + "." + b.getPath())).collect(Collectors.toList())).ifPresent(tooltip::addAll);
+	}
+
+	private static ResourceLocation getBiomeId(Holder<Biome> h) {
+		try {
+			if(h.kind() == Kind.DIRECT) {
+				return h.value().getRegistryName();
+			} else {
+				return ((Holder.Reference<Biome>)h).key().location();
+			}
+		} catch (Exception e) {
+			return new ResourceLocation("null");
+		}
 	}
 }
