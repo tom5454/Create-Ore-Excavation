@@ -8,7 +8,7 @@ import com.simibubi.create.foundation.ponder.PonderLocalization;
 import com.simibubi.create.foundation.ponder.PonderRegistrationHelper;
 import com.simibubi.create.foundation.ponder.PonderRegistry;
 import com.simibubi.create.foundation.ponder.PonderTag;
-import com.simibubi.create.repack.registrate.providers.ProviderType;
+import com.tterrag.registrate.providers.ProviderType;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

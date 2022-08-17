@@ -31,6 +31,7 @@ import com.simibubi.create.foundation.block.ITE;
 
 import com.tom.createores.Registration;
 import com.tom.createores.block.MultiblockPart.MultiblockGhostPart;
+import com.tom.createores.block.entity.KineticInputBlockEntity;
 
 public class KineticInputBlock extends KineticBlock implements MultiblockGhostPart, ITE<KineticInputBlockEntity> {
 	public static final DirectionProperty SHAFT_FACING = DirectionProperty.create("shaft");

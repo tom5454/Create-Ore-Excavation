@@ -1,4 +1,4 @@
-package com.tom.createores.block;
+package com.tom.createores.block.entity;
 
 import java.util.List;
 
@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 
+import com.tom.createores.block.MultiblockPart;
 import com.tom.createores.block.MultiblockPart.MultiblockGhostPart;
 
 public class MultiblockBlockEntity extends BlockEntity implements IHaveGoggleInformation {

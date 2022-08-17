@@ -1,4 +1,4 @@
-package com.tom.createores.block;
+package com.tom.createores.block.entity;
 
 import java.util.List;
 
@@ -12,8 +12,9 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import com.simibubi.create.content.contraptions.base.KineticTileEntity;
 
-import com.tom.createores.block.MultiblockCapHandler.Kinetic;
+import com.tom.createores.block.MultiblockPart;
 import com.tom.createores.block.MultiblockPart.MultiblockGhostPart;
+import com.tom.createores.block.entity.MultiblockCapHandler.Kinetic;
 
 public class KineticInputBlockEntity extends KineticTileEntity implements Kinetic {
 	private float reqStress = 1;

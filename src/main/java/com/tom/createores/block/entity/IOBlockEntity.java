@@ -1,4 +1,4 @@
-package com.tom.createores.block;
+package com.tom.createores.block.entity;
 
 import java.util.List;
 
@@ -14,6 +14,8 @@ import net.minecraftforge.common.util.LazyOptional;
 
 import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
 
+import com.tom.createores.block.IOBlock;
+import com.tom.createores.block.MultiblockPart;
 import com.tom.createores.block.MultiblockPart.MultiblockGhostPart;
 
 public class IOBlockEntity extends BlockEntity implements IHaveGoggleInformation {

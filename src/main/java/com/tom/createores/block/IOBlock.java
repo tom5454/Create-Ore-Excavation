@@ -38,6 +38,7 @@ import com.simibubi.create.foundation.block.ITE;
 
 import com.tom.createores.Registration;
 import com.tom.createores.block.MultiblockPart.MultiblockGhostPart;
+import com.tom.createores.block.entity.IOBlockEntity;
 
 public class IOBlock extends BaseEntityBlock implements MultiblockGhostPart, ITE<IOBlockEntity> {
 	public static final EnumProperty<Type> TYPE = EnumProperty.create("type", Type.class);

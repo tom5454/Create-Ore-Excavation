@@ -16,6 +16,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import com.simibubi.create.foundation.block.ITE;
 
 import com.tom.createores.Registration;
+import com.tom.createores.block.entity.ExtractorBlockEntity;
 
 public class ExtractorBlock extends MultiblockController implements ITE<ExtractorBlockEntity> {
 

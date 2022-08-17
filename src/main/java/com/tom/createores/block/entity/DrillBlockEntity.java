@@ -1,4 +1,4 @@
-package com.tom.createores.block;
+package com.tom.createores.block.entity;
 
 import static net.minecraft.ChatFormatting.*;
 
@@ -22,6 +22,7 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -46,7 +47,7 @@ import com.tom.createores.recipe.DrillingRecipe;
 import com.tom.createores.recipe.IRecipe;
 import com.tom.createores.util.QueueInventory;
 
-public class DrillBlockEntity extends SmartTileEntity implements MultiblockCapHandler {
+public class DrillBlockEntity extends SmartTileEntity implements MultiblockCapHandler, IDrill {
 	private int progress;
 	private DrillingRecipe current;
 	private Kinetic kinetic;
@@ -262,5 +263,25 @@ public class DrillBlockEntity extends SmartTileEntity implements MultiblockCapHa
 
 	private void dropItemStack(ItemStack stackInSlot) {
 		Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stackInSlot);
+	}
+
+	@Override
+	public boolean isActive() {
+		return recipeClient != null;
+	}
+
+	@Override
+	public ItemStack getDrill() {
+		return drillStack;
+	}
+
+	@Override
+	public BlockPos getBelow() {
+		return worldPosition.below(2);
+	}
+
+	@Override
+	protected AABB createRenderBoundingBox() {
+		return new AABB(worldPosition.offset(-1, -1, -1), worldPosition.offset(1, 0, 1));
 	}
 }

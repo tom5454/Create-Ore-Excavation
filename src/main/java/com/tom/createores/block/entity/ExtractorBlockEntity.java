@@ -1,4 +1,4 @@
-package com.tom.createores.block;
+package com.tom.createores.block.entity;
 
 import static net.minecraft.ChatFormatting.*;
 
@@ -21,6 +21,7 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -43,7 +44,7 @@ import com.tom.createores.client.ClientUtil;
 import com.tom.createores.recipe.ExtractorRecipe;
 import com.tom.createores.recipe.IRecipe;
 
-public class ExtractorBlockEntity extends SmartTileEntity implements MultiblockCapHandler {
+public class ExtractorBlockEntity extends SmartTileEntity implements MultiblockCapHandler, IDrill {
 	private int progress;
 	private ExtractorRecipe current;
 	private Kinetic kinetic;
@@ -254,5 +255,25 @@ public class ExtractorBlockEntity extends SmartTileEntity implements MultiblockC
 		public int fillInternal(FluidStack resource, FluidAction action) {
 			return super.fill(resource, action);
 		}
+	}
+
+	@Override
+	public boolean isActive() {
+		return progress > 0;
+	}
+
+	@Override
+	public ItemStack getDrill() {
+		return drillStack;
+	}
+
+	@Override
+	public BlockPos getBelow() {
+		return worldPosition.below(2);
+	}
+
+	@Override
+	protected AABB createRenderBoundingBox() {
+		return new AABB(worldPosition.offset(-1, -1, -1), worldPosition.offset(1, 0, 1));
 	}
 }

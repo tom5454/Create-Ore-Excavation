@@ -11,22 +11,23 @@ import com.simibubi.create.content.AllSections;
 import com.simibubi.create.foundation.block.BlockStressDefaults;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
-import com.simibubi.create.repack.registrate.providers.ProviderType;
-import com.simibubi.create.repack.registrate.util.entry.BlockEntityEntry;
-import com.simibubi.create.repack.registrate.util.entry.BlockEntry;
+import com.tterrag.registrate.providers.ProviderType;
+import com.tterrag.registrate.util.entry.BlockEntityEntry;
+import com.tterrag.registrate.util.entry.BlockEntry;
 
 import com.tom.createores.block.DrillBlock;
-import com.tom.createores.block.DrillBlockEntity;
 import com.tom.createores.block.ExtractorBlock;
-import com.tom.createores.block.ExtractorBlockEntity;
 import com.tom.createores.block.IOBlock;
-import com.tom.createores.block.IOBlockEntity;
 import com.tom.createores.block.KineticInputBlock;
-import com.tom.createores.block.KineticInputBlockEntity;
-import com.tom.createores.block.KineticInputInstance;
 import com.tom.createores.block.MultiblockBlock;
-import com.tom.createores.block.MultiblockBlockEntity;
 import com.tom.createores.block.MultiblockPart;
+import com.tom.createores.block.entity.DrillBlockEntity;
+import com.tom.createores.block.entity.ExtractorBlockEntity;
+import com.tom.createores.block.entity.IOBlockEntity;
+import com.tom.createores.block.entity.KineticInputBlockEntity;
+import com.tom.createores.block.entity.KineticInputInstance;
+import com.tom.createores.block.entity.MultiblockBlockEntity;
+import com.tom.createores.client.DrillRenderer;
 import com.tom.createores.client.KineticInputBlockEntityRenderer;
 import com.tom.createores.item.MultiBlockItem;
 
@@ -44,9 +45,8 @@ public class Registration {
 			.item(MultiBlockItem::new)
 			.properties(p -> p.stacksTo(1))
 			.transform(b -> b.model((c, p) -> {
-				p.singleTexture(Registration.DRILL_BLOCK.get().getRegistryName().getPath(),
-						p.mcLoc("item/generated"),
-						"layer0", p.modLoc("item/drill_block"));
+				p.withExistingParent(Registration.DRILL_BLOCK.get().getRegistryName().getPath(),
+						p.modLoc("block/drill_model"));
 			}).build())
 			.lang("Drilling Machine")
 			.register();
@@ -54,6 +54,7 @@ public class Registration {
 	public static final BlockEntityEntry<DrillBlockEntity> DRILL_TILE = REGISTRATE
 			.tileEntity("drill", DrillBlockEntity::new)
 			.validBlocks(DRILL_BLOCK)
+			.renderer(() -> DrillRenderer::new)
 			.register();
 
 	public static final BlockEntry<KineticInputBlock> KINETIC_INPUT = REGISTRATE.block("kinetic_input", KineticInputBlock::new)
@@ -111,9 +112,8 @@ public class Registration {
 			.item(MultiBlockItem::new)
 			.properties(p -> p.stacksTo(1))
 			.transform(b -> b.model((c, p) -> {
-				p.singleTexture(Registration.EXTRACTOR_BLOCK.get().getRegistryName().getPath(),
-						p.mcLoc("item/generated"),
-						"layer0", p.modLoc("item/extractor_block"));
+				p.withExistingParent(Registration.DRILL_BLOCK.get().getRegistryName().getPath(),
+						p.modLoc("block/extractor_model"));
 			}).build())
 			.lang("Fluid Well Extractor")
 			.register();
@@ -121,6 +121,7 @@ public class Registration {
 	public static final BlockEntityEntry<ExtractorBlockEntity> EXTRACTOR_TILE = REGISTRATE
 			.tileEntity("extractor", ExtractorBlockEntity::new)
 			.validBlocks(EXTRACTOR_BLOCK)
+			.renderer(() -> DrillRenderer::new)
 			.register();
 
 	public static void register() {

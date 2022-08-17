@@ -1,10 +1,12 @@
-package com.tom.createores.block;
+package com.tom.createores.block.entity;
 
 import net.minecraft.core.Direction;
 
 import com.jozufozu.flywheel.api.MaterialManager;
 import com.simibubi.create.content.contraptions.base.HalfShaftInstance;
 import com.simibubi.create.content.contraptions.base.KineticTileEntity;
+
+import com.tom.createores.block.KineticInputBlock;
 
 public class KineticInputInstance extends HalfShaftInstance {
 

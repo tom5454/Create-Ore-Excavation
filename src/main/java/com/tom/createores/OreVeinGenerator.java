@@ -11,9 +11,9 @@ import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.level.chunk.LevelChunk;
 
 import com.tom.createores.recipe.DrillingRecipe;
+import com.tom.createores.recipe.ExtractorRecipe;
 import com.tom.createores.recipe.IRecipe;
 import com.tom.createores.recipe.IRecipe.RandomizerBuilder;
-import com.tom.createores.recipe.ExtractorRecipe;
 
 public class OreVeinGenerator {
 	private static AtomicReference<SimpleWeightedRandomList<IRecipe>> picker = new AtomicReference<>();

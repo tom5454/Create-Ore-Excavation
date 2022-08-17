@@ -24,6 +24,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import com.tom.createores.block.MultiblockPart.MultiblockMainPart;
+import com.tom.createores.block.entity.MultiblockCapHandler;
 
 public abstract class MultiblockController extends Block implements MultiblockMainPart {
 

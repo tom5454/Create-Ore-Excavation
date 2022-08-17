@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "createoreexcavation:item/drill_block"
-  }
+  "parent": "createoreexcavation:block/drill_model"
 }

@@ -51,13 +51,13 @@ Extract resources using machines powered by Rotational Force
 [[dependencies.createoreexcavation]]
     modId="create"
     mandatory=true
-    versionRange="[0.5a,0.6)"
+    versionRange="[0.5.0.d,0.6.0)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.createoreexcavation]]
     modId="flywheel"
     mandatory=true
-    versionRange="[1.18-0.6.2,1.18-0.7.0)"
+    versionRange="[0.6,0.7)"
     ordering="AFTER"
     side="CLIENT"
 # Here's another dependency

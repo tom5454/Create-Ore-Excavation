@@ -1,9 +1,10 @@
 {
 	"homepage": "https://www.curseforge.com/minecraft/mc-mods/create-ore-excavation",
 	"promos": {
-		"1.18.2-latest": "0.1.1"
+		"1.18.2-latest": "0.2.0"
 	},
 	"1.18.2": {
+		"0.2.0": "Updated models for Drilling Machine & Fluid Extractor\nFixed not working with latest Create",
 		"0.1.1": "Fixed crashes with dedicated servers",
 		"0.1.0": "First Release"
 	}

@@ -30,6 +30,7 @@ import com.simibubi.create.foundation.block.ITE;
 
 import com.tom.createores.Registration;
 import com.tom.createores.block.MultiblockPart.MultiblockGhostPart;
+import com.tom.createores.block.entity.MultiblockBlockEntity;
 
 public class MultiblockBlock extends Block implements MultiblockGhostPart, ITE<MultiblockBlockEntity> {
 

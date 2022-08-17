@@ -22,7 +22,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
-import com.simibubi.create.repack.registrate.util.nullness.NonNullUnaryOperator;
+import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 
 import com.tom.createores.Registration;
 

@@ -47,7 +47,7 @@ import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.foundation.block.BlockStressValues;
 import com.simibubi.create.foundation.config.AllConfigs;
 import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.simibubi.create.repack.registrate.util.nullness.NonNullSupplier;
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
 import com.tom.createores.OreDataCapability.OreData;
 import com.tom.createores.client.ClientRegistration;
