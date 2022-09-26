@@ -8,6 +8,9 @@
   "ticks": 20,
   "biomeWhitelist": "forge:is_overworld",
   "stress": 256,
+  "neverFinite": true,
+  "amountMin": 1.0,
+  "amountMax": 2.0,
   "output": {
     "fluid": "minecraft:water",
     "amount": 500

@@ -1,9 +1,10 @@
 {
 	"homepage": "https://www.curseforge.com/minecraft/mc-mods/create-ore-excavation",
 	"promos": {
-		"1.18.2-latest": "0.2.0"
+		"1.18.2-latest": "0.3.0"
 	},
 	"1.18.2": {
+		"0.3.0": "Added finite ore vein option\nAdded chinese simplified translation\nFixed incorrect KubeJS info in the server config\nFixed resources still produced when over stressed",
 		"0.2.0": "Updated models for Drilling Machine & Fluid Extractor\nFixed not working with latest Create",
 		"0.1.1": "Fixed crashes with dedicated servers",
 		"0.1.0": "First Release"

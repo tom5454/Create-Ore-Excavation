@@ -9,8 +9,8 @@ public class KubeJSExcavation extends KubeJSPlugin {
 
 	@Override
 	public void addRecipes(RegisterRecipeHandlersEvent event) {
-		event.register(CreateOreExcavation.DRILLING_RECIPES.getSerializer().getRegistryName(), DrillingRecipe::new);
-		event.register(CreateOreExcavation.EXTRACTING_RECIPES.getSerializer().getRegistryName(), ExtractorRecipe::new);
+		event.register(CreateOreExcavation.DRILLING_RECIPES.getSerializer().getRegistryName(), DrillingRecipeJS::new);
+		event.register(CreateOreExcavation.EXTRACTING_RECIPES.getSerializer().getRegistryName(), ExtractorRecipeJS::new);
 		CreateOreExcavation.LOGGER.info("Loaded KubeJS integration");
 	}
 }

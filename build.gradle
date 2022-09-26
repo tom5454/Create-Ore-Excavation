@@ -19,8 +19,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 
-
-version = '0.2.0'
+version = '0.3.0'
 group = 'com.tom5454.createoreexcavation' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'createoreexcavation'
 
@@ -203,7 +202,7 @@ dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.18.2-40.1.73'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.1.80'
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
@@ -226,7 +225,7 @@ dependencies {
     //implementation fg.deobf("curse.maven:create-328085:3872145")
     //implementation fg.deobf("curse.maven:createaddition-439890:3876683")
     
-    implementation fg.deobf("local:create:1.18.2-0.5.0.d")
+    implementation fg.deobf("local:create:1.18.2-0.5.0.e")
     //implementation fg.deobf("local:createaddition:1.18.2-20220813a")
     
     implementation fg.deobf("curse.maven:flywheel-486392:3934664")

@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.lang3.tuple.Pair;
 
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -15,25 +16,22 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 public class Config {
 	public static class Server {
 		public IntValue generationChance;
-		public IntValue generationAttempts;
-		public IntValue generationHeight;
+		public IntValue finiteAmountBase;
+		public BooleanValue defaultInfinite;
 
 		private Server(ForgeConfigSpec.Builder builder) {
 			builder.comment("IMPORTANT NOTICE:",
 					"You can add more entries using KubeJS",
-					"Put this script into server_scripts folder",
-					"onEvent('recipes', event => {",
-					"    event.recipes.createOreExcavationItem([<output>, ...], <vein name>, <spawn weight>, <ticks>).id('<id>')//mode: 'FIRST', or 'RANDOM', 'ROUND_ROBIN'",
-					"    event.recipes.createOreExcavationItem([<output>, ...], <vein name>, <spawn weight>, <ticks>).fluid(<drilling fluid stack>).id('<id>')//Or with a drilling fluid per operation",
-					"    event.recipes.createOreExcavationFluid(<fluid>, <vein name>, <spawn weight>, <ticks>).id('<id>')//mode: 'FIRST', or 'RANDOM', 'ROUND_ROBIN'",
-					"})").
+					"https://github.com/tom5454/Create-Ore-Excavation#kubejs").
 			define("importantInfo", true);
 
 			generationChance = builder.comment("Weight value for empty chunk").translation("config.coe.generationChance").
 					defineInRange("generationChance", 5000, 1, Integer.MAX_VALUE);
 
-			generationAttempts = builder.comment("Amount of times to try generating an ore vein").translation("config.coe.generationAttempts").
-					defineInRange("generationAttempts", 5, 1, 1000);
+			finiteAmountBase = builder.comment("Finite vein base amount").translation("config.coe.finiteAmountBase").
+					defineInRange("finiteAmountBase", 1, 1000, Integer.MAX_VALUE);
+
+			defaultInfinite = builder.comment("Veins infinite by default").translation("config.coe.defaultInfinite").define("defaultInfinite", true);
 		}
 	}
 
@@ -67,12 +65,14 @@ public class Config {
 		SERVER = specPair.getLeft();
 	}
 
-	public static int generationChance, generationAttempts;
+	public static int generationChance, finiteAmountBase;
+	public static boolean defaultInfinite;
 
 	private static void load(ModConfig modConfig) {
 		if(modConfig.getType() == Type.SERVER) {
 			generationChance = SERVER.generationChance.get();
-			generationAttempts = SERVER.generationAttempts.get();
+			finiteAmountBase = SERVER.finiteAmountBase.get();
+			defaultInfinite = SERVER.defaultInfinite.get();
 			OreVeinGenerator.invalidate();
 		}
 	}

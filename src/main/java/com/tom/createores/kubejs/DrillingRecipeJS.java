@@ -9,13 +9,13 @@ import com.tom.createores.CreateOreExcavation;
 import dev.latvian.mods.kubejs.fluid.FluidStackJS;
 import dev.latvian.mods.kubejs.item.ingredient.IngredientJS;
 import dev.latvian.mods.kubejs.recipe.RecipeExceptionJS;
-import dev.latvian.mods.kubejs.recipe.RecipeJS;
 import dev.latvian.mods.kubejs.util.ListJS;
 
-public class DrillingRecipe extends RecipeJS {
+public class DrillingRecipeJS extends ExcavatingRecipeJS<DrillingRecipeJS> {
 
 	@Override
 	public void create(ListJS args) {
+		super.create(args);
 		inputItems.add(IngredientJS.of("#" + CreateOreExcavation.DRILL_TAG.location()));
 		outputItems.addAll(parseResultItemList(args.get(0)));
 		Component name = Component.Serializer.fromJson(args.get(1).toString());
@@ -52,33 +52,9 @@ public class DrillingRecipe extends RecipeJS {
 		}
 	}
 
-	public DrillingRecipe fluid(FluidStackJS fluid) {
+	public DrillingRecipeJS fluid(FluidStackJS fluid) {
 		json.add("fluid", fluid.toJson());
 		save();
-		return this;
-	}
-
-	public DrillingRecipe stress(int stress) {
-		json.addProperty("stress", stress);
-		save();
-		return this;
-	}
-
-	public DrillingRecipe biomeWhitelist(String tag) {
-		json.addProperty("biomeWhitelist", tag);
-		save();
-		return this;
-	}
-
-	public DrillingRecipe biomeBlacklist(String tag) {
-		json.addProperty("biomeBlacklist", tag);
-		save();
-		return this;
-	}
-
-	public DrillingRecipe drill(IngredientJS drill) {
-		inputItems.set(0, drill);
-		serializeInputs = true;
 		return this;
 	}
 }

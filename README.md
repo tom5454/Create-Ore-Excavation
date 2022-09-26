@@ -26,5 +26,10 @@ onEvent('recipes', event => {
 	//Fluid extractor recipes (Fluids)
 	event.recipes.createoreexcavation.extracting(Fluid.of('minecraft:water', 400), '{"text": "Water well"}', 10, 100).id("my_vein4");
 	//The biome, stress and drill settings are the same as the drilling recipe
+	
+	//Finite veins
+	//Use veinSize(min, max) to set vein size multiplier
+	//Use alwaysFinite(), alwaysInfinite() to change mode
+	//Set base value in config
 })
 ```

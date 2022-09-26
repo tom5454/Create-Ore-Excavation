@@ -8,6 +8,8 @@
   "ticks": 600,
   "biomeWhitelist": "forge:is_overworld",
   "stress": 192,
+  "amountMin": 1.0,
+  "amountMax": 2.0,
   "output": [
     {
       "item": "minecraft:raw_gold"

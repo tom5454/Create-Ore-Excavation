@@ -112,7 +112,7 @@ public class Registration {
 			.item(MultiBlockItem::new)
 			.properties(p -> p.stacksTo(1))
 			.transform(b -> b.model((c, p) -> {
-				p.withExistingParent(Registration.DRILL_BLOCK.get().getRegistryName().getPath(),
+				p.withExistingParent(Registration.EXTRACTOR_BLOCK.get().getRegistryName().getPath(),
 						p.modLoc("block/extractor_model"));
 			}).build())
 			.lang("Fluid Well Extractor")
@@ -134,7 +134,8 @@ public class Registration {
 		add(CreateOreExcavation.RAW_REDSTONE, "Raw Redstone");
 		add(CreateOreExcavation.VEIN_FINDER_ITEM, "Ore Vein Finder");
 		add("config.coe.generationChance", "Weight value for empty chunk");
-		add("config.coe.generationAttempts", "Amount of times to try generating an ore vein");
+		add("config.coe.finiteAmountBase", "Finite vein amount base");
+		add("config.coe.defaultInfinite", "Veins infinite by default");
 		add("chat.coe.veinFinder.info", "Vein Finder Result:");
 		add("chat.coe.veinFinder.found", "Found in Chunk: %s");
 		add("chat.coe.veinFinder.nothing", "Nothing");
@@ -145,6 +146,7 @@ public class Registration {
 		add("info.coe.drill.badDrill", "Drill not compatible");
 		add("info.coe.drill.installed", "Installed drill: %s");
 		add("info.coe.drill.progress", "Progress");
+		add("info.coe.drill.resourceRemaining", "Resource remaining: %s");
 		add("jei.coe.recipe.drilling", "Drilling Machine");
 		add("jei.coe.recipe.extracting", "Fluid Extractor");
 		add("tooltip.coe.variableImpact", "Variable Impact");

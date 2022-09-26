@@ -47,6 +47,7 @@ import com.tom.createores.Registration;
 import com.tom.createores.recipe.DrillingRecipe;
 import com.tom.createores.recipe.ExcavatingRecipe;
 import com.tom.createores.recipe.ExtractorRecipe;
+import com.tom.createores.recipe.IRecipe.ThreeState;
 
 public class COERecipes extends RecipeProvider {
 
@@ -139,7 +140,7 @@ public class COERecipes extends RecipeProvider {
 		new DrillingBuilder(Items.GLOWSTONE_DUST, 10, 60*20).setBiomeWhitelist(BiomeTags.IS_NETHER).save("glowstone", consumer);
 		new DrillingBuilder(Items.QUARTZ, 10, 60*20).setBiomeWhitelist(BiomeTags.IS_NETHER).setStress(512).save("quartz", consumer);
 
-		new ExtractorBuilder(new FluidStack(Fluids.WATER, 500), 10, 20).setBiomeWhitelist(Tags.Biomes.IS_OVERWORLD).save("water", consumer);
+		new ExtractorBuilder(new FluidStack(Fluids.WATER, 500), 10, 20).setBiomeWhitelist(Tags.Biomes.IS_OVERWORLD).setFinite(ThreeState.NEVER).save("water", consumer);
 
 		processing("redstone_milling", AllRecipeTypes.MILLING, consumer, b -> b.withItemIngredients(Ingredient.of(CreateOreExcavation.RAW_REDSTONE.get())).output(new ItemStack(Items.REDSTONE, 3)));
 		processing("redstone_crushing", AllRecipeTypes.CRUSHING, consumer, b -> b.withItemIngredients(Ingredient.of(CreateOreExcavation.RAW_REDSTONE.get())).output(new ItemStack(Items.REDSTONE, 4)));
@@ -170,6 +171,7 @@ public class COERecipes extends RecipeProvider {
 		UpgradeRecipeBuilder.smithing(Ingredient.of(pIngredientItem), Ingredient.of(Items.NETHERITE_INGOT), pResultItem).unlocks("has_netherite_ingot", has(Items.NETHERITE_INGOT)).save(pFinishedRecipeConsumer, i(getItemName(pResultItem) + "_smithing"));
 	}
 
+	@SuppressWarnings("unchecked")
 	public static interface AbstractExcavatingBuilder<T extends AbstractExcavatingBuilder<T>> {
 
 		public default void init(int weight, int ticks, Component name) {
@@ -178,33 +180,43 @@ public class COERecipes extends RecipeProvider {
 			self().veinName = name;
 			self().drill = Ingredient.of(CreateOreExcavation.DRILL_TAG);
 			self().stressMul = 256;
+			self().finite = ThreeState.DEFAULT;
+			self().amountMultiplierMin = 1;
+			self().amountMultiplierMax = 2;
 		}
 
 		public default ExcavatingRecipe self() {
 			return (ExcavatingRecipe) this;
 		}
 
-		@SuppressWarnings("unchecked")
 		public default T setDrill(Ingredient drill) {
 			self().drill = drill;
 			return (T) this;
 		}
 
-		@SuppressWarnings("unchecked")
 		public default T setStress(int stress) {
 			self().stressMul = stress;
 			return (T) this;
 		}
 
-		@SuppressWarnings("unchecked")
 		public default T setBiomeWhitelist(TagKey<Biome> tag) {
 			self().biomeWhitelist = tag;
 			return (T) this;
 		}
 
-		@SuppressWarnings("unchecked")
 		public default T setBiomeBlacklist(TagKey<Biome> tag) {
 			self().biomeBlacklist = tag;
+			return (T) this;
+		}
+
+		public default T setAmount(int min, int max) {
+			self().amountMultiplierMin = min;
+			self().amountMultiplierMax = max;
+			return (T) this;
+		}
+
+		public default T setFinite(ThreeState finite) {
+			self().finite = finite;
 			return (T) this;
 		}
 

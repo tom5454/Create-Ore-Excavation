@@ -105,7 +105,7 @@ public class KineticInputBlockEntity extends KineticTileEntity implements Kineti
 
 	@Override
 	public float getRotationSpeed() {
-		if(lastStressApplied != reqStress)return 0;
+		if(overStressed || lastStressApplied != reqStress)return 0;
 		return Math.abs(speed);
 	}
 }

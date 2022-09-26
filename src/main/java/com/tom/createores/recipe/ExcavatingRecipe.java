@@ -22,7 +22,10 @@ import com.simibubi.create.foundation.item.SmartInventory;
 
 import com.google.gson.JsonObject;
 
-public abstract class ExcavatingRecipe implements Recipe<SmartInventory>, IRecipe {
+import com.tom.createores.Config;
+import com.tom.createores.recipe.IRecipe.IResourceRecipe;
+
+public abstract class ExcavatingRecipe implements Recipe<SmartInventory>, IRecipe, IResourceRecipe {
 	public ResourceLocation id;
 	public RecipeType<?> type;
 	public RecipeSerializer<?> serializer;
@@ -30,6 +33,8 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory>, IRecip
 	public int weight, ticks, stressMul;
 	public Component veinName;
 	public TagKey<Biome> biomeWhitelist, biomeBlacklist;
+	public ThreeState finite;
+	public float amountMultiplierMin, amountMultiplierMax;
 
 	public ExcavatingRecipe(ResourceLocation id, RecipeType<?> type, RecipeSerializer<?> serializer) {
 		this.id = id;
@@ -115,6 +120,21 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory>, IRecip
 		return lvl.getServer().registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getTag(tag).map(t -> t.contains(b)).orElse(false);
 	}
 
+	@Override
+	public ThreeState isFinite() {
+		return finite;
+	}
+
+	@Override
+	public float getMinAmount() {
+		return amountMultiplierMin;
+	}
+
+	@Override
+	public float getMaxAmount() {
+		return amountMultiplierMax;
+	}
+
 	protected abstract void fromJson(JsonObject json);
 	protected abstract void toJson(JsonObject json);
 	protected abstract void fromNetwork(FriendlyByteBuf buffer);
@@ -146,6 +166,9 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory>, IRecip
 				r.biomeBlacklist = TagKey.create(Registry.BIOME_REGISTRY, resourcelocation);
 			}
 			r.stressMul = GsonHelper.getAsInt(json, "stress", 256);
+			r.finite = ThreeState.get(json, "Finite");
+			r.amountMultiplierMin = GsonHelper.getAsFloat(json, "amountMin", 1);
+			r.amountMultiplierMax = GsonHelper.getAsFloat(json, "amountMax", 2);
 			r.fromJson(json);
 			return r;
 		}
@@ -158,6 +181,9 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory>, IRecip
 			if(recipe.biomeWhitelist != null)json.addProperty("biomeWhitelist", recipe.biomeWhitelist.location().toString());
 			if(recipe.biomeBlacklist != null)json.addProperty("biomeBlacklist", recipe.biomeBlacklist.location().toString());
 			json.addProperty("stress", recipe.stressMul);
+			recipe.finite.toJson(json, "Finite");
+			json.addProperty("amountMin", recipe.amountMultiplierMin);
+			json.addProperty("amountMax", recipe.amountMultiplierMax);
 			recipe.toJson(json);
 		}
 
@@ -172,11 +198,14 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory>, IRecip
 			r.biomeBlacklist = create(buffer);
 			r.stressMul = buffer.readVarInt();
 			r.fromNetwork(buffer);
+			r.finite = buffer.readBoolean() ? ThreeState.ALWAYS : ThreeState.NEVER;
+			r.amountMultiplierMin = buffer.readFloat();
+			r.amountMultiplierMax = buffer.readFloat();
 			return r;
 		}
 
 		private static TagKey<Biome> create(FriendlyByteBuf buffer) {
-			ResourceLocation rl = buffer.readResourceLocation();;
+			ResourceLocation rl = buffer.readResourceLocation();
 			if(NULL.equals(rl))return null;
 			else return TagKey.create(Registry.BIOME_REGISTRY, rl);
 		}
@@ -191,6 +220,9 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory>, IRecip
 			write(recipe.biomeBlacklist, buffer);
 			buffer.writeVarInt(recipe.stressMul);
 			recipe.toNetwork(buffer);
+			buffer.writeBoolean(recipe.finite == ThreeState.DEFAULT ? !Config.defaultInfinite : recipe.finite == ThreeState.ALWAYS);
+			buffer.writeFloat(recipe.amountMultiplierMin);
+			buffer.writeFloat(recipe.amountMultiplierMax);
 		}
 
 		private static void write(TagKey<Biome> tag, FriendlyByteBuf buffer) {
