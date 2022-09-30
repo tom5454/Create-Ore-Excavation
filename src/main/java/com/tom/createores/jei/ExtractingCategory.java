@@ -1,7 +1,6 @@
 package com.tom.createores.jei;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
@@ -26,7 +25,7 @@ public class ExtractingCategory extends ExcavatingCategory<ExtractorRecipe> {
 
 	@Override
 	public Component getTitle() {
-		return new TranslatableComponent("jei.coe.recipe.extracting");
+		return Component.translatable("jei.coe.recipe.extracting");
 	}
 
 	@Override

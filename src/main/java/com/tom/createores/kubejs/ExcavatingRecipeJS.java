@@ -1,14 +1,23 @@
 package com.tom.createores.kubejs;
 
-import dev.latvian.mods.kubejs.item.ingredient.IngredientJS;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+
+import com.tom.createores.CreateOreExcavation;
+
+import dev.latvian.mods.kubejs.recipe.IngredientMatch;
+import dev.latvian.mods.kubejs.recipe.ItemInputTransformer;
+import dev.latvian.mods.kubejs.recipe.ItemOutputTransformer;
+import dev.latvian.mods.kubejs.recipe.RecipeArguments;
 import dev.latvian.mods.kubejs.recipe.RecipeJS;
-import dev.latvian.mods.kubejs.util.ListJS;
 
 @SuppressWarnings("unchecked")
 public abstract class ExcavatingRecipeJS<T extends ExcavatingRecipeJS<T>> extends RecipeJS {
+	private Ingredient drill;
 
 	@Override
-	public void create(ListJS arg0) {
+	public void create(RecipeArguments arg0) {
+		drill = Ingredient.of(CreateOreExcavation.DRILL_TAG);
 		json.addProperty("amountMin", 1);
 		json.addProperty("amountMax", 2);
 	}
@@ -25,8 +34,8 @@ public abstract class ExcavatingRecipeJS<T extends ExcavatingRecipeJS<T>> extend
 		return (T) this;
 	}
 
-	public T drill(IngredientJS drill) {
-		inputItems.set(0, drill);
+	public T drill(Ingredient drill) {
+		this.drill = drill;
 		serializeInputs = true;
 		return (T) this;
 	}
@@ -63,5 +72,35 @@ public abstract class ExcavatingRecipeJS<T extends ExcavatingRecipeJS<T>> extend
 		json.addProperty("amountMax", max);
 		save();
 		return (T) this;
+	}
+
+	@Override
+	public void deserialize() {
+		drill = parseItemInput(json.get("drill"), "drill");
+	}
+
+	@Override
+	public void serialize() {
+		if(serializeInputs)json.add("drill", drill.toJson());
+	}
+
+	@Override
+	public boolean hasInput(IngredientMatch var1) {
+		return false;
+	}
+
+	@Override
+	public boolean replaceInput(IngredientMatch var1, Ingredient var2, ItemInputTransformer var3) {
+		return false;
+	}
+
+	@Override
+	public boolean hasOutput(IngredientMatch var1) {
+		return false;
+	}
+
+	@Override
+	public boolean replaceOutput(IngredientMatch var1, ItemStack var2, ItemOutputTransformer var3) {
+		return false;
 	}
 }

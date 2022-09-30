@@ -6,17 +6,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.simibubi.create.content.contraptions.processing.ProcessingOutput;
 
@@ -44,11 +41,11 @@ public class DrillBlockEntity extends ExcavatingBlockEntity<DrillingRecipe> {
 
 	@Override
 	public <T> LazyOptional<T> getCaps(Capability<T> cap, Type type) {
-		if(type == Type.ITEM_OUT && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+		if(type == Type.ITEM_OUT && cap == ForgeCapabilities.ITEM_HANDLER) {
 			return inventory.asCap();
 		}
 
-		if(type == Type.FLUID_IN && cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+		if(type == Type.FLUID_IN && cap == ForgeCapabilities.FLUID_HANDLER) {
 			return tankCap.cast();
 		}
 		return LazyOptional.empty();
@@ -82,7 +79,7 @@ public class DrillBlockEntity extends ExcavatingBlockEntity<DrillingRecipe> {
 	@Override
 	public void addToGoggleTooltip(List<Component> tooltip, DrillingRecipe rec) {
 		if(rec.getDrillingFluid().getRequiredAmount() != 0 && rec.getDrillingFluid().test(fluidTank.getFluid()) && fluidTank.getFluidAmount() >= rec.getDrillingFluid().getRequiredAmount()) {
-			tooltip.add(new TextComponent(spacing).append(new TranslatableComponent("info.coe.drill.noFluid")));
+			tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.drill.noFluid")));
 		}
 	}
 

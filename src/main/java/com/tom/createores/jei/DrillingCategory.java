@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 
 import com.simibubi.create.compat.jei.DoubleItemIcon;
@@ -32,7 +31,7 @@ public class DrillingCategory extends ExcavatingCategory<DrillingRecipe> {
 
 	@Override
 	public Component getTitle() {
-		return new TranslatableComponent("jei.coe.recipe.drilling");
+		return Component.translatable("jei.coe.recipe.drilling");
 	}
 
 	@Override

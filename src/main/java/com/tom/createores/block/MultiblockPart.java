@@ -33,7 +33,7 @@ public interface MultiblockPart extends IWrenchable {
 	}
 
 	public static NonNullUnaryOperator<BlockBehaviour.Properties> propsGhost() {
-		return props().andThen(p -> p.noDrops());
+		return props().andThen(p -> p.noLootTable());
 	}
 
 	InteractionResult onActivate(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand,

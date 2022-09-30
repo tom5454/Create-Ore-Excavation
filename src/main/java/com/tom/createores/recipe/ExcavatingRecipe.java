@@ -16,8 +16,6 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 
-import net.minecraftforge.registries.ForgeRegistryEntry;
-
 import com.simibubi.create.foundation.item.SmartInventory;
 
 import com.google.gson.JsonObject;
@@ -154,7 +152,7 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory>, IRecip
 		return Math.round(isNet ? (double) amountMultiplierMax : (double) amountMultiplierMax * Config.finiteAmountBase);
 	}
 
-	public static class Serializer<T extends ExcavatingRecipe> extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<T> {
+	public static class Serializer<T extends ExcavatingRecipe> implements RecipeSerializer<T> {
 		private static final ResourceLocation NULL = new ResourceLocation("coe:null");
 		private final RecipeTypeGroup<?> type;
 		private final RecipeFactory<T> create;

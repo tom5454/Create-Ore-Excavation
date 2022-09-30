@@ -1,0 +1,17 @@
+// 1.19.2	2022-09-30T22:12:53.9796583	Registrate Provider for createoreexcavation [Recipes, Advancements, Loot tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+ab1bbafb4f5b819e8f1742e1ce79d15a4acde589 assets/createoreexcavation/blockstates/drilling_machine.json
+4447c4025e38e242f026b0801fbcf1cb00de9310 assets/createoreexcavation/blockstates/extractor.json
+455904ef454e8e3ad3470132985375d2b5065ac1 assets/createoreexcavation/blockstates/io_block.json
+98e5e9e87e06afb931e7e981a7dfc6b3e6b2c7be assets/createoreexcavation/blockstates/kinetic_input.json
+1fe99c03129c60fc557434997253bfbcfe747119 assets/createoreexcavation/blockstates/multiblock.json
+b6b718a0f3928958bd0e3f555f1058ec9aef2da1 assets/createoreexcavation/lang/en_ud.json
+2a13d47e45798190d6832e7d113537bd894b7cd7 assets/createoreexcavation/lang/en_us.json
+3d3078e7e65efb7e67935c1407c53a79bfe90042 assets/createoreexcavation/models/block/io_block.json
+3d3078e7e65efb7e67935c1407c53a79bfe90042 assets/createoreexcavation/models/block/kinetic_in.json
+3d3078e7e65efb7e67935c1407c53a79bfe90042 assets/createoreexcavation/models/block/multiblock_ghost.json
+faed783787a082d8f935ceedbfc821c9b1dbab02 assets/createoreexcavation/models/item/drilling_machine.json
+302682a71e3cf5e3f72b4e4c3fa07018211e231c assets/createoreexcavation/models/item/extractor.json
+bc539f07f82931787aa18020220eac30ed804952 data/createoreexcavation/loot_tables/blocks/drilling_machine.json
+0988b6c36d2627c4674dc3dad951fa366f337f91 data/createoreexcavation/loot_tables/blocks/extractor.json
+9868666af9078c8bf7f66460c6380c6c2e83531c data/minecraft/tags/blocks/mineable/pickaxe.json
+9868666af9078c8bf7f66460c6380c6c2e83531c data/minecraft/tags/blocks/needs_iron_tool.json

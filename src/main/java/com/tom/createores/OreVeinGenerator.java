@@ -1,11 +1,11 @@
 package com.tom.createores;
 
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
 
 import net.minecraft.core.QuartPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.level.chunk.LevelChunk;
 
@@ -38,16 +38,16 @@ public class OreVeinGenerator {
 		}
 	}
 
-	public static IRecipe pick(LevelChunk chunk, Random rng) {
+	public static IRecipe pick(LevelChunk chunk, RandomSource rng) {
 		ServerLevel lvl = (ServerLevel) chunk.getLevel();
 		int i = QuartPos.fromBlock(chunk.getMinBuildHeight());
 		int k = i + QuartPos.fromBlock(chunk.getHeight()) - 1;
 		return getPicker(chunk).getRandomValue(rng).filter(r -> r.canGenerate(lvl, chunk.getNoiseBiome(rng.nextInt(4), i + rng.nextInt(k), rng.nextInt(4)))).orElse(null);
 	}
 
-	public static Random rngFromChunk(LevelChunk chunk) {
+	public static RandomSource rngFromChunk(LevelChunk chunk) {
 		ServerLevel lvl = (ServerLevel) chunk.getLevel();
 		long seed = lvl.getSeed();
-		return new Random(seed ^ chunk.getPos().toLong());
+		return RandomSource.create(seed ^ chunk.getPos().toLong());
 	}
 }

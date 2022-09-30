@@ -1,22 +1,22 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "create",
+  "key": {
+    "b": {
+      "tag": "forge:storage_blocks/diamond"
+    },
+    "d": {
+      "item": "createoreexcavation:drill"
+    },
+    "i": {
+      "tag": "forge:gems/diamond"
+    }
+  },
   "pattern": [
     "bi ",
     "idi",
     " ii"
   ],
-  "key": {
-    "b": {
-      "tag": "forge:storage_blocks/diamond"
-    },
-    "i": {
-      "tag": "forge:gems/diamond"
-    },
-    "d": {
-      "item": "createoreexcavation:drill"
-    }
-  },
   "result": {
     "item": "createoreexcavation:diamond_drill"
   }

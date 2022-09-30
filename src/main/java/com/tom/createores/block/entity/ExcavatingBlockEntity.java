@@ -9,8 +9,6 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -60,8 +58,8 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		R rec = recipeClient != null ? level.getRecipeManager().byKey(recipeClient).filter(this::instanceofCheck).map(r -> (R) r).orElse(null) : null;
-		Component vein = rec != null ? rec.getName() : new TranslatableComponent("chat.coe.veinFinder.nothing");
-		tooltip.add(new TextComponent(spacing).append(new TranslatableComponent("chat.coe.veinFinder.found", vein)));
+		Component vein = rec != null ? rec.getName() : Component.translatable("chat.coe.veinFinder.nothing");
+		tooltip.add(Component.literal(spacing).append(Component.translatable("chat.coe.veinFinder.found", vein)));
 		if(!hasRotation) {
 			tooltip.add(componentSpacing.plainCopy()
 					.append(Lang.translateDirect("tooltip.speedRequirement")
@@ -75,20 +73,20 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 						.append(cutString.get(i)));
 		}
 		if(drillStack.isEmpty())
-			tooltip.add(new TextComponent(spacing).append(new TranslatableComponent("info.coe.drill.noDrill")));
+			tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.drill.noDrill")));
 		else
-			tooltip.add(new TextComponent(spacing).append(new TranslatableComponent("info.coe.drill.installed", drillStack.getHoverName())));
+			tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.drill.installed", drillStack.getHoverName())));
 
 		if(rec != null) {
-			tooltip.add(new TextComponent(spacing).append(new TranslatableComponent("info.coe.drill.progress")).append(": [").append(ClientUtil.makeProgressBar(progress / (float) rec.getTicks())).append("]"));
-			if(resourceRemClient != 0)tooltip.add(new TextComponent(spacing).append(new TranslatableComponent("info.coe.drill.resourceRemaining", NumberFormatter.formatNumber(resourceRemClient))));
+			tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.drill.progress")).append(": [").append(ClientUtil.makeProgressBar(progress / (float) rec.getTicks())).append("]"));
+			if(resourceRemClient != 0)tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.drill.resourceRemaining", NumberFormatter.formatNumber(resourceRemClient))));
 			if(!rec.getDrill().test(drillStack)) {
-				tooltip.add(new TextComponent(spacing).append(new TranslatableComponent("info.coe.drill.badDrill")));
+				tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.drill.badDrill")));
 			}
 			addToGoggleTooltip(tooltip, rec);
 		}
 		if(state != ExcavatorState.NO_ERROR) {
-			tooltip.add(new TextComponent(spacing).append(new TranslatableComponent("info.coe.drill.err_" + state.name().toLowerCase())));
+			tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.drill.err_" + state.name().toLowerCase())));
 		}
 
 		return true;

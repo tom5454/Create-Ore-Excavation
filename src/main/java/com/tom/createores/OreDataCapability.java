@@ -1,13 +1,13 @@
 package com.tom.createores;
 
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -142,7 +142,7 @@ public class OreDataCapability implements ICapabilityProvider, INBTSerializable<
 		if(chunk.getLevel().isClientSide)throw new RuntimeException("Ore Data accessed from client");
 		OreData data = chunk.getCapability(ORE_CAP).orElse(null);
 		if(data != null && !data.loaded) {
-			Random rng = OreVeinGenerator.rngFromChunk(chunk);
+			RandomSource rng = OreVeinGenerator.rngFromChunk(chunk);
 			IRecipe r = OreVeinGenerator.pick(chunk, rng);
 			if(r != null) {
 				data.recipe = r.getRecipeId();

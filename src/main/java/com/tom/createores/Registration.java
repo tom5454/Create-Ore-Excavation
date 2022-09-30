@@ -45,7 +45,7 @@ public class Registration {
 			.item(MultiBlockItem::new)
 			.properties(p -> p.stacksTo(1))
 			.transform(b -> b.model((c, p) -> {
-				p.withExistingParent(Registration.DRILL_BLOCK.get().getRegistryName().getPath(),
+				p.withExistingParent("drilling_machine",
 						p.modLoc("block/drill_model"));
 			}).build())
 			.lang("Drilling Machine")
@@ -112,7 +112,7 @@ public class Registration {
 			.item(MultiBlockItem::new)
 			.properties(p -> p.stacksTo(1))
 			.transform(b -> b.model((c, p) -> {
-				p.withExistingParent(Registration.EXTRACTOR_BLOCK.get().getRegistryName().getPath(),
+				p.withExistingParent("extractor",
 						p.modLoc("block/extractor_model"));
 			}).build())
 			.lang("Fluid Well Extractor")

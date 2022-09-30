@@ -6,8 +6,6 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 
 import net.minecraftforge.api.distmarker.Dist;
@@ -29,7 +27,7 @@ public class ClientEventHandler {
 
 	@SubscribeEvent
 	public static void addToItemTooltip(ItemTooltipEvent event) {
-		if (event.getPlayer() == null)
+		if (event.getEntity() == null)
 			return;
 
 		ItemStack stack = event.getItemStack();
@@ -57,7 +55,7 @@ public class ClientEventHandler {
 				builder.add(Lang.text("1-?"))
 				.text("x ")
 				.add(rpmUnit)
-				.add(new TextComponent(" ").append(new TranslatableComponent("tooltip.coe.variableImpact")))
+				.add(Component.literal(" ").append(Component.translatable("tooltip.coe.variableImpact")))
 				.addTo(tooltip);
 			} else
 				builder.translate("tooltip.stressImpact." + Lang.asId(impactId.name()))

@@ -2,20 +2,16 @@ package com.tom.createores.kubejs;
 
 import net.minecraft.network.chat.Component;
 
-import com.tom.createores.CreateOreExcavation;
-
 import dev.latvian.mods.kubejs.fluid.FluidStackJS;
-import dev.latvian.mods.kubejs.item.ingredient.IngredientJS;
+import dev.latvian.mods.kubejs.recipe.RecipeArguments;
 import dev.latvian.mods.kubejs.recipe.RecipeExceptionJS;
-import dev.latvian.mods.kubejs.util.ListJS;
 
 public class ExtractorRecipeJS extends ExcavatingRecipeJS<ExtractorRecipeJS> {
 	private FluidStackJS fluid;
 
 	@Override
-	public void create(ListJS args) {
+	public void create(RecipeArguments args) {
 		super.create(args);
-		inputItems.add(IngredientJS.of("#" + CreateOreExcavation.DRILL_TAG.location()));
 		fluid = FluidStackJS.of(args.get(0));
 		Component name = Component.Serializer.fromJson(args.get(1).toString());
 		int weight = ((Number) args.get(2)).intValue();
@@ -31,15 +27,13 @@ public class ExtractorRecipeJS extends ExcavatingRecipeJS<ExtractorRecipeJS> {
 
 	@Override
 	public void deserialize() {
-		inputItems.add(IngredientJS.ingredientFromRecipeJson(json.get("drill")));
+		super.deserialize();
 		fluid = FluidStackJS.fromJson(json.get("output"));
 	}
 
 	@Override
 	public void serialize() {
-		if (serializeInputs) {
-			json.add("drill", inputItems.get(0).toJson());
-		}
+		super.serialize();
 		if(serializeOutputs)json.add("output", fluid.toJson());
 	}
 }
