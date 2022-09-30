@@ -8,8 +8,8 @@
   "ticks": 1200,
   "biomeWhitelist": "forge:is_overworld",
   "stress": 512,
-  "amountMin": 1.0,
-  "amountMax": 2.0,
+  "amountMin": 0.2,
+  "amountMax": 1.0,
   "output": [
     {
       "item": "createoreexcavation:raw_emerald"

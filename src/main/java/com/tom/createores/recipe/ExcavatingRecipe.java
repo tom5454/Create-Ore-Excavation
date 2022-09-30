@@ -23,6 +23,7 @@ import com.simibubi.create.foundation.item.SmartInventory;
 import com.google.gson.JsonObject;
 
 import com.tom.createores.Config;
+import com.tom.createores.CreateOreExcavation.RecipeTypeGroup;
 import com.tom.createores.recipe.IRecipe.IResourceRecipe;
 
 public abstract class ExcavatingRecipe implements Recipe<SmartInventory>, IRecipe, IResourceRecipe {
@@ -35,6 +36,7 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory>, IRecip
 	public TagKey<Biome> biomeWhitelist, biomeBlacklist;
 	public ThreeState finite;
 	public float amountMultiplierMin, amountMultiplierMax;
+	protected boolean isNet;
 
 	public ExcavatingRecipe(ResourceLocation id, RecipeType<?> type, RecipeSerializer<?> serializer) {
 		this.id = id;
@@ -140,19 +142,31 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory>, IRecip
 	protected abstract void fromNetwork(FriendlyByteBuf buffer);
 	protected abstract void toNetwork(FriendlyByteBuf buffer);
 
+	public boolean isInfiniteClient() {
+		return isNet ? finite == ThreeState.NEVER : finite == ThreeState.DEFAULT ? Config.defaultInfinite : finite == ThreeState.NEVER;
+	}
+
+	public long getMinAmountClient() {
+		return Math.round(isNet ? (double) amountMultiplierMin : (double) amountMultiplierMin * Config.finiteAmountBase);
+	}
+
+	public long getMaxAmountClient() {
+		return Math.round(isNet ? (double) amountMultiplierMax : (double) amountMultiplierMax * Config.finiteAmountBase);
+	}
+
 	public static class Serializer<T extends ExcavatingRecipe> extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<T> {
 		private static final ResourceLocation NULL = new ResourceLocation("coe:null");
-		private final RecipeType<?> type;
+		private final RecipeTypeGroup<?> type;
 		private final RecipeFactory<T> create;
 
-		public Serializer(RecipeType<?> type, RecipeFactory<T> create) {
+		public Serializer(RecipeTypeGroup<?> type, RecipeFactory<T> create) {
 			this.type = type;
 			this.create = create;
 		}
 
 		@Override
 		public T fromJson(ResourceLocation pRecipeId, JsonObject json) {
-			T r = create.create(pRecipeId, type, this);
+			T r = create.create(pRecipeId, type.getRecipeType(), this);
 			r.drill = Ingredient.fromJson(json.get("drill"));
 			r.veinName = Component.Serializer.fromJson(json.get("name").getAsString());
 			r.weight = GsonHelper.getAsInt(json, "weight");
@@ -189,7 +203,7 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory>, IRecip
 
 		@Override
 		public T fromNetwork(ResourceLocation pRecipeId, FriendlyByteBuf buffer) {
-			T r = create.create(pRecipeId, type, this);
+			T r = create.create(pRecipeId, type.getRecipeType(), this);
 			r.drill = Ingredient.fromNetwork(buffer);
 			r.ticks = buffer.readVarInt();
 			r.weight = buffer.readVarInt();
@@ -201,6 +215,7 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory>, IRecip
 			r.finite = buffer.readBoolean() ? ThreeState.ALWAYS : ThreeState.NEVER;
 			r.amountMultiplierMin = buffer.readFloat();
 			r.amountMultiplierMax = buffer.readFloat();
+			r.isNet = true;
 			return r;
 		}
 
@@ -221,8 +236,8 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory>, IRecip
 			buffer.writeVarInt(recipe.stressMul);
 			recipe.toNetwork(buffer);
 			buffer.writeBoolean(recipe.finite == ThreeState.DEFAULT ? !Config.defaultInfinite : recipe.finite == ThreeState.ALWAYS);
-			buffer.writeFloat(recipe.amountMultiplierMin);
-			buffer.writeFloat(recipe.amountMultiplierMax);
+			buffer.writeFloat(recipe.amountMultiplierMin * Config.finiteAmountBase);
+			buffer.writeFloat(recipe.amountMultiplierMax * Config.finiteAmountBase);
 		}
 
 		private static void write(TagKey<Biome> tag, FriendlyByteBuf buffer) {

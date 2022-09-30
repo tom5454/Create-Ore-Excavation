@@ -12,6 +12,7 @@
   "config.coe.defaultInfinite": "\u0287\u05DFn\u0250\u025F\u01DDp \u028Eq \u01DD\u0287\u0131u\u0131\u025Fu\u0131 su\u0131\u01DD\u039B",
   "config.coe.finiteAmountBase": "\u01DDs\u0250q \u0287uno\u026F\u0250 u\u0131\u01DD\u028C \u01DD\u0287\u0131u\u0131\u2132",
   "config.coe.generationChance": "\u029Eun\u0265\u0254 \u028E\u0287d\u026F\u01DD \u0279o\u025F \u01DDn\u05DF\u0250\u028C \u0287\u0265b\u0131\u01DDM",
+  "config.coe.maxExtractorsPerVein": "\u01DD\u0287\u0131u\u0131\u025Fu\u0131 \u0279o\u025F 0 o\u0287 \u0287\u01DDS 'u\u0131\u01DD\u028C \u01DD\u0279o \u0279\u01DDd \u0279o\u0287\u0254\u0250\u0279\u0287x\u01DD \u025Fo \u0279\u01DDq\u026Fnu x\u0250W",
   "createoreexcavation.ponder.find_ores.header": "\u0279\u01DDpu\u0131\u2132 u\u0131\u01DD\u039B \u01DD\u0265\u0287 bu\u0131sn su\u0131\u01DD\u028C \u01DD\u0279o pu\u0131\u2132",
   "createoreexcavation.ponder.find_ores.text_1": "s\u01DD\u0279o \u01DD\u0287\u0250\u0254o\u05DF o\u0287 \u0279\u01DDpu\u0131\u2132 u\u0131\u01DD\u039B \u01DD\u0279O u\u0250 \u01DDs\u2229",
   "createoreexcavation.ponder.find_ores.text_2": "bu\u0131\u0265\u0287oN :puno\u2132",
@@ -24,6 +25,9 @@
   "createoreexcavation.ponder.tag.drilling": "bu\u0131\u05DF\u05DF\u0131\u0279\u15E1",
   "createoreexcavation.ponder.tag.drilling.description": "puno\u0279b\u0279\u01DDpun \u026Fo\u0279\u025F s\u01DD\u0254\u0279nos\u01DD\u0279 sno\u0131\u0279\u0250\u028C \u0287\u0254\u0250\u0279\u0287x\u018E",
   "info.coe.drill.badDrill": "\u01DD\u05DFq\u0131\u0287\u0250d\u026Fo\u0254 \u0287ou \u05DF\u05DF\u0131\u0279\u15E1",
+  "info.coe.drill.err_no_vein": "\u01DD\u0287\u0250\u028C\u0250\u0254x\u01DD o\u0287 u\u0131\u01DD\u028C oN",
+  "info.coe.drill.err_too_many_excavators": "s\u0279o\u0287\u0254\u0250\u0279\u0287x\u01DD u\u0131\u01DD\u028C \u028Eu\u0250\u026F oo\u27D8",
+  "info.coe.drill.err_vein_empty": "p\u01DD\u0287\u01DD\u05DFd\u01DDp s\u0131 u\u0131\u01DD\u028C \u01DD\u0265\u27D8",
   "info.coe.drill.installed": "%s :\u05DF\u05DF\u0131\u0279p p\u01DD\u05DF\u05DF\u0250\u0287suI",
   "info.coe.drill.noDrill": "\u026F\u01DD\u0287\u0131 \u05DF\u05DF\u0131\u0279p sp\u01DD\u01DDu \u01DDu\u0131\u0265\u0254\u0250\u026F \u01DD\u0265\u27D8",
   "info.coe.drill.noFluid": "p\u0131n\u05DF\u025F bu\u0131\u05DF\u05DF\u0131\u0279p sp\u01DD\u01DDu \u01DDu\u0131\u0265\u0254\u0250\u026F \u01DD\u0265\u27D8",
@@ -42,6 +46,9 @@
   "ore.coe.hardenedDiamond": "puo\u026F\u0250\u0131\u15E1 p\u01DDu\u01DDp\u0279\u0250H",
   "tooltip.coe.biome.blacklist": ":\u0287s\u0131\u05DF\u029E\u0254\u0250\u05DF\u15FA \u01DD\u026Fo\u0131\u15FA",
   "tooltip.coe.biome.whitelist": ":\u0287s\u0131\u05DF\u01DD\u0287\u0131\u0265M \u01DD\u026Fo\u0131\u15FA",
+  "tooltip.coe.finiteVeins": "%s - %s :\u01DDz\u0131s su\u0131\u01DD\u028C \u01DD\u0287\u0131u\u0131\u2132",
+  "tooltip.coe.infiniteVeins": "su\u0131\u01DD\u028C \u01DD\u0287\u0131u\u0131\u025FuI",
+  "tooltip.coe.page": "%s/%s :\u01DDb\u0250\u0500",
   "tooltip.coe.processTime": "%s :s\u029E\u0254\u0131\u27D8",
   "tooltip.coe.variableImpact": "\u0287\u0254\u0250d\u026FI \u01DD\u05DFq\u0250\u0131\u0279\u0250\u039B"
 }

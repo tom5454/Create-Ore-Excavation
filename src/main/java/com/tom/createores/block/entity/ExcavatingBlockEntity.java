@@ -46,7 +46,7 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 	protected ItemStack drillStack;
 	protected R current;
 	protected OreData data;
-	protected boolean canRun;
+	protected ExcavatorState state = ExcavatorState.NO_VEIN;
 
 	protected ExcavatingBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -87,6 +87,9 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 			}
 			addToGoggleTooltip(tooltip, rec);
 		}
+		if(state != ExcavatorState.NO_ERROR) {
+			tooltip.add(new TextComponent(spacing).append(new TranslatableComponent("info.coe.drill.err_" + state.name().toLowerCase())));
+		}
 
 		return true;
 	}
@@ -113,29 +116,42 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 	public void tick() {
 		super.tick();
 		if(!level.isClientSide) {
-			if(current != null && canRun) {
+			if(current != null && state == ExcavatorState.NO_ERROR) {
 				if(kinetic != null)kinetic.setStress(current.getStress());
 				if(canExtract() && kinetic != null && kinetic.getRotationSpeed() >= SpeedLevel.MEDIUM.getSpeedValue() &&
 						current.getDrill().test(drillStack)) {
 					float prg = kinetic.getRotationSpeed() / SpeedLevel.MEDIUM.getSpeedValue();
 					progress += prg;
 					if(progress >= current.getTicks()) {
-						onFinished();
-						data.extract(1);
+						updateState();
+						if(state == ExcavatorState.NO_ERROR) {
+							onFinished();
+							data.extract(1);
+						}
 						progress = 0;
-						current = getRecipe();
-						notifyUpdate();
 					}
 				}
 			} else if(progress > 10) {
 				progress = 0;
-				current = getRecipe();
-				canRun = current != null && data.getResourcesRemaining(current) >= 0;
-				notifyUpdate();
+				updateState();
 			} else {
 				progress++;
 			}
 		}
+	}
+
+	private void updateState() {
+		current = getRecipe();
+		if(current == null) {
+			state = ExcavatorState.NO_VEIN;
+		} else if(!data.canExtract(level, worldPosition)) {
+			state = ExcavatorState.TOO_MANY_EXCAVATORS;
+		} else if(data.getResourcesRemaining(current) == -1) {
+			state = ExcavatorState.VEIN_EMPTY;
+		} else {
+			state = ExcavatorState.NO_ERROR;
+		}
+		notifyUpdate();
 	}
 
 	@Override
@@ -149,6 +165,7 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 		progress = tag.getInt("progress");
 		drillStack = ItemStack.of(tag.getCompound("drill"));
 		if(clientPacket) {
+			state = ExcavatorState.VALUES[tag.getByte("state")];
 			if(tag.contains("veinName")) {
 				recipeClient = new ResourceLocation(tag.getString("veinName"));
 				resourceRemClient = tag.getLong("resRem");
@@ -164,6 +181,7 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 		tag.putInt("progress", progress);
 		tag.put("drill", drillStack.serializeNBT());
 		if(clientPacket) {
+			tag.putByte("state", (byte) state.ordinal());
 			if(current != null) {
 				tag.putString("veinName", current.getRecipeId().toString());
 				tag.putLong("resRem", data.getResourcesRemaining(current));
@@ -241,5 +259,14 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 	@Override
 	protected AABB createRenderBoundingBox() {
 		return new AABB(worldPosition.offset(-1, -1, -1), worldPosition.offset(1, 0, 1));
+	}
+
+	public static enum ExcavatorState {
+		NO_ERROR,
+		NO_VEIN,
+		VEIN_EMPTY,
+		TOO_MANY_EXCAVATORS,
+		;
+		public static final ExcavatorState[] VALUES = values();
 	}
 }

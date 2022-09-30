@@ -1,11 +1,15 @@
 package com.tom.createores;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
 
 import net.minecraftforge.common.capabilities.Capability;
@@ -15,6 +19,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 
+import com.tom.createores.block.entity.IDrill;
 import com.tom.createores.recipe.IRecipe;
 import com.tom.createores.recipe.IRecipe.IResourceRecipe;
 import com.tom.createores.recipe.IRecipe.ThreeState;
@@ -64,6 +69,7 @@ public class OreDataCapability implements ICapabilityProvider, INBTSerializable<
 		private boolean loaded;
 		private long extractedAmount;
 		private float randomMul;
+		private Set<BlockPos> extractors;
 
 		public void loadNBTData(CompoundTag nbt) {
 			loaded = nbt.getBoolean("gen");
@@ -112,6 +118,23 @@ public class OreDataCapability implements ICapabilityProvider, INBTSerializable<
 
 		public void extract(int a) {
 			extractedAmount += a;
+		}
+
+		public boolean canExtract(Level lvl, BlockPos pos) {
+			if(Config.maxExtractorsPerVein == 0)return true;
+			if(extractors == null) {
+				extractors = new HashSet<>();
+				extractors.add(pos);
+				return true;
+			}
+			if(extractors.contains(pos))
+				return true;
+			extractors.removeIf(p -> !(lvl.getBlockEntity(p) instanceof IDrill));
+			if(extractors.size() < Config.maxExtractorsPerVein) {
+				extractors.add(pos);
+				return true;
+			}
+			return false;
 		}
 	}
 

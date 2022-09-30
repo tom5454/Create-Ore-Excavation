@@ -1,13 +1,8 @@
 package com.tom.createores;
 
-import java.util.Optional;
-
 import org.slf4j.Logger;
 
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
 import net.minecraft.core.Registry;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -26,6 +21,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -39,9 +35,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.foundation.block.BlockStressValues;
@@ -49,7 +42,6 @@ import com.simibubi.create.foundation.config.AllConfigs;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
-import com.tom.createores.OreDataCapability.OreData;
 import com.tom.createores.client.ClientRegistration;
 import com.tom.createores.item.DrillItem;
 import com.tom.createores.item.OreVeinFinderItem;
@@ -68,6 +60,7 @@ public class CreateOreExcavation {
 	private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
 	private static final DeferredRegister<MenuType<?>> MENU_TYPE = DeferredRegister.create(ForgeRegistries.CONTAINERS, MODID);
 	private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZER = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, MODID);
+	private static final DeferredRegister<RecipeType<?>> TYPE_REGISTER = DeferredRegister.create(Registry.RECIPE_TYPE_REGISTRY, MODID);
 
 	public static final RecipeTypeGroup<DrillingRecipe> DRILLING_RECIPES = recipe("drilling", DrillingRecipe::new);
 	public static final RecipeTypeGroup<ExtractorRecipe> EXTRACTING_RECIPES = recipe("extracting", ExtractorRecipe::new);
@@ -114,24 +107,28 @@ public class CreateOreExcavation {
 
 		Registration.register();
 
-		ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
-		MENU_TYPE.register(FMLJavaModLoadingContext.get().getModEventBus());
-		RECIPE_SERIALIZER.register(FMLJavaModLoadingContext.get().getModEventBus());
+		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+		ITEMS.register(bus);
+		MENU_TYPE.register(bus);
+		RECIPE_SERIALIZER.register(bus);
+		TYPE_REGISTER.register(bus);
 	}
 
 	private static <T extends ExcavatingRecipe> RecipeTypeGroup<T> recipe(String name, RecipeFactory<T> factory) {
-		RecipeTypeGroup<T> rg = new RecipeTypeGroup<>();
-		rg.recipeType = Optional.empty();
-		rg.serializer = RECIPE_SERIALIZER.register(name, () -> {
-			rg.recipeType = Optional.of(AllRecipeTypes.simpleType(new ResourceLocation(MODID, name)));
-			return new ExcavatingRecipe.Serializer<>(rg.getRecipeType(), factory);
-		});
+		RecipeTypeGroup<T> rg = new RecipeTypeGroup<>(new ResourceLocation(MODID, name));
+		rg.recipeType = TYPE_REGISTER.register(name, () -> AllRecipeTypes.simpleType(new ResourceLocation(MODID, name)));
+		rg.serializer = RECIPE_SERIALIZER.register(name, () -> new ExcavatingRecipe.Serializer<>(rg, factory));
 		return rg;
 	}
 
 	public static class RecipeTypeGroup<T extends Recipe<?>> {
 		private RegistryObject<RecipeSerializer<T>> serializer;
-		private Optional<RecipeType<T>> recipeType;
+		private RegistryObject<RecipeType<T>> recipeType;
+		private ResourceLocation id;
+
+		public RecipeTypeGroup(ResourceLocation id) {
+			this.id = id;
+		}
 
 		public RecipeType<T> getRecipeType() {
 			return recipeType.get();
@@ -139,6 +136,10 @@ public class CreateOreExcavation {
 
 		public RecipeSerializer<T> getSerializer() {
 			return serializer.get();
+		}
+
+		public ResourceLocation getId() {
+			return id;
 		}
 	}
 
@@ -168,24 +169,24 @@ public class CreateOreExcavation {
 
 	@SubscribeEvent
 	public void registerCommands(RegisterCommandsEvent evt) {
-		LiteralArgumentBuilder<CommandSourceStack> l = Commands.literal("coe");
-		/*l.then(Commands.literal("chunkInfo").executes(ctx -> {
+		/*LiteralArgumentBuilder<CommandSourceStack> l = Commands.literal("coe");
+		l.then(Commands.literal("chunkInfo").executes(ctx -> {
 			OreData d = OreDataCapability.getData(css.getLevel().getChunkAt(css.getPlayerOrException().blockPosition()));
 			ctx.getSource().sendSuccess(null, false);
 			return 1;
-		}));*/
+		}));
 
 		l.then(Commands.argument("arg", StringArgumentType.greedyString()).executes(cc -> {
 			test(cc.getSource(), StringArgumentType.getString(cc, "arg"));
 			return 1;
 		}));
-		evt.getDispatcher().register(l);
+		evt.getDispatcher().register(l);*/
 	}
 
-	private static void test(CommandSourceStack css, String arg) throws CommandSyntaxException {
+	/*private static void test(CommandSourceStack css, String arg) throws CommandSyntaxException {
 		OreData d = OreDataCapability.getData(css.getLevel().getChunkAt(css.getPlayerOrException().blockPosition()));
 		css.sendSuccess(new TextComponent("Ore: " + d.getRecipeId()), true);
-	}
+	}*/
 
 	@SubscribeEvent
 	public void onAttachCapabilitiesChunk(AttachCapabilitiesEvent<LevelChunk> event){

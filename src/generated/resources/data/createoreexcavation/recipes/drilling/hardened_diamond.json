@@ -9,7 +9,7 @@
   "biomeWhitelist": "forge:is_overworld",
   "stress": 1024,
   "amountMin": 1.0,
-  "amountMax": 2.0,
+  "amountMax": 3.0,
   "output": [
     {
       "item": "createoreexcavation:raw_diamond"

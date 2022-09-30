@@ -127,18 +127,18 @@ public class COERecipes extends RecipeProvider {
 		.key('P', AllBlocks.MECHANICAL_PUMP.get())
 		.build(consumer);
 
-		new DrillingBuilder(Items.RAW_IRON, 10, 30*20).setBiomeWhitelist(Tags.Biomes.IS_OVERWORLD).save("iron", consumer);
-		new DrillingBuilder(Items.RAW_GOLD, 4, 30*20).setBiomeWhitelist(Tags.Biomes.IS_OVERWORLD).setStress(192).save("gold", consumer);
-		new DrillingBuilder(Items.RAW_COPPER, 10, 30*20).setBiomeWhitelist(Tags.Biomes.IS_OVERWORLD).save("copper", consumer);
-		new DrillingBuilder(Items.COAL, 20, 10*20).setBiomeWhitelist(Tags.Biomes.IS_OVERWORLD).save("coal", consumer);
-		new DrillingBuilder(CreateOreExcavation.RAW_DIAMOND.get(), 2, 60*20).setBiomeWhitelist(Tags.Biomes.IS_OVERWORLD).setStress(512).save("diamond", consumer);
-		new DrillingBuilder(CreateOreExcavation.RAW_REDSTONE.get(), 10, 30*20).setBiomeWhitelist(Tags.Biomes.IS_OVERWORLD).save("redstone", consumer);
-		new DrillingBuilder(CreateOreExcavation.RAW_EMERALD.get(), 2, 60*20).setBiomeWhitelist(Tags.Biomes.IS_OVERWORLD).setStress(512).save("emerald", consumer);
-		new DrillingBuilder(new ProcessingOutput(new ItemStack(CreateOreExcavation.RAW_DIAMOND.get()), 1F), 2, 20*20, new TranslatableComponent("ore.coe.hardenedDiamond")).addOutput(Items.DIAMOND, 0.1f).setDrill(Ingredient.of(CreateOreExcavation.NETHERITE_DRILL_ITEM.get())).setDrillingFluid(FluidIngredient.fromFluid(Fluids.LAVA, 500)).setBiomeWhitelist(Tags.Biomes.IS_OVERWORLD).setStress(1024).save("hardened_diamond", consumer);
-		new DrillingBuilder(AllItems.RAW_ZINC.get(), 10, 30*20).setBiomeWhitelist(Tags.Biomes.IS_OVERWORLD).save("zinc", consumer);
+		new DrillingBuilder(Items.RAW_IRON, 10, 30*20).setBiomeWhitelist(Tags.Biomes.IS_OVERWORLD).veinSize(10, 30).save("iron", consumer);
+		new DrillingBuilder(Items.RAW_GOLD, 4, 30*20).setBiomeWhitelist(Tags.Biomes.IS_OVERWORLD).veinSize(2, 4).setStress(192).save("gold", consumer);
+		new DrillingBuilder(Items.RAW_COPPER, 10, 30*20).setBiomeWhitelist(Tags.Biomes.IS_OVERWORLD).veinSize(10, 30).save("copper", consumer);
+		new DrillingBuilder(Items.COAL, 20, 10*20).setBiomeWhitelist(Tags.Biomes.IS_OVERWORLD).veinSize(15, 40).save("coal", consumer);
+		new DrillingBuilder(CreateOreExcavation.RAW_DIAMOND.get(), 2, 60*20).setBiomeWhitelist(Tags.Biomes.IS_OVERWORLD).setStress(512).veinSize(0.5f, 2).save("diamond", consumer);
+		new DrillingBuilder(CreateOreExcavation.RAW_REDSTONE.get(), 10, 30*20).setBiomeWhitelist(Tags.Biomes.IS_OVERWORLD).veinSize(10, 30).save("redstone", consumer);
+		new DrillingBuilder(CreateOreExcavation.RAW_EMERALD.get(), 2, 60*20).setBiomeWhitelist(Tags.Biomes.IS_OVERWORLD).veinSize(0.2f, 1).setStress(512).save("emerald", consumer);
+		new DrillingBuilder(new ProcessingOutput(new ItemStack(CreateOreExcavation.RAW_DIAMOND.get()), 1F), 2, 20*20, new TranslatableComponent("ore.coe.hardenedDiamond")).addOutput(Items.DIAMOND, 0.1f).setDrill(Ingredient.of(CreateOreExcavation.NETHERITE_DRILL_ITEM.get())).setDrillingFluid(FluidIngredient.fromFluid(Fluids.LAVA, 500)).setBiomeWhitelist(Tags.Biomes.IS_OVERWORLD).setStress(1024).veinSize(1f, 3f).save("hardened_diamond", consumer);
+		new DrillingBuilder(AllItems.RAW_ZINC.get(), 10, 30*20).setBiomeWhitelist(Tags.Biomes.IS_OVERWORLD).veinSize(8, 24).save("zinc", consumer);
 
-		new DrillingBuilder(Items.GLOWSTONE_DUST, 10, 60*20).setBiomeWhitelist(BiomeTags.IS_NETHER).save("glowstone", consumer);
-		new DrillingBuilder(Items.QUARTZ, 10, 60*20).setBiomeWhitelist(BiomeTags.IS_NETHER).setStress(512).save("quartz", consumer);
+		new DrillingBuilder(Items.GLOWSTONE_DUST, 10, 60*20).setBiomeWhitelist(BiomeTags.IS_NETHER).veinSize(5, 12).save("glowstone", consumer);
+		new DrillingBuilder(Items.QUARTZ, 10, 60*20).setBiomeWhitelist(BiomeTags.IS_NETHER).setStress(512).veinSize(8, 24).save("quartz", consumer);
 
 		new ExtractorBuilder(new FluidStack(Fluids.WATER, 500), 10, 20).setBiomeWhitelist(Tags.Biomes.IS_OVERWORLD).setFinite(ThreeState.NEVER).save("water", consumer);
 
@@ -209,7 +209,7 @@ public class COERecipes extends RecipeProvider {
 			return (T) this;
 		}
 
-		public default T setAmount(int min, int max) {
+		public default T veinSize(float min, float max) {
 			self().amountMultiplierMin = min;
 			self().amountMultiplierMax = max;
 			return (T) this;

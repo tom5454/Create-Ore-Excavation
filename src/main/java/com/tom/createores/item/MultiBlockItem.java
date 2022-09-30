@@ -33,6 +33,10 @@ public class MultiBlockItem extends BlockItem {
 					if(type != null) {
 						if(pContext.getLevel().isOutsideBuildHeight(pos))return false;
 						BlockPlaceContext p = BlockPlaceContext.at(pContext, pos.below(), Direction.UP);
+						if(p.replacingClickedOnBlock()) {
+							p = BlockPlaceContext.at(pContext, pos, Direction.UP);
+							if(!p.replacingClickedOnBlock())return false;
+						}
 						if(!p.canPlace())return false;
 						if(!super.canPlace(p, pState))return false;
 					}

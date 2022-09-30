@@ -136,6 +136,7 @@ public class Registration {
 		add("config.coe.generationChance", "Weight value for empty chunk");
 		add("config.coe.finiteAmountBase", "Finite vein amount base");
 		add("config.coe.defaultInfinite", "Veins infinite by default");
+		add("config.coe.maxExtractorsPerVein", "Max number of extractor per ore vein, Set to 0 for infinite");
 		add("chat.coe.veinFinder.info", "Vein Finder Result:");
 		add("chat.coe.veinFinder.found", "Found in Chunk: %s");
 		add("chat.coe.veinFinder.nothing", "Nothing");
@@ -147,12 +148,18 @@ public class Registration {
 		add("info.coe.drill.installed", "Installed drill: %s");
 		add("info.coe.drill.progress", "Progress");
 		add("info.coe.drill.resourceRemaining", "Resource remaining: %s");
+		add("info.coe.drill.err_no_vein", "No vein to excavate");
+		add("info.coe.drill.err_vein_empty", "The vein is depleted");
+		add("info.coe.drill.err_too_many_excavators", "Too many vein extractors");
 		add("jei.coe.recipe.drilling", "Drilling Machine");
 		add("jei.coe.recipe.extracting", "Fluid Extractor");
 		add("tooltip.coe.variableImpact", "Variable Impact");
 		add("tooltip.coe.biome.whitelist", "Biome Whitelist:");
 		add("tooltip.coe.biome.blacklist", "Biome Blacklist:");
 		add("tooltip.coe.processTime", "Ticks: %s");
+		add("tooltip.coe.finiteVeins", "Finite veins size: %s - %s");
+		add("tooltip.coe.infiniteVeins", "Infinite veins");
+		add("tooltip.coe.page", "Page: %s/%s");
 		add("ore.coe.hardenedDiamond", "Hardened Diamond");
 	}
 

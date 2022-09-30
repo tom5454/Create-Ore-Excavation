@@ -18,6 +18,7 @@ public class Config {
 		public IntValue generationChance;
 		public IntValue finiteAmountBase;
 		public BooleanValue defaultInfinite;
+		public IntValue maxExtractorsPerVein;
 
 		private Server(ForgeConfigSpec.Builder builder) {
 			builder.comment("IMPORTANT NOTICE:",
@@ -29,9 +30,12 @@ public class Config {
 					defineInRange("generationChance", 5000, 1, Integer.MAX_VALUE);
 
 			finiteAmountBase = builder.comment("Finite vein base amount").translation("config.coe.finiteAmountBase").
-					defineInRange("finiteAmountBase", 1, 1000, Integer.MAX_VALUE);
+					defineInRange("finiteAmountBase", 1000, 1, Integer.MAX_VALUE);
 
 			defaultInfinite = builder.comment("Veins infinite by default").translation("config.coe.defaultInfinite").define("defaultInfinite", true);
+
+			maxExtractorsPerVein = builder.comment("Max number of extractor per ore vein, Set to 0 for infinite").translation("config.coe.maxExtractorsPerVein")
+					.defineInRange("maxExtractorsPerVein", 0, 0, 64);
 		}
 	}
 
@@ -65,7 +69,7 @@ public class Config {
 		SERVER = specPair.getLeft();
 	}
 
-	public static int generationChance, finiteAmountBase;
+	public static int generationChance, finiteAmountBase, maxExtractorsPerVein;
 	public static boolean defaultInfinite;
 
 	private static void load(ModConfig modConfig) {
@@ -73,6 +77,7 @@ public class Config {
 			generationChance = SERVER.generationChance.get();
 			finiteAmountBase = SERVER.finiteAmountBase.get();
 			defaultInfinite = SERVER.defaultInfinite.get();
+			maxExtractorsPerVein = SERVER.maxExtractorsPerVein.get();
 			OreVeinGenerator.invalidate();
 		}
 	}

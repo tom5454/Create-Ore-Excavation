@@ -58,9 +58,9 @@ public abstract class ExcavatingRecipeJS<T extends ExcavatingRecipeJS<T>> extend
 		return (T) this;
 	}
 
-	public T veinSize(int min, int max) {
+	public T veinSize(float min, float max) {
 		json.addProperty("amountMin", min);
-		json.addProperty("amountMax", min);
+		json.addProperty("amountMax", max);
 		save();
 		return (T) this;
 	}
