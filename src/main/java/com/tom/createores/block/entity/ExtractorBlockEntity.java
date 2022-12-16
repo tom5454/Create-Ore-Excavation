@@ -71,8 +71,8 @@ public class ExtractorBlockEntity extends ExcavatingBlockEntity<ExtractorRecipe>
 	}
 
 	@Override
-	public void setRemoved() {
-		super.setRemoved();
+	public void invalidate() {
+		super.invalidate();
 		tankCap.invalidate();
 	}
 

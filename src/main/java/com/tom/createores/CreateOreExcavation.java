@@ -40,7 +40,6 @@ import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.foundation.block.BlockStressValues;
 import com.simibubi.create.foundation.config.AllConfigs;
 import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
 import com.tom.createores.client.ClientRegistration;
 import com.tom.createores.item.DrillItem;
@@ -55,7 +54,7 @@ public class CreateOreExcavation {
 	public static final String MODID = "createoreexcavation";
 	public static final Logger LOGGER = LogUtils.getLogger();
 
-	private static NonNullSupplier<CreateRegistrate> registrate;
+	private static CreateRegistrate registrate;
 
 	private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
 	private static final DeferredRegister<MenuType<?>> MENU_TYPE = DeferredRegister.create(ForgeRegistries.CONTAINERS, MODID);
@@ -95,8 +94,7 @@ public class CreateOreExcavation {
 		// Register the processIMC method for modloading
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
 
-		registrate = CreateRegistrate.lazy(MODID);
-		registrate.get();
+		registrate = CreateRegistrate.create(MODID).registerEventListeners(FMLJavaModLoadingContext.get().getModEventBus());
 
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.commonSpec);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.serverSpec);
@@ -201,6 +199,6 @@ public class CreateOreExcavation {
 	}
 
 	public static CreateRegistrate registrate() {
-		return registrate.get();
+		return registrate;
 	}
 }
