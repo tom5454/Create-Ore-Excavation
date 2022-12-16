@@ -9,9 +9,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
@@ -30,7 +30,7 @@ public class ExtractorBlockEntity extends ExcavatingBlockEntity<ExtractorRecipe>
 
 	@Override
 	public <T> LazyOptional<T> getCaps(Capability<T> cap, Type type) {
-		if(type == Type.FLUID_OUT && cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+		if(type == Type.FLUID_OUT && cap == ForgeCapabilities.FLUID_HANDLER) {
 			return tankCap.cast();
 		}
 		return LazyOptional.empty();
@@ -71,8 +71,8 @@ public class ExtractorBlockEntity extends ExcavatingBlockEntity<ExtractorRecipe>
 	}
 
 	@Override
-	public void setRemoved() {
-		super.setRemoved();
+	public void invalidate() {
+		super.invalidate();
 		tankCap.invalidate();
 	}
 

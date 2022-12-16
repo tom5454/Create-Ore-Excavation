@@ -84,8 +84,8 @@ public class DrillBlockEntity extends ExcavatingBlockEntity<DrillingRecipe> {
 	}
 
 	@Override
-	public void setRemoved() {
-		super.setRemoved();
+	public void invalidate() {
+		super.invalidate();
 		inventory.invalidate();
 		tankCap.invalidate();
 	}

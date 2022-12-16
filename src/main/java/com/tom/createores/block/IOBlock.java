@@ -30,9 +30,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 import com.simibubi.create.foundation.block.ITE;
 
@@ -91,12 +89,12 @@ public class IOBlock extends BaseEntityBlock implements MultiblockGhostPart, ITE
 	}
 
 	public static enum Type implements StringRepresentable {
-		ITEM_IN   (() -> CapabilityItemHandler.ITEM_HANDLER_CAPABILITY),
-		ITEM_OUT  (() -> CapabilityItemHandler.ITEM_HANDLER_CAPABILITY),
-		FLUID_IN  (() -> CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY),
-		FLUID_OUT (() -> CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY),
-		ENERGY_IN (() -> CapabilityEnergy.ENERGY),
-		ENERGY_OUT(() -> CapabilityEnergy.ENERGY),
+		ITEM_IN   (() -> ForgeCapabilities.ITEM_HANDLER),
+		ITEM_OUT  (() -> ForgeCapabilities.ITEM_HANDLER),
+		FLUID_IN  (() -> ForgeCapabilities.FLUID_HANDLER),
+		FLUID_OUT (() -> ForgeCapabilities.FLUID_HANDLER),
+		ENERGY_IN (() -> ForgeCapabilities.ENERGY),
+		ENERGY_OUT(() -> ForgeCapabilities.ENERGY),
 		;
 		private final String name;
 		private final Supplier<Capability<?>> cap;

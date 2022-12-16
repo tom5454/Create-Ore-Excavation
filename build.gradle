@@ -13,7 +13,7 @@ plugins {
 
 apply plugin: 'org.spongepowered.mixin'
 
-version = '0.3.1'
+version = '0.3.2'
 group = 'com.tom5454.createoreexcavation' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'createoreexcavation-1.19'
 
@@ -175,7 +175,7 @@ dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.19.2-43.1.3'
+    minecraft 'net.minecraftforge:forge:1.19.2-43.2.0'
     
     annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
 
@@ -199,12 +199,12 @@ dependencies {
   	
   	implementation fg.deobf("local:theoneprobe:1.19-6.2.2")
   	
-  	implementation fg.deobf("local:create:1.19.2-0.5.0.f")
-  	implementation fg.deobf("local:flywheel-forge:1.19.2-0.6.7-8")
+  	implementation fg.deobf("local:create:1.19.2-0.5.0.g")
+  	implementation fg.deobf("local:flywheel-forge:1.19.2-0.6.8-13")
   	
-  	implementation fg.deobf("dev.latvian.mods:kubejs-forge:1902.6.0-build.70")
-	implementation fg.deobf("dev.latvian.mods:rhino-forge:1802.2.0-build.235")
-	implementation fg.deobf("dev.architectury:architectury-forge:6.2.46")
+  	implementation fg.deobf("dev.latvian.mods:kubejs-forge:1902.6.0-build.128")
+	implementation fg.deobf("dev.latvian.mods:rhino-forge:1902.2.2-build.264")
+	implementation fg.deobf("dev.architectury:architectury-forge:6.3.56")
 }
 
 // Example for how to get properties into the manifest for reading at runtime.

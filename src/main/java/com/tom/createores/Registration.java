@@ -6,11 +6,11 @@ import net.minecraft.world.item.Item;
 
 import net.minecraftforge.registries.RegistryObject;
 
-import com.simibubi.create.AllTags;
 import com.simibubi.create.content.AllSections;
 import com.simibubi.create.foundation.block.BlockStressDefaults;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
+import com.simibubi.create.foundation.data.TagGen;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
@@ -39,7 +39,7 @@ public class Registration {
 			.initialProperties(SharedProperties::copperMetal)
 			.properties(MultiblockPart.props())
 			.tag(BlockTags.NEEDS_IRON_TOOL)
-			.transform(AllTags.pickaxeOnly())
+			.transform(TagGen.pickaxeOnly())
 			.blockstate((ctx, prov) -> prov.horizontalBlock(ctx.getEntry(), prov.models()
 					.getExistingFile(prov.modLoc("drill_model"))))
 			.item(MultiBlockItem::new)
@@ -62,7 +62,7 @@ public class Registration {
 			.properties(MultiblockPart.propsGhost())
 			.transform(BlockStressDefaults.setImpact(16))
 			.tag(BlockTags.NEEDS_IRON_TOOL)
-			.transform(AllTags.pickaxeOnly())
+			.transform(TagGen.pickaxeOnly())
 			.blockstate((ctx, prov) -> prov.simpleBlock(ctx.getEntry(), prov.models().getBuilder("kinetic_in").texture("particle", new ResourceLocation("create:block/brass_casing"))))
 			.lang("Multiblock Rotational Input")
 			.register();
@@ -78,7 +78,7 @@ public class Registration {
 			.initialProperties(SharedProperties::copperMetal)
 			.properties(MultiblockPart.propsGhost())
 			.tag(BlockTags.NEEDS_IRON_TOOL)
-			.transform(AllTags.pickaxeOnly())
+			.transform(TagGen.pickaxeOnly())
 			.blockstate((ctx, prov) -> prov.simpleBlock(ctx.getEntry(), prov.models().getBuilder("multiblock_ghost").texture("particle", new ResourceLocation("create:block/brass_casing"))))
 			.lang("Multiblock")
 			.register();
@@ -92,7 +92,7 @@ public class Registration {
 			.initialProperties(SharedProperties::copperMetal)
 			.properties(MultiblockPart.propsGhost())
 			.tag(BlockTags.NEEDS_IRON_TOOL)
-			.transform(AllTags.pickaxeOnly())
+			.transform(TagGen.pickaxeOnly())
 			.blockstate((ctx, prov) -> prov.simpleBlock(ctx.getEntry(), prov.models().getBuilder("io_block").texture("particle", new ResourceLocation("create:block/brass_casing"))))
 			.lang("Multiblock IO")
 			.register();
@@ -106,7 +106,7 @@ public class Registration {
 			.initialProperties(SharedProperties::copperMetal)
 			.properties(MultiblockPart.props())
 			.tag(BlockTags.NEEDS_IRON_TOOL)
-			.transform(AllTags.pickaxeOnly())
+			.transform(TagGen.pickaxeOnly())
 			.blockstate((ctx, prov) -> prov.horizontalBlock(ctx.getEntry(), prov.models()
 					.getExistingFile(prov.modLoc("extractor_model"))))
 			.item(MultiBlockItem::new)
