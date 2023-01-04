@@ -6,11 +6,11 @@ import net.minecraft.world.item.Item;
 
 import net.minecraftforge.registries.RegistryObject;
 
-import com.simibubi.create.AllTags;
 import com.simibubi.create.content.AllSections;
 import com.simibubi.create.foundation.block.BlockStressDefaults;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
+import com.simibubi.create.foundation.data.TagGen;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
@@ -39,13 +39,13 @@ public class Registration {
 			.initialProperties(SharedProperties::copperMetal)
 			.properties(MultiblockPart.props())
 			.tag(BlockTags.NEEDS_IRON_TOOL)
-			.transform(AllTags.pickaxeOnly())
+			.transform(TagGen.pickaxeOnly())
 			.blockstate((ctx, prov) -> prov.horizontalBlock(ctx.getEntry(), prov.models()
 					.getExistingFile(prov.modLoc("drill_model"))))
 			.item(MultiBlockItem::new)
 			.properties(p -> p.stacksTo(1))
 			.transform(b -> b.model((c, p) -> {
-				p.withExistingParent(Registration.DRILL_BLOCK.get().getRegistryName().getPath(),
+				p.withExistingParent("drilling_machine",
 						p.modLoc("block/drill_model"));
 			}).build())
 			.lang("Drilling Machine")
@@ -62,7 +62,7 @@ public class Registration {
 			.properties(MultiblockPart.propsGhost())
 			.transform(BlockStressDefaults.setImpact(16))
 			.tag(BlockTags.NEEDS_IRON_TOOL)
-			.transform(AllTags.pickaxeOnly())
+			.transform(TagGen.pickaxeOnly())
 			.blockstate((ctx, prov) -> prov.simpleBlock(ctx.getEntry(), prov.models().getBuilder("kinetic_in").texture("particle", new ResourceLocation("create:block/brass_casing"))))
 			.lang("Multiblock Rotational Input")
 			.register();
@@ -78,7 +78,7 @@ public class Registration {
 			.initialProperties(SharedProperties::copperMetal)
 			.properties(MultiblockPart.propsGhost())
 			.tag(BlockTags.NEEDS_IRON_TOOL)
-			.transform(AllTags.pickaxeOnly())
+			.transform(TagGen.pickaxeOnly())
 			.blockstate((ctx, prov) -> prov.simpleBlock(ctx.getEntry(), prov.models().getBuilder("multiblock_ghost").texture("particle", new ResourceLocation("create:block/brass_casing"))))
 			.lang("Multiblock")
 			.register();
@@ -92,7 +92,7 @@ public class Registration {
 			.initialProperties(SharedProperties::copperMetal)
 			.properties(MultiblockPart.propsGhost())
 			.tag(BlockTags.NEEDS_IRON_TOOL)
-			.transform(AllTags.pickaxeOnly())
+			.transform(TagGen.pickaxeOnly())
 			.blockstate((ctx, prov) -> prov.simpleBlock(ctx.getEntry(), prov.models().getBuilder("io_block").texture("particle", new ResourceLocation("create:block/brass_casing"))))
 			.lang("Multiblock IO")
 			.register();
@@ -106,13 +106,13 @@ public class Registration {
 			.initialProperties(SharedProperties::copperMetal)
 			.properties(MultiblockPart.props())
 			.tag(BlockTags.NEEDS_IRON_TOOL)
-			.transform(AllTags.pickaxeOnly())
+			.transform(TagGen.pickaxeOnly())
 			.blockstate((ctx, prov) -> prov.horizontalBlock(ctx.getEntry(), prov.models()
 					.getExistingFile(prov.modLoc("extractor_model"))))
 			.item(MultiBlockItem::new)
 			.properties(p -> p.stacksTo(1))
 			.transform(b -> b.model((c, p) -> {
-				p.withExistingParent(Registration.DRILL_BLOCK.get().getRegistryName().getPath(),
+				p.withExistingParent("extractor",
 						p.modLoc("block/extractor_model"));
 			}).build())
 			.lang("Fluid Well Extractor")
@@ -134,7 +134,9 @@ public class Registration {
 		add(CreateOreExcavation.RAW_REDSTONE, "Raw Redstone");
 		add(CreateOreExcavation.VEIN_FINDER_ITEM, "Ore Vein Finder");
 		add("config.coe.generationChance", "Weight value for empty chunk");
-		add("config.coe.generationAttempts", "Amount of times to try generating an ore vein");
+		add("config.coe.finiteAmountBase", "Finite vein amount base");
+		add("config.coe.defaultInfinite", "Veins infinite by default");
+		add("config.coe.maxExtractorsPerVein", "Max number of extractor per ore vein, Set to 0 for infinite");
 		add("chat.coe.veinFinder.info", "Vein Finder Result:");
 		add("chat.coe.veinFinder.found", "Found in Chunk: %s");
 		add("chat.coe.veinFinder.nothing", "Nothing");
@@ -145,12 +147,19 @@ public class Registration {
 		add("info.coe.drill.badDrill", "Drill not compatible");
 		add("info.coe.drill.installed", "Installed drill: %s");
 		add("info.coe.drill.progress", "Progress");
+		add("info.coe.drill.resourceRemaining", "Resource remaining: %s");
+		add("info.coe.drill.err_no_vein", "No vein to excavate");
+		add("info.coe.drill.err_vein_empty", "The vein is depleted");
+		add("info.coe.drill.err_too_many_excavators", "Too many vein extractors");
 		add("jei.coe.recipe.drilling", "Drilling Machine");
 		add("jei.coe.recipe.extracting", "Fluid Extractor");
 		add("tooltip.coe.variableImpact", "Variable Impact");
 		add("tooltip.coe.biome.whitelist", "Biome Whitelist:");
 		add("tooltip.coe.biome.blacklist", "Biome Blacklist:");
 		add("tooltip.coe.processTime", "Ticks: %s");
+		add("tooltip.coe.finiteVeins", "Finite veins size: %s - %s");
+		add("tooltip.coe.infiniteVeins", "Infinite veins");
+		add("tooltip.coe.page", "Page: %s/%s");
 		add("ore.coe.hardenedDiamond", "Hardened Diamond");
 	}
 

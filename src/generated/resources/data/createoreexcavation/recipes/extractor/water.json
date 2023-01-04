@@ -1,15 +1,18 @@
 {
   "type": "createoreexcavation:extracting",
+  "amountMax": 2.0,
+  "amountMin": 1.0,
+  "biomeWhitelist": "minecraft:is_overworld",
   "drill": {
     "tag": "createoreexcavation:drills"
   },
   "name": "{\"translate\":\"block.minecraft.water\"}",
-  "weight": 10,
-  "ticks": 20,
-  "biomeWhitelist": "forge:is_overworld",
-  "stress": 256,
+  "neverFinite": true,
   "output": {
-    "fluid": "minecraft:water",
-    "amount": 500
-  }
+    "amount": 500,
+    "fluid": "minecraft:water"
+  },
+  "stress": 256,
+  "ticks": 20,
+  "weight": 10
 }

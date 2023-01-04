@@ -1,25 +1,25 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "create",
+  "key": {
+    "a": {
+      "tag": "forge:gems/amethyst"
+    },
+    "e": {
+      "item": "minecraft:ender_eye"
+    },
+    "r": {
+      "tag": "forge:ores/redstone"
+    },
+    "s": {
+      "tag": "forge:rods/wooden"
+    }
+  },
   "pattern": [
     "ea ",
     "rs ",
     "  s"
   ],
-  "key": {
-    "e": {
-      "item": "minecraft:ender_eye"
-    },
-    "a": {
-      "tag": "forge:gems/amethyst"
-    },
-    "s": {
-      "tag": "forge:rods/wooden"
-    },
-    "r": {
-      "tag": "forge:ores/redstone"
-    }
-  },
   "result": {
     "item": "createoreexcavation:vein_finder"
   }

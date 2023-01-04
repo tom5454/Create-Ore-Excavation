@@ -7,8 +7,8 @@
   ],
   "results": [
     {
-      "item": "minecraft:redstone",
-      "count": 3
+      "count": 3,
+      "item": "minecraft:redstone"
     }
   ]
 }

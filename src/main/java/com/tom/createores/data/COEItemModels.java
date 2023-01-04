@@ -15,25 +15,25 @@ public class COEItemModels extends ItemModelProvider {
 
 	@Override
 	protected void registerModels() {
-		singleTexture(CreateOreExcavation.NORMAL_DRILL_ITEM.get().getRegistryName().getPath(),
+		singleTexture(CreateOreExcavation.NORMAL_DRILL_ITEM.getId().getPath(),
 				mcLoc("item/generated"),
 				"layer0", modLoc("item/normal_drill"));
-		singleTexture(CreateOreExcavation.DIAMOND_DRILL_ITEM.get().getRegistryName().getPath(),
+		singleTexture(CreateOreExcavation.DIAMOND_DRILL_ITEM.getId().getPath(),
 				mcLoc("item/generated"),
 				"layer0", modLoc("item/diamond_drill"));
-		singleTexture(CreateOreExcavation.NETHERITE_DRILL_ITEM.get().getRegistryName().getPath(),
+		singleTexture(CreateOreExcavation.NETHERITE_DRILL_ITEM.getId().getPath(),
 				mcLoc("item/generated"),
 				"layer0", modLoc("item/netherite_drill"));
-		singleTexture(CreateOreExcavation.RAW_DIAMOND.get().getRegistryName().getPath(),
+		singleTexture(CreateOreExcavation.RAW_DIAMOND.getId().getPath(),
 				mcLoc("item/generated"),
 				"layer0", modLoc("item/raw_diamond"));
-		singleTexture(CreateOreExcavation.RAW_EMERALD.get().getRegistryName().getPath(),
+		singleTexture(CreateOreExcavation.RAW_EMERALD.getId().getPath(),
 				mcLoc("item/generated"),
 				"layer0", modLoc("item/raw_emerald"));
-		singleTexture(CreateOreExcavation.RAW_REDSTONE.get().getRegistryName().getPath(),
+		singleTexture(CreateOreExcavation.RAW_REDSTONE.getId().getPath(),
 				mcLoc("item/generated"),
 				"layer0", modLoc("item/raw_redstone"));
-		singleTexture(CreateOreExcavation.VEIN_FINDER_ITEM.get().getRegistryName().getPath(),
+		singleTexture(CreateOreExcavation.VEIN_FINDER_ITEM.getId().getPath(),
 				mcLoc("item/generated"),
 				"layer0", modLoc("item/vein_finder"));
 	}

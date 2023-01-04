@@ -3,10 +3,7 @@ package com.tom.createores.item;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
@@ -40,20 +37,20 @@ public class OreVeinFinderItem extends Item {
 				else far.add(d);
 			}
 		}
-		ctx.getPlayer().sendMessage(new TranslatableComponent("chat.coe.veinFinder.info"), Util.NIL_UUID);
+		ctx.getPlayer().displayClientMessage(Component.translatable("chat.coe.veinFinder.info"), false);
 		RecipeManager m = ctx.getLevel().getRecipeManager();
 		Component f;
-		Component nothing = new TranslatableComponent("chat.coe.veinFinder.nothing");
-		Component comma = new TextComponent(", ");
+		Component nothing = Component.translatable("chat.coe.veinFinder.nothing");
+		Component comma = Component.literal(", ");
 		if(found != null && found.getRecipe(m) != null)f = found.getRecipe(m).getName();
 		else f = nothing;
-		ctx.getPlayer().sendMessage(new TranslatableComponent("chat.coe.veinFinder.found", f), Util.NIL_UUID);
+		ctx.getPlayer().displayClientMessage(Component.translatable("chat.coe.veinFinder.found", f), false);
 
 		f = nearby.stream().map(d -> d.getRecipe(m)).filter(r -> r != null).map(r -> r.getName()).collect(ComponentJoiner.joining(nothing, comma));
-		ctx.getPlayer().sendMessage(new TranslatableComponent("chat.coe.veinFinder.nearby", f), Util.NIL_UUID);
+		ctx.getPlayer().displayClientMessage(Component.translatable("chat.coe.veinFinder.nearby", f), false);
 
 		f = far.stream().map(d -> d.getRecipe(m)).filter(r -> r != null).map(r -> r.getName()).collect(ComponentJoiner.joining(nothing, comma));
-		ctx.getPlayer().sendMessage(new TranslatableComponent("chat.coe.veinFinder.far", f), Util.NIL_UUID);
+		ctx.getPlayer().displayClientMessage(Component.translatable("chat.coe.veinFinder.far", f), false);
 
 		return InteractionResult.SUCCESS;
 	}

@@ -30,9 +30,14 @@ public class MultiBlockItem extends BlockItem {
 				for(int z = 0;z<s.getZ();z++) {
 					BlockPos pos = place.offset(x, y, z);
 					MultiblockPartType type = part.getPartTypeAt(facing, x, y, z);
+					System.out.println(pos + " " + type);
 					if(type != null) {
 						if(pContext.getLevel().isOutsideBuildHeight(pos))return false;
 						BlockPlaceContext p = BlockPlaceContext.at(pContext, pos.below(), Direction.UP);
+						if(p.replacingClickedOnBlock()) {
+							p = BlockPlaceContext.at(pContext, pos, Direction.UP);
+							if(!p.replacingClickedOnBlock())return false;
+						}
 						if(!p.canPlace())return false;
 						if(!super.canPlace(p, pState))return false;
 					}

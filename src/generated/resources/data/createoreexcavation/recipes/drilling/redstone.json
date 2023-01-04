@@ -1,16 +1,18 @@
 {
   "type": "createoreexcavation:drilling",
+  "amountMax": 30.0,
+  "amountMin": 10.0,
+  "biomeWhitelist": "minecraft:is_overworld",
   "drill": {
     "tag": "createoreexcavation:drills"
   },
   "name": "{\"translate\":\"item.createoreexcavation.raw_redstone\"}",
-  "weight": 10,
-  "ticks": 600,
-  "biomeWhitelist": "forge:is_overworld",
-  "stress": 256,
   "output": [
     {
       "item": "createoreexcavation:raw_redstone"
     }
-  ]
+  ],
+  "stress": 256,
+  "ticks": 600,
+  "weight": 10
 }

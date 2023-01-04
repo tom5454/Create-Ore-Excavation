@@ -10,7 +10,6 @@ import java.util.stream.Collector;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
 
 public class ComponentJoiner {
 	static final Set<Collector.Characteristics> CH_NOID = Collections.emptySet();
@@ -56,7 +55,7 @@ public class ComponentJoiner {
 		if (value != null) {
 			value.append(delimiter);
 		} else {
-			value = new TextComponent("");
+			value = Component.empty();
 		}
 		return value;
 	}

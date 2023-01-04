@@ -1,5 +1,9 @@
 {
   "variants": {
+    "facing=east": {
+      "model": "createoreexcavation:block/extractor_model",
+      "y": 90
+    },
     "facing=north": {
       "model": "createoreexcavation:block/extractor_model"
     },
@@ -10,10 +14,6 @@
     "facing=west": {
       "model": "createoreexcavation:block/extractor_model",
       "y": 270
-    },
-    "facing=east": {
-      "model": "createoreexcavation:block/extractor_model",
-      "y": 90
     }
   }
 }

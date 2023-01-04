@@ -4,7 +4,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 
 import com.google.common.base.Strings;
 
@@ -23,6 +22,6 @@ public class ClientUtil {
 		bars += ChatFormatting.GRAY + Strings.repeat("|", current);
 		if (progress < 1)
 			bars += ChatFormatting.DARK_GRAY + Strings.repeat("|", total - current);
-		return new TextComponent(bars);
+		return Component.literal(bars);
 	}
 }
