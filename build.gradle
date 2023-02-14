@@ -19,7 +19,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 
-version = '0.3.2'
+version = project.mod_version
 group = 'com.tom5454.createoreexcavation' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'createoreexcavation'
 
@@ -225,7 +225,7 @@ dependencies {
     //implementation fg.deobf("curse.maven:create-328085:3872145")
     //implementation fg.deobf("curse.maven:createaddition-439890:3876683")
     
-    implementation fg.deobf("local:create:1.18.2-0.5.0.g")
+    implementation fg.deobf("local:create:1.18.2-0.5.0.i")
     //implementation fg.deobf("local:createaddition:1.18.2-20220813a")
     
     implementation fg.deobf("curse.maven:flywheel-486392:4174748")

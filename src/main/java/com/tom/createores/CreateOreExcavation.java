@@ -149,6 +149,7 @@ public class CreateOreExcavation {
 		LOGGER.info("Create Ore Excavation starting");
 		Registration.postRegister();
 		BlockStressValues.registerProvider(MODID, AllConfigs.SERVER.kinetics.stressValues);
+		COECommand.init();
 	}
 
 	private void doClientStuff(final FMLClientSetupEvent event) {
@@ -167,24 +168,8 @@ public class CreateOreExcavation {
 
 	@SubscribeEvent
 	public void registerCommands(RegisterCommandsEvent evt) {
-		/*LiteralArgumentBuilder<CommandSourceStack> l = Commands.literal("coe");
-		l.then(Commands.literal("chunkInfo").executes(ctx -> {
-			OreData d = OreDataCapability.getData(css.getLevel().getChunkAt(css.getPlayerOrException().blockPosition()));
-			ctx.getSource().sendSuccess(null, false);
-			return 1;
-		}));
-
-		l.then(Commands.argument("arg", StringArgumentType.greedyString()).executes(cc -> {
-			test(cc.getSource(), StringArgumentType.getString(cc, "arg"));
-			return 1;
-		}));
-		evt.getDispatcher().register(l);*/
+		COECommand.register(evt);
 	}
-
-	/*private static void test(CommandSourceStack css, String arg) throws CommandSyntaxException {
-		OreData d = OreDataCapability.getData(css.getLevel().getChunkAt(css.getPlayerOrException().blockPosition()));
-		css.sendSuccess(new TextComponent("Ore: " + d.getRecipeId()), true);
-	}*/
 
 	@SubscribeEvent
 	public void onAttachCapabilitiesChunk(AttachCapabilitiesEvent<LevelChunk> event){
@@ -194,7 +179,7 @@ public class CreateOreExcavation {
 	}
 
 	@SubscribeEvent
-	public void registerCommands(TagsUpdatedEvent evt) {
+	public void reloadEvent(TagsUpdatedEvent evt) {
 		OreVeinGenerator.invalidate();
 	}
 
