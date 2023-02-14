@@ -13,7 +13,7 @@ plugins {
 
 apply plugin: 'org.spongepowered.mixin'
 
-version = '0.3.2'
+version = project.mod_version
 group = 'com.tom5454.createoreexcavation' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'createoreexcavation-1.19'
 
@@ -199,8 +199,8 @@ dependencies {
   	
   	implementation fg.deobf("local:theoneprobe:1.19-6.2.2")
   	
-  	implementation fg.deobf("local:create:1.19.2-0.5.0.g")
-  	implementation fg.deobf("local:flywheel-forge:1.19.2-0.6.8-13")
+  	implementation fg.deobf("local:create:1.19.2-0.5.0.i")
+  	implementation fg.deobf("local:flywheel-forge:1.19.2-0.6.8.a-14")
   	
   	implementation fg.deobf("dev.latvian.mods:kubejs-forge:1902.6.0-build.128")
 	implementation fg.deobf("dev.latvian.mods:rhino-forge:1902.2.2-build.264")

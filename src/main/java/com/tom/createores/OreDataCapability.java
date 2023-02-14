@@ -136,6 +136,18 @@ public class OreDataCapability implements ICapabilityProvider, INBTSerializable<
 			}
 			return false;
 		}
+
+		public void setRandomMul(float randomMul) {
+			this.randomMul = randomMul;
+		}
+
+		public void setLoaded(boolean loaded) {
+			this.loaded = loaded;
+		}
+
+		public void setExtractedAmount(long extractedAmount) {
+			this.extractedAmount = extractedAmount;
+		}
 	}
 
 	public static OreData getData(LevelChunk chunk) {

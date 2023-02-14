@@ -142,6 +142,7 @@ public class Registration {
 		add("chat.coe.veinFinder.nothing", "Nothing");
 		add("chat.coe.veinFinder.nearby", "Found nearby: %s");
 		add("chat.coe.veinFinder.far", "Found traces of: %s");
+		add("command.coe.setvein.success", "Successfully set vein to: %s");
 		add("info.coe.drill.noFluid", "The machine needs drilling fluid");
 		add("info.coe.drill.noDrill", "The machine needs drill item");
 		add("info.coe.drill.badDrill", "Drill not compatible");
