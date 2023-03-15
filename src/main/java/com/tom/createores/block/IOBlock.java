@@ -2,6 +2,7 @@ package com.tom.createores.block;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.FACING;
 
+import java.util.Locale;
 import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
@@ -102,7 +103,7 @@ public class IOBlock extends BaseEntityBlock implements MultiblockGhostPart, ITE
 		private final Supplier<Capability<?>> cap;
 
 		private Type(Supplier<Capability<?>> cap) {
-			name = name().toLowerCase();
+			name = name().toLowerCase(Locale.ROOT);
 			this.cap = cap;
 		}
 

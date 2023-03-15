@@ -11,6 +11,7 @@ import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.commands.synchronization.SuggestionProviders;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -40,6 +41,7 @@ public class COECommand {
 									Recipe<?> rl = ResourceLocationArgument.getRecipe(c, "recipe");
 									if(rl instanceof ExcavatingRecipe) {
 										run(c.getSource(), p, rl.getId(), 0.8F);
+										c.getSource().sendSuccess(new TranslatableComponent("command.coe.setvein.success", rl.getId()), true);
 										return 1;
 									}
 									return 0;
@@ -51,6 +53,7 @@ public class COECommand {
 											Recipe<?> rl = ResourceLocationArgument.getRecipe(c, "recipe");
 											if(rl.getType() instanceof ExcavatingRecipe) {
 												run(c.getSource(), p, rl.getId(), mul);
+												c.getSource().sendSuccess(new TranslatableComponent("command.coe.setvein.success", rl.getId()), true);
 												return 1;
 											}
 											return 0;
