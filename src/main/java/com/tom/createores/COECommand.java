@@ -53,6 +53,7 @@ public class COECommand {
 											Recipe<?> rl = ResourceLocationArgument.getRecipe(c, "recipe");
 											if(rl.getType() instanceof ExcavatingRecipe) {
 												run(c.getSource(), p, rl.getId(), mul);
+												c.getSource().sendSuccess(Component.translatable("command.coe.setvein.success", rl.getId()), true);
 												return 1;
 											}
 											return 0;
