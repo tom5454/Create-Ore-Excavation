@@ -1,0 +1,18 @@
+{
+  "type": "createoreexcavation:drilling",
+  "amountMax": 40.0,
+  "amountMin": 15.0,
+  "biomeWhitelist": "minecraft:is_overworld",
+  "drill": {
+    "tag": "createoreexcavation:drills"
+  },
+  "name": "{\"translate\":\"item.minecraft.coal\"}",
+  "output": [
+    {
+      "item": "minecraft:coal"
+    }
+  ],
+  "stress": 256,
+  "ticks": 200,
+  "weight": 20
+}

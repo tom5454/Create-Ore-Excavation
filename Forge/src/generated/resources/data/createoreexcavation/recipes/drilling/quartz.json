@@ -1,0 +1,18 @@
+{
+  "type": "createoreexcavation:drilling",
+  "amountMax": 24.0,
+  "amountMin": 8.0,
+  "biomeWhitelist": "minecraft:is_nether",
+  "drill": {
+    "tag": "createoreexcavation:drills"
+  },
+  "name": "{\"translate\":\"item.minecraft.quartz\"}",
+  "output": [
+    {
+      "item": "minecraft:quartz"
+    }
+  ],
+  "stress": 512,
+  "ticks": 1200,
+  "weight": 10
+}

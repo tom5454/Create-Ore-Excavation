@@ -1,0 +1,18 @@
+{
+  "type": "createoreexcavation:drilling",
+  "amountMax": 24.0,
+  "amountMin": 8.0,
+  "biomeWhitelist": "minecraft:is_overworld",
+  "drill": {
+    "tag": "createoreexcavation:drills"
+  },
+  "name": "{\"translate\":\"item.create.raw_zinc\"}",
+  "output": [
+    {
+      "item": "create:raw_zinc"
+    }
+  ],
+  "stress": 256,
+  "ticks": 600,
+  "weight": 10
+}

@@ -1,0 +1,49 @@
+{
+	"schemaVersion": 1,
+	"id": "createoreexcavation",
+	"version": "${version}",
+	"name": "Create Ore Excavation",
+	"description": "Extract resources using machines powered by Rotational Force",
+	"authors": [
+		"tom5454"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/tom5454/Create-Ore-Excavation",
+		"issues": "https://github.com/tom5454/Create-Ore-Excavation/issues"
+	},
+	"license": "MIT",
+	"icon": "createoreexcavation.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.tom.createores.CreateOreExcavation"
+		],
+		"client": [
+			"com.tom.createores.client.CreateOreExcavationClient"
+		],
+		"fabric-datagen": [
+			"com.tom.createores.data.COEDataGenerator"
+		],
+		"rei_client": [
+	    	"com.tom.createores.rei.REIPlugin"
+		],
+		"emi": [
+			"com.tom.createores.emi.EMIPlugin"
+		],
+		"jei_mod_plugin": [
+			"com.tom.createores.jei.JEIHandler"
+		]
+	},
+	"mixins": [
+	],
+	"depends": {
+		"fabricloader": ">=0.14.14",
+		"minecraft": "~1.19.2",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

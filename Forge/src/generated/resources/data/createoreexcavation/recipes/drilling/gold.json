@@ -1,0 +1,18 @@
+{
+  "type": "createoreexcavation:drilling",
+  "amountMax": 4.0,
+  "amountMin": 2.0,
+  "biomeWhitelist": "minecraft:is_overworld",
+  "drill": {
+    "tag": "createoreexcavation:drills"
+  },
+  "name": "{\"translate\":\"item.minecraft.raw_gold\"}",
+  "output": [
+    {
+      "item": "minecraft:raw_gold"
+    }
+  ],
+  "stress": 192,
+  "ticks": 600,
+  "weight": 4
+}
