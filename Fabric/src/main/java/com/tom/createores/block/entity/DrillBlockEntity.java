@@ -99,9 +99,11 @@ public class DrillBlockEntity extends ExcavatingBlockEntity<DrillingRecipe> {
 	@Override
 	protected void onFinished() {
 		current.getOutput().stream().map(ProcessingOutput::rollOutput).filter(i -> !i.isEmpty()).forEach(inventory::add);
-		try(Transaction t = Transaction.openOuter()) {
-			fluidTank.extract(fluidTank.variant, current.getDrillingFluid().getRequiredAmount(), t);
-			t.commit();
+		if(current.getDrillingFluid().getRequiredAmount() != 0) {
+			try(Transaction t = Transaction.openOuter()) {
+				fluidTank.extract(fluidTank.variant, current.getDrillingFluid().getRequiredAmount(), t);
+				t.commit();
+			}
 		}
 	}
 }

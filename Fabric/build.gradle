@@ -64,6 +64,10 @@ repositories {
         }
     }
     maven {
+		name = "tom5454 maven"
+		url = "https://raw.githubusercontent.com/tom5454/maven/main"
+	}
+    maven {
     	url = "http://localhost:8000"
 		allowInsecureProtocol true
 		content {
@@ -104,7 +108,7 @@ dependencies {
 	implementation "com.electronwill.night-config:core:3.6.3"
     implementation "com.electronwill.night-config:toml:3.6.3"
 	modImplementation("curse.maven:forge-config-api-port-fabric-547434:4401535")
-    modImplementation(include("local:chunk-storage-api-fabric:1.0.0"))
+    modImplementation(include("com.tom5454.chunkstorage:ChunkStorageFabric-119:1.0.0"))
     modImplementation("com.tterrag.registrate_fabric:Registrate:1.1.50-MC1.19.2")
 	
 	modImplementation("com.terraformersmc:modmenu:4.0.6") {
