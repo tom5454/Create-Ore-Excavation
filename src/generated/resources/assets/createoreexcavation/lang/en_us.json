@@ -9,6 +9,7 @@
   "chat.coe.veinFinder.info": "Vein Finder Result:",
   "chat.coe.veinFinder.nearby": "Found nearby: %s",
   "chat.coe.veinFinder.nothing": "Nothing",
+  "chat.coe.veinFinder.pos": "At: %d, %d",
   "command.coe.setvein.success": "Successfully set vein to: %s",
   "config.coe.defaultInfinite": "Veins infinite by default",
   "config.coe.finiteAmountBase": "Finite vein amount base",

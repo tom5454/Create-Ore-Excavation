@@ -138,6 +138,7 @@ public class Registration {
 		add("config.coe.defaultInfinite", "Veins infinite by default");
 		add("config.coe.maxExtractorsPerVein", "Max number of extractor per ore vein, Set to 0 for infinite");
 		add("chat.coe.veinFinder.info", "Vein Finder Result:");
+		add("chat.coe.veinFinder.pos", "At: %d, %d");
 		add("chat.coe.veinFinder.found", "Found in Chunk: %s");
 		add("chat.coe.veinFinder.nothing", "Nothing");
 		add("chat.coe.veinFinder.nearby", "Found nearby: %s");
