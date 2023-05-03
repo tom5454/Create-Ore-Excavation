@@ -107,9 +107,9 @@ dependencies {
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
 	implementation "com.electronwill.night-config:core:3.6.3"
     implementation "com.electronwill.night-config:toml:3.6.3"
-	modImplementation("curse.maven:forge-config-api-port-fabric-547434:4401535")
+	modImplementation("curse.maven:forge-config-api-port-fabric-547434:4143545")
     modImplementation(include("com.tom5454.chunkstorage:ChunkStorageFabric-119:1.0.2"))
-    modImplementation("com.tterrag.registrate_fabric:Registrate:1.1.50-MC1.19.2")
+    modImplementation("com.tterrag.registrate_fabric:Registrate:1.1.57-MC1.19.2")
 	
 	modImplementation("com.terraformersmc:modmenu:4.0.6") {
         exclude(group: "net.fabricmc.fabric-api")
@@ -131,7 +131,7 @@ dependencies {
         exclude(group: "dev.architectury")
     }
     modImplementation("dev.architectury:architectury-fabric:6.2.43")
-    modImplementation "dev.emi:emi:0.6.3+1.19.2"
+    modImplementation "dev.emi:emi:0.7.3+1.19.2"
     modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
@@ -143,7 +143,7 @@ dependencies {
 	modRuntimeOnly("mezz.jei:jei-1.19.2-fabric:11.6.0.1013")
 	
 	modImplementation("com.simibubi.create:create-fabric-${project.minecraft_version}:${project.create_version}+${project.minecraft_version}")
-	modImplementation("io.github.fabricators_of_create.Porting-Lib:porting-lib:$port_lib_version+$minecraft_version")
+	modImplementation("io.github.fabricators_of_create.Porting-Lib:Porting-Lib:$port_lib_version+$minecraft_version")
 	modImplementation("com.jozufozu.flywheel:flywheel-fabric-$flywheel_minecraft_version:$flywheel_version")
 	modImplementation("dev.latvian.mods:kubejs-fabric:1902.6.0-build.142")
 	implementation "com.google.code.findbugs:jsr305:3.0.2"

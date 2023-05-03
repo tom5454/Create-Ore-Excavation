@@ -41,7 +41,7 @@ public class DrillingEmiRecipe extends CreateEmiRecipe<DrillingRecipe> {
 		int xOffset = 134 / 2;
 		int yOffset = 86;
 		layoutOutput(recipe).forEach(layoutEntry -> {
-			addChancedSlot(widgets, EmiStack.of(layoutEntry.output.getStack()), (xOffset) + layoutEntry.posX() + 1, yOffset + layoutEntry.posY() + 1, layoutEntry.output.getChance());
+			addSlot(widgets, EmiStack.of(layoutEntry.output.getStack()).setChance(layoutEntry.output.getChance()), (xOffset) + layoutEntry.posX() + 1, yOffset + layoutEntry.posY() + 1).recipeContext(this);
 		});
 
 		widgets.add(new RecipeTooltipWidget(recipe));

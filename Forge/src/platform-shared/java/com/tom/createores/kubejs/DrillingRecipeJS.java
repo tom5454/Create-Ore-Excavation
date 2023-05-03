@@ -19,7 +19,7 @@ public class DrillingRecipeJS extends ExcavatingRecipeJS<DrillingRecipeJS> {
 	public void create(RecipeArguments args) {
 		super.create(args);
 		outputItems.addAll(parseItemOutputList(args.get(0)));
-		Component name = Component.Serializer.fromJson(args.get(1).toString());
+		Component name = KubeJSExcavation.parseComponent(args.get(1));
 		int weight = ((Number) args.get(2)).intValue();
 		int ticks = ((Number) args.get(3)).intValue();
 

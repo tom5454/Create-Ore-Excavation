@@ -13,7 +13,7 @@ public class ExtractorRecipeJS extends ExcavatingRecipeJS<ExtractorRecipeJS> {
 	public void create(RecipeArguments args) {
 		super.create(args);
 		fluid = FluidStackJS.of(args.get(0));
-		Component name = Component.Serializer.fromJson(args.get(1).toString());
+		Component name = KubeJSExcavation.parseComponent(args.get(1));
 		int weight = ((Number) args.get(2)).intValue();
 		int ticks = ((Number) args.get(3)).intValue();
 

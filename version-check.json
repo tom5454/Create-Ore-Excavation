@@ -1,10 +1,11 @@
 {
 	"homepage": "https://www.curseforge.com/minecraft/mc-mods/create-ore-excavation",
 	"promos": {
-		"1.19.2-latest": "1.1.0",
-		"1.18.2-latest": "1.0.2"
+		"1.19.2-latest": "1.1.1",
+		"1.18.2-latest": "1.0.3"
 	},
 	"1.19.2": {
+		"1.1.1": "Use ComponentWrapper.of for KubeJS names",
 		"1.1.0": "Added: Ore Vein finder shows clicked coordinates, and works in the air",
 		"1.0.1": "Fixed /coe command not sending command response\nFixed mod crashing with certain locales",
 		"1.0.0": "Added Dutch Translation\nUpdated Simplified Chinese translation\nAdded /coe setvein command",
@@ -12,6 +13,7 @@
 		"0.3.1": "Ported to 1.19.2"
 	},
 	"1.18.2": {
+		"1.0.3": "Use ComponentWrapper.of for KubeJS names",
 		"1.0.2": "Added: Ore Vein finder shows clicked coordinates, and works in the air",
 		"1.0.1": "Fixed /coe command not sending command response\nFixed mod crashing with certain locales",
 		"1.0.0": "Added Dutch Translation\nUpdated Simplified Chinese translation\nAdded /coe setvein command",
