@@ -17,7 +17,7 @@ public class ExtractorRecipeJS extends ExcavatingRecipeJS<ExtractorRecipeJS> {
 		super.create(args);
 		inputItems.add(IngredientJS.of("#" + CreateOreExcavation.DRILL_TAG.location()));
 		fluid = FluidStackJS.of(args.get(0));
-		Component name = Component.Serializer.fromJson(args.get(1).toString());
+		Component name = KubeJSExcavation.parseComponent(args.get(1));
 		int weight = ((Number) args.get(2)).intValue();
 		int ticks = ((Number) args.get(3)).intValue();
 
