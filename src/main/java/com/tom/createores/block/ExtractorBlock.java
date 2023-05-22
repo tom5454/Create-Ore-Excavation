@@ -13,12 +13,12 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
-import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.foundation.block.IBE;
 
 import com.tom.createores.Registration;
 import com.tom.createores.block.entity.ExtractorBlockEntity;
 
-public class ExtractorBlock extends MultiblockController implements ITE<ExtractorBlockEntity> {
+public class ExtractorBlock extends MultiblockController implements IBE<ExtractorBlockEntity> {
 
 	private static final MultiblockPartType[][][] LAYOUT = new MultiblockPartType[][][] {
 		{
@@ -38,12 +38,12 @@ public class ExtractorBlock extends MultiblockController implements ITE<Extracto
 	}
 
 	@Override
-	public Class<ExtractorBlockEntity> getTileEntityClass() {
+	public Class<ExtractorBlockEntity> getBlockEntityClass() {
 		return ExtractorBlockEntity.class;
 	}
 
 	@Override
-	public BlockEntityType<? extends ExtractorBlockEntity> getTileEntityType() {
+	public BlockEntityType<? extends ExtractorBlockEntity> getBlockEntityType() {
 		return Registration.EXTRACTOR_TILE.get();
 	}
 

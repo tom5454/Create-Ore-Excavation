@@ -37,9 +37,9 @@ import net.minecraftforge.registries.RegistryObject;
 
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.AllRecipeTypes;
-import com.simibubi.create.foundation.block.BlockStressValues;
-import com.simibubi.create.foundation.config.AllConfigs;
+import com.simibubi.create.content.kinetics.BlockStressValues;
 import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.simibubi.create.infrastructure.config.AllConfigs;
 
 import com.tom.createores.client.ClientRegistration;
 import com.tom.createores.item.DrillItem;
@@ -148,7 +148,7 @@ public class CreateOreExcavation {
 	private void setup(final FMLCommonSetupEvent event) {
 		LOGGER.info("Create Ore Excavation starting");
 		Registration.postRegister();
-		BlockStressValues.registerProvider(MODID, AllConfigs.SERVER.kinetics.stressValues);
+		BlockStressValues.registerProvider(MODID, AllConfigs.server().kinetics.stressValues);
 		COECommand.init();
 	}
 

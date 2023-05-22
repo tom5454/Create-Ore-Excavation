@@ -35,13 +35,13 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.foundation.block.IBE;
 
 import com.tom.createores.Registration;
 import com.tom.createores.block.MultiblockPart.MultiblockGhostPart;
 import com.tom.createores.block.entity.IOBlockEntity;
 
-public class IOBlock extends BaseEntityBlock implements MultiblockGhostPart, ITE<IOBlockEntity> {
+public class IOBlock extends BaseEntityBlock implements MultiblockGhostPart, IBE<IOBlockEntity> {
 	public static final EnumProperty<Type> TYPE = EnumProperty.create("type", Type.class);
 
 	public IOBlock(Properties pr) {
@@ -118,12 +118,12 @@ public class IOBlock extends BaseEntityBlock implements MultiblockGhostPart, ITE
 	}
 
 	@Override
-	public Class<IOBlockEntity> getTileEntityClass() {
+	public Class<IOBlockEntity> getBlockEntityClass() {
 		return IOBlockEntity.class;
 	}
 
 	@Override
-	public BlockEntityType<? extends IOBlockEntity> getTileEntityType() {
+	public BlockEntityType<? extends IOBlockEntity> getBlockEntityType() {
 		return Registration.IO_TILE.get();
 	}
 

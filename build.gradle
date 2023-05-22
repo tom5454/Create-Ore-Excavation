@@ -156,11 +156,6 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
     maven {
-        // Location of the maven that hosts JEI files (and TiC)
-        name 'Progwml6 maven'
-        url 'https://dvs1.progwml6.com/files/maven'
-    }
-    maven {
         // Location of the maven for vazkii's mods
         name 'blamejared'
         url 'https://maven.blamejared.com'
@@ -192,6 +187,11 @@ repositories {
         }
     }
     maven {
+    	// location of the maven that hosts JEI files since January 2023
+    	name = "Jared's maven"
+    	url = "https://maven.blamejared.com/"
+  	}
+    maven {
     	url = "http://localhost:8000"
 		allowInsecureProtocol true
 		content {
@@ -204,7 +204,7 @@ dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.18.2-40.1.80'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.2.4'
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
@@ -219,18 +219,20 @@ dependencies {
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-    // compile against the JEI API but do not include it at runtime
-    compileOnly fg.deobf("mezz.jei:jei-1.18.2:9.7.0.196:api")
+  	
+  	// compile against the JEI API but do not include it at runtime
+    compileOnly fg.deobf("mezz.jei:jei-1.18.2-forge-api:10.2.1.1004")
+    compileOnly fg.deobf("mezz.jei:jei-1.18.2-common-api:10.2.1.1004")
   	// at runtime, use the full JEI jar
-  	runtimeOnly fg.deobf("mezz.jei:jei-1.18.2:9.7.0.196")
+  	runtimeOnly fg.deobf("mezz.jei:jei-1.18.2-forge:10.2.1.1004")
   	
     //implementation fg.deobf("curse.maven:create-328085:3872145")
     //implementation fg.deobf("curse.maven:createaddition-439890:3876683")
     
-    implementation fg.deobf("local:create:1.18.2-0.5.0.i")
+    implementation fg.deobf("local:create:1.18.2-0.5.1.a")
+    implementation fg.deobf("local:flywheel-forge:1.18.2-0.6.8.a-99")
     //implementation fg.deobf("local:createaddition:1.18.2-20220813a")
     
-    implementation fg.deobf("curse.maven:flywheel-486392:4174748")
     implementation fg.deobf("curse.maven:configured-457570:3721946")
 	implementation fg.deobf("dev.latvian.mods:kubejs-forge:1802.5.4-build.521")
 	implementation fg.deobf("dev.latvian.mods:rhino-forge:1802.1.14-build.195")

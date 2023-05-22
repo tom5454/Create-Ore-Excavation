@@ -18,7 +18,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import com.simibubi.create.content.contraptions.processing.ProcessingOutput;
+import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 
 import com.tom.createores.block.IOBlock.Type;
 import com.tom.createores.recipe.DrillingRecipe;

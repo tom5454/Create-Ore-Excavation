@@ -13,12 +13,12 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
-import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.foundation.block.IBE;
 
 import com.tom.createores.Registration;
 import com.tom.createores.block.entity.DrillBlockEntity;
 
-public class DrillBlock extends MultiblockController implements ITE<DrillBlockEntity> {
+public class DrillBlock extends MultiblockController implements IBE<DrillBlockEntity> {
 
 	private static final MultiblockPartType[][][] LAYOUT = new MultiblockPartType[][][] {
 		{
@@ -38,12 +38,12 @@ public class DrillBlock extends MultiblockController implements ITE<DrillBlockEn
 	}
 
 	@Override
-	public Class<DrillBlockEntity> getTileEntityClass() {
+	public Class<DrillBlockEntity> getBlockEntityClass() {
 		return DrillBlockEntity.class;
 	}
 
 	@Override
-	public BlockEntityType<? extends DrillBlockEntity> getTileEntityType() {
+	public BlockEntityType<? extends DrillBlockEntity> getBlockEntityType() {
 		return Registration.DRILL_TILE.get();
 	}
 
