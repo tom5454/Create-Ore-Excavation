@@ -25,14 +25,14 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.foundation.block.IBE;
 
 import com.tom.createores.Registration;
 import com.tom.createores.block.MultiblockPart.MultiblockGhostPart;
 import com.tom.createores.block.entity.IOBlockEntity;
 import com.tom.createores.util.IOBlockType;
 
-public class IOBlock extends BaseEntityBlock implements MultiblockGhostPart, ITE<IOBlockEntity> {
+public class IOBlock extends BaseEntityBlock implements MultiblockGhostPart, IBE<IOBlockEntity> {
 	public static final EnumProperty<IOBlockType> TYPE = EnumProperty.create("type", IOBlockType.class);
 
 	public IOBlock(Properties pr) {
@@ -83,12 +83,12 @@ public class IOBlock extends BaseEntityBlock implements MultiblockGhostPart, ITE
 	}
 
 	@Override
-	public Class<IOBlockEntity> getTileEntityClass() {
+	public Class<IOBlockEntity> getBlockEntityClass() {
 		return IOBlockEntity.class;
 	}
 
 	@Override
-	public BlockEntityType<? extends IOBlockEntity> getTileEntityType() {
+	public BlockEntityType<? extends IOBlockEntity> getBlockEntityType() {
 		return Registration.IO_TILE.get();
 	}
 

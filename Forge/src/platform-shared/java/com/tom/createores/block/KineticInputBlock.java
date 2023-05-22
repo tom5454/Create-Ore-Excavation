@@ -25,14 +25,14 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import com.simibubi.create.content.contraptions.base.KineticBlock;
-import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.content.kinetics.base.KineticBlock;
+import com.simibubi.create.foundation.block.IBE;
 
 import com.tom.createores.Registration;
 import com.tom.createores.block.MultiblockPart.MultiblockGhostPart;
 import com.tom.createores.block.entity.KineticInputBlockEntity;
 
-public class KineticInputBlock extends KineticBlock implements MultiblockGhostPart, ITE<KineticInputBlockEntity> {
+public class KineticInputBlock extends KineticBlock implements MultiblockGhostPart, IBE<KineticInputBlockEntity> {
 	public static final DirectionProperty SHAFT_FACING = DirectionProperty.create("shaft");
 
 	public KineticInputBlock(Properties pr) {
@@ -94,12 +94,12 @@ public class KineticInputBlock extends KineticBlock implements MultiblockGhostPa
 	}
 
 	@Override
-	public Class<KineticInputBlockEntity> getTileEntityClass() {
+	public Class<KineticInputBlockEntity> getBlockEntityClass() {
 		return KineticInputBlockEntity.class;
 	}
 
 	@Override
-	public BlockEntityType<? extends KineticInputBlockEntity> getTileEntityType() {
+	public BlockEntityType<? extends KineticInputBlockEntity> getBlockEntityType() {
 		return Registration.KINETIC_INPUT_TILE.get();
 	}
 

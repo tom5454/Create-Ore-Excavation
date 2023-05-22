@@ -10,13 +10,13 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-import com.simibubi.create.content.contraptions.base.KineticTileEntity;
+import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 
 import com.tom.createores.block.MultiblockPart;
 import com.tom.createores.block.MultiblockPart.MultiblockGhostPart;
 import com.tom.createores.block.entity.MultiblockCapHandler.Kinetic;
 
-public class KineticInputBlockEntity extends KineticTileEntity implements Kinetic {
+public class KineticInputBlockEntity extends KineticBlockEntity implements Kinetic {
 	private float reqStress = 1;
 
 	public KineticInputBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {

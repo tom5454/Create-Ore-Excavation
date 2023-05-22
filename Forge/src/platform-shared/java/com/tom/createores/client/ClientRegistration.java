@@ -8,6 +8,7 @@ import com.simibubi.create.foundation.ponder.PonderLocalization;
 import com.simibubi.create.foundation.ponder.PonderRegistrationHelper;
 import com.simibubi.create.foundation.ponder.PonderRegistry;
 import com.simibubi.create.foundation.ponder.PonderTag;
+import com.simibubi.create.infrastructure.ponder.AllPonderTags;
 import com.tterrag.registrate.providers.ProviderType;
 
 import com.google.gson.JsonElement;
@@ -24,10 +25,10 @@ public class ClientRegistration {
 	static final PonderRegistrationHelper HELPER = new PonderRegistrationHelper(CreateOreExcavation.MODID);
 
 	public static void register() {
-		PonderRegistry.TAGS.forTag(PonderTag.KINETIC_APPLIANCES).
+		PonderRegistry.TAGS.forTag(AllPonderTags.KINETIC_APPLIANCES).
 		add(Registration.DRILL_BLOCK);
 
-		HELPER.addStoryBoard(Registration.DRILL_BLOCK, "drilling_machine", PonderScenes::oreFinder, PonderTag.KINETIC_SOURCES, DRILLING);
+		HELPER.addStoryBoard(Registration.DRILL_BLOCK, "drilling_machine", PonderScenes::oreFinder, AllPonderTags.KINETIC_SOURCES, DRILLING);
 
 		CreateOreExcavation.registrate().addDataGenerator(ProviderType.LANG, prov -> {
 			PonderLocalization.generateSceneLang();

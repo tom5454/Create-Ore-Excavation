@@ -25,13 +25,13 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.foundation.block.IBE;
 
 import com.tom.createores.Registration;
 import com.tom.createores.block.MultiblockPart.MultiblockGhostPart;
 import com.tom.createores.block.entity.MultiblockBlockEntity;
 
-public class MultiblockBlock extends Block implements MultiblockGhostPart, ITE<MultiblockBlockEntity> {
+public class MultiblockBlock extends Block implements MultiblockGhostPart, IBE<MultiblockBlockEntity> {
 
 	public MultiblockBlock(Properties pr) {
 		super(pr);
@@ -97,12 +97,12 @@ public class MultiblockBlock extends Block implements MultiblockGhostPart, ITE<M
 	}
 
 	@Override
-	public Class<MultiblockBlockEntity> getTileEntityClass() {
+	public Class<MultiblockBlockEntity> getBlockEntityClass() {
 		return MultiblockBlockEntity.class;
 	}
 
 	@Override
-	public BlockEntityType<? extends MultiblockBlockEntity> getTileEntityType() {
+	public BlockEntityType<? extends MultiblockBlockEntity> getBlockEntityType() {
 		return Registration.GHOST_TILE.get();
 	}
 

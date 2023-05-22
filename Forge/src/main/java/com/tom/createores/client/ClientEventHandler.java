@@ -13,9 +13,9 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
-import com.simibubi.create.content.contraptions.base.IRotate.StressImpact;
-import com.simibubi.create.content.contraptions.goggles.GogglesItem;
-import com.simibubi.create.foundation.item.ItemDescription;
+import com.simibubi.create.content.equipment.goggles.GogglesItem;
+import com.simibubi.create.content.kinetics.base.IRotate.StressImpact;
+import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.LangBuilder;
 
@@ -48,7 +48,7 @@ public class ClientEventHandler {
 
 			StressImpact impactId = StressImpact.HIGH;
 			LangBuilder builder = Lang.builder()
-					.add(Lang.text(ItemDescription.makeProgressBar(3, impactId.ordinal() + 1))
+					.add(Lang.text(TooltipHelper.makeProgressBar(3, impactId.ordinal() + 1))
 							.style(impactId.getAbsoluteColor()));
 
 			if (hasGoggles) {

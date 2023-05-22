@@ -1,10 +1,9 @@
 package com.tom.createores.block.entity;
 
-import static net.minecraft.ChatFormatting.*;
+import static net.minecraft.ChatFormatting.GOLD;
 
 import java.util.List;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -21,10 +20,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
-import com.simibubi.create.content.contraptions.base.IRotate.SpeedLevel;
+import com.simibubi.create.content.kinetics.base.IRotate.SpeedLevel;
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.item.TooltipHelper;
-import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
-import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
+import com.simibubi.create.foundation.item.TooltipHelper.Palette;
 import com.simibubi.create.foundation.utility.Lang;
 
 import com.tom.createores.CreateOreExcavation;
@@ -35,7 +35,7 @@ import com.tom.createores.recipe.ExcavatingRecipe;
 import com.tom.createores.recipe.IRecipe;
 import com.tom.createores.util.NumberFormatter;
 
-public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends SmartTileEntity implements MultiblockCapHandler, IDrill {
+public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends SmartBlockEntity implements MultiblockCapHandler, IDrill {
 	protected int progress;
 	protected Kinetic kinetic;
 	protected ResourceLocation recipeClient;
@@ -67,7 +67,7 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 			Component hint =
 					Lang.translateDirect("gui.contraptions.not_fast_enough", I18n.get(getBlockState().getBlock()
 							.getDescriptionId()));
-			List<Component> cutString = TooltipHelper.cutTextComponent(hint, GRAY, ChatFormatting.WHITE);
+			List<Component> cutString = TooltipHelper.cutTextComponent(hint, Palette.GRAY_AND_WHITE);
 			for (int i = 0; i < cutString.size(); i++)
 				tooltip.add(componentSpacing.plainCopy()
 						.append(cutString.get(i)));
@@ -247,7 +247,7 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 	}
 
 	@Override
-	public void addBehaviours(List<TileEntityBehaviour> behaviours) {
+	public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
 	}
 
 	protected void dropItemStack(ItemStack stackInSlot) {

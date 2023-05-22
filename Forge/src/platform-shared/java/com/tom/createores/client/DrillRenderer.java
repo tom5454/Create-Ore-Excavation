@@ -25,14 +25,14 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
 import com.simibubi.create.foundation.ponder.PonderWorld;
-import com.simibubi.create.foundation.tileEntity.renderer.SafeTileEntityRenderer;
 import com.simibubi.create.foundation.utility.RegisteredObjects;
 
 import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.block.entity.IDrill;
 
-public class DrillRenderer<T extends BlockEntity & IDrill> extends SafeTileEntityRenderer<T> {
+public class DrillRenderer<T extends BlockEntity & IDrill> extends SafeBlockEntityRenderer<T> {
 	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(CreateOreExcavation.MODID, "drill"), "main");
 	private static final ResourceLocation SHAFT = new ResourceLocation(CreateOreExcavation.MODID, "textures/entity/shaft.png");

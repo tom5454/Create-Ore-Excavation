@@ -4,8 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Item;
 
-import com.simibubi.create.content.AllSections;
-import com.simibubi.create.foundation.block.BlockStressDefaults;
+import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
@@ -54,7 +53,7 @@ public class Registration {
 			.register();
 
 	public static final BlockEntityEntry<DrillBlockEntity> DRILL_TILE = REGISTRATE
-			.tileEntity("drill", DrillBlockEntity::new)
+			.blockEntity("drill", DrillBlockEntity::new)
 			.validBlocks(DRILL_BLOCK)
 			.renderer(() -> DrillRenderer::new)
 			.register();
@@ -70,7 +69,7 @@ public class Registration {
 			.register();
 
 	public static final BlockEntityEntry<KineticInputBlockEntity> KINETIC_INPUT_TILE = REGISTRATE
-			.tileEntity("kinetic_input", KineticInputBlockEntity::new)
+			.blockEntity("kinetic_input", KineticInputBlockEntity::new)
 			.instance(() -> KineticInputInstance::new)
 			.validBlocks(KINETIC_INPUT)
 			.renderer(() -> KineticInputBlockEntityRenderer::new)
@@ -86,7 +85,7 @@ public class Registration {
 			.register();
 
 	public static final BlockEntityEntry<MultiblockBlockEntity> GHOST_TILE = REGISTRATE
-			.tileEntity("multiblock", MultiblockBlockEntity::new)
+			.blockEntity("multiblock", MultiblockBlockEntity::new)
 			.validBlocks(GHOST_BLOCK)
 			.register();
 
@@ -100,7 +99,7 @@ public class Registration {
 			.register();
 
 	public static final BlockEntityEntry<IOBlockEntity> IO_TILE = REGISTRATE
-			.tileEntity("io", IOBlockEntity::new)
+			.blockEntity("io", IOBlockEntity::new)
 			.validBlocks(IO_BLOCK)
 			.register();
 
@@ -121,7 +120,7 @@ public class Registration {
 			.register();
 
 	public static final BlockEntityEntry<ExtractorBlockEntity> EXTRACTOR_TILE = REGISTRATE
-			.tileEntity("extractor", ExtractorBlockEntity::new)
+			.blockEntity("extractor", ExtractorBlockEntity::new)
 			.validBlocks(EXTRACTOR_BLOCK)
 			.renderer(() -> DrillRenderer::new)
 			.register();
@@ -217,8 +216,8 @@ public class Registration {
 	}
 
 	public static void postRegister() {
-		REGISTRATE.addToSection(DRILL_BLOCK, AllSections.KINETICS);
-		REGISTRATE.addToSection(EXTRACTOR_BLOCK, AllSections.KINETICS);
+		//REGISTRATE.addToSection(DRILL_BLOCK, AllSections.KINETICS);
+		//REGISTRATE.addToSection(EXTRACTOR_BLOCK, AllSections.KINETICS);
 	}
 
 	private static Item.Properties tool(Item.Properties p) {
