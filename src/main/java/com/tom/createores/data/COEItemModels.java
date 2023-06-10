@@ -34,7 +34,7 @@ public class COEItemModels extends ItemModelProvider {
 				mcLoc("item/generated"),
 				"layer0", modLoc("item/raw_redstone"));
 		singleTexture(CreateOreExcavation.VEIN_FINDER_ITEM.get().getRegistryName().getPath(),
-				mcLoc("item/generated"),
+				mcLoc("item/handheld"),
 				"layer0", modLoc("item/vein_finder"));
 	}
 }
