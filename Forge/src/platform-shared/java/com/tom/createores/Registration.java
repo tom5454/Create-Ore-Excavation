@@ -174,7 +174,7 @@ public class Registration {
 			.item("vein_finder", OreVeinFinderItem::new)
 			.properties(Registration::tool)
 			.lang("Ore Vein Finder")
-			.model(item2d("item/vein_finder"))
+			.model(itemTool("item/vein_finder"))
 			.register();
 
 	public static void register() {
@@ -230,5 +230,9 @@ public class Registration {
 
 	private static <T extends Item> NonNullBiConsumer<DataGenContext<Item, T>, RegistrateItemModelProvider> item2d(String texture) {
 		return (c, p) -> p.singleTexture(c.getName(), p.mcLoc("item/generated"), "layer0", p.modLoc(texture));
+	}
+
+	private static <T extends Item> NonNullBiConsumer<DataGenContext<Item, T>, RegistrateItemModelProvider> itemTool(String texture) {
+		return (c, p) -> p.singleTexture(c.getName(), p.mcLoc("item/handheld"), "layer0", p.modLoc(texture));
 	}
 }
