@@ -10,9 +10,9 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 
-import com.simibubi.create.content.contraptions.base.IRotate.StressImpact;
-import com.simibubi.create.content.contraptions.goggles.GogglesItem;
-import com.simibubi.create.foundation.item.ItemDescription;
+import com.simibubi.create.content.equipment.goggles.GogglesItem;
+import com.simibubi.create.content.kinetics.base.IRotate.StressImpact;
+import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.LangBuilder;
 
@@ -44,7 +44,7 @@ public class CreateOreExcavationClient implements ClientModInitializer {
 
 			StressImpact impactId = StressImpact.HIGH;
 			LangBuilder builder = Lang.builder()
-					.add(Lang.text(ItemDescription.makeProgressBar(3, impactId.ordinal() + 1))
+					.add(Lang.text(TooltipHelper.makeProgressBar(3, impactId.ordinal() + 1))
 							.style(impactId.getAbsoluteColor()));
 
 			if (hasGoggles) {

@@ -6,7 +6,7 @@ import java.util.List;
 import net.minecraft.resources.ResourceLocation;
 
 import com.simibubi.create.compat.emi.recipes.CreateEmiRecipe;
-import com.simibubi.create.content.contraptions.processing.ProcessingOutput;
+import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.simibubi.create.foundation.ponder.ui.LayoutHelper;
 

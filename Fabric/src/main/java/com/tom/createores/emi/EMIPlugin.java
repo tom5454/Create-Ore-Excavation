@@ -28,7 +28,7 @@ public class EMIPlugin implements EmiPlugin {
 
 	public static final EmiRecipeCategory
 	DRILLING = register("drilling", DoubleItemIcon.of(Registration.DRILL_BLOCK.get(), Registration.NORMAL_DRILL_ITEM.get())),
-	EXTRACTING = register("extractor", DoubleItemIcon.of(Registration.EXTRACTOR_BLOCK.get(), Items.BUCKET));
+	EXTRACTING = register("extracting", DoubleItemIcon.of(Registration.EXTRACTOR_BLOCK.get(), Items.BUCKET));
 
 	@Override
 	public void register(EmiRegistry registry) {

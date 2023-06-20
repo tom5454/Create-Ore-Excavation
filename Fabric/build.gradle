@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.1-SNAPSHOT'
+	id 'fabric-loom' version '1.2-SNAPSHOT'
 	id 'maven-publish'
 	
 }
@@ -43,10 +43,6 @@ repositories {
     maven {
         name = 'Ladysnake Mods'
         url = 'https://ladysnake.jfrog.io/artifactory/mods'
-    }
-    maven {
-        name = "Progwml6 maven"
-        url = "https://dvs1.progwml6.com/files/maven/"
     }
     maven {
         name = "ModMaven"
@@ -108,10 +104,15 @@ dependencies {
 	implementation "com.electronwill.night-config:core:3.6.3"
     implementation "com.electronwill.night-config:toml:3.6.3"
 	modImplementation("curse.maven:forge-config-api-port-fabric-547434:4143545")
-    modImplementation(include("com.tom5454.chunkstorage:ChunkStorageFabric-119:1.0.2"))
-    modImplementation("com.tterrag.registrate_fabric:Registrate:1.1.57-MC1.19.2")
+    modImplementation(include("com.tom5454.chunkstorage:ChunkStorageFabric-119:1.0.2")) {
+		exclude(group: "net.fabricmc.fabric-loader")
+	}
+    modImplementation("com.tterrag.registrate_fabric:Registrate:1.1.58-MC1.19.2") {
+        exclude(group: "io.github.fabricators_of_create") // avoid duplicate Porting Lib
+        exclude(group: "net.fabricmc")
+    }
 	
-	modImplementation("com.terraformersmc:modmenu:4.0.6") {
+	modImplementation("com.terraformersmc:modmenu:4.1.2") {
         exclude(group: "net.fabricmc.fabric-api")
     }
 	
@@ -119,32 +120,49 @@ dependencies {
 		exclude(group: "net.fabricmc.fabric-api")
         exclude(group: "me.shedaniel.cloth")
         exclude(group: "dev.architectury")
+        exclude(group: "net.fabricmc")
     }
     modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin:${project.rei_version}") {
        exclude(group: "net.fabricmc.fabric-api")
        exclude(group: "me.shedaniel.cloth")
        exclude(group: "dev.architectury")
+       exclude(group: "net.fabricmc")
     }
     modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"){
         exclude(group: "net.fabricmc.fabric-api")
         exclude(group: "me.shedaniel.cloth")
         exclude(group: "dev.architectury")
+        exclude(group: "net.fabricmc")
     }
     modImplementation("dev.architectury:architectury-fabric:6.2.43")
-    modImplementation "dev.emi:emi:0.7.3+1.19.2"
+    modCompileOnly "dev.emi:emi-fabric:1.0.1+1.19.2:api"
+	modLocalRuntime "dev.emi:emi-fabric:1.0.1+1.19.2"
     modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") {
         exclude(group: "net.fabricmc.fabric-api")
+        exclude(group: "net.fabricmc")
     }
     
 	// compile against the JEI API but do not include it at runtime
-	modCompileOnlyApi("mezz.jei:jei-1.19.2-common-api:11.6.0.1013")
-	modCompileOnlyApi("mezz.jei:jei-1.19.2-fabric-api:11.6.0.1013")
+	modCompileOnlyApi("mezz.jei:jei-1.19.2-common-api:11.6.0.1013") {
+		exclude(group: "net.fabricmc.fabric")
+	}
+	modCompileOnlyApi("mezz.jei:jei-1.19.2-fabric-api:11.6.0.1013") {
+		exclude(group: "net.fabricmc.fabric")
+	}
 	// at runtime, use the full JEI jar for Fabric
-	modRuntimeOnly("mezz.jei:jei-1.19.2-fabric:11.6.0.1013")
+	modRuntimeOnly("mezz.jei:jei-1.19.2-fabric:11.6.0.1013") {
+		exclude(group: "net.fabricmc.fabric")
+	}
 	
-	modImplementation("com.simibubi.create:create-fabric-${project.minecraft_version}:${project.create_version}+${project.minecraft_version}")
-	modImplementation("io.github.fabricators_of_create.Porting-Lib:Porting-Lib:$port_lib_version+$minecraft_version")
-	modImplementation("com.jozufozu.flywheel:flywheel-fabric-$flywheel_minecraft_version:$flywheel_version")
+	modImplementation("com.simibubi.create:create-fabric-${project.minecraft_version}:${project.create_version}+mc${project.minecraft_version}") {
+		exclude(group: "net.fabricmc.fabric")
+	}
+	modImplementation("io.github.fabricators_of_create.Porting-Lib:Porting-Lib:$port_lib_version+$minecraft_version") {
+		exclude(group: "net.fabricmc.fabric")
+	}
+	modImplementation("com.jozufozu.flywheel:flywheel-fabric-$flywheel_minecraft_version:$flywheel_version") {
+		exclude(group: "net.fabricmc.fabric")
+	}
 	modImplementation("dev.latvian.mods:kubejs-fabric:1902.6.0-build.142")
 	implementation "com.google.code.findbugs:jsr305:3.0.2"
 }

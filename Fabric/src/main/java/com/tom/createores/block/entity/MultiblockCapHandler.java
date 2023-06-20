@@ -2,7 +2,7 @@ package com.tom.createores.block.entity;
 
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 
-import com.simibubi.create.content.contraptions.goggles.IHaveGoggleInformation;
+import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 
 import com.tom.createores.util.IOBlockType;
 

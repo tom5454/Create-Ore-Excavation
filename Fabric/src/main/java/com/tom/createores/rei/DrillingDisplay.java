@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.simibubi.create.compat.rei.display.CreateDisplay;
-import com.simibubi.create.content.contraptions.processing.ProcessingOutput;
+import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 
 import com.tom.createores.recipe.DrillingRecipe;

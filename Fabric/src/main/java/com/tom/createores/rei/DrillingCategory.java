@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import com.simibubi.create.compat.rei.DoubleItemIcon;
 import com.simibubi.create.compat.rei.category.WidgetUtil;
 import com.simibubi.create.compat.rei.display.CreateDisplay;
-import com.simibubi.create.content.contraptions.processing.ProcessingOutput;
+import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.ponder.ui.LayoutHelper;
