@@ -2,38 +2,17 @@ package com.tom.createores.kubejs;
 
 import net.minecraft.network.chat.Component;
 
-import dev.latvian.mods.kubejs.fluid.FluidStackJS;
-import dev.latvian.mods.kubejs.recipe.RecipeArguments;
-import dev.latvian.mods.kubejs.recipe.RecipeExceptionJS;
+import dev.latvian.mods.kubejs.fluid.OutputFluid;
+import dev.latvian.mods.kubejs.recipe.RecipeKey;
+import dev.latvian.mods.kubejs.recipe.component.FluidComponents;
+import dev.latvian.mods.kubejs.recipe.component.NumberComponent;
+import dev.latvian.mods.kubejs.recipe.schema.RecipeSchema;
 
 public class ExtractorRecipeJS extends ExcavatingRecipeJS<ExtractorRecipeJS> {
-	private FluidStackJS fluid;
+	public static final RecipeKey<OutputFluid> RESULT = FluidComponents.OUTPUT.key("output");
+	public static final RecipeKey<Component> NAME = ComponentComponent.INSTANCE.key("name");
+	public static final RecipeKey<Integer> WEIGHT = NumberComponent.intRange(1, Integer.MAX_VALUE).key("weight");
+	public static final RecipeKey<Integer> TICKS = NumberComponent.intRange(1, Integer.MAX_VALUE).key("ticks");
 
-	@Override
-	public void create(RecipeArguments args) {
-		super.create(args);
-		fluid = FluidStackJS.of(args.get(0));
-		Component name = KubeJSExcavation.parseComponent(args.get(1));
-		int weight = ((Number) args.get(2)).intValue();
-		int ticks = ((Number) args.get(3)).intValue();
-
-		if(weight < 1)throw new RecipeExceptionJS("Weight must be higher than 0");
-		if(ticks < 1)throw new RecipeExceptionJS("Ticks must be higher than 0");
-
-		json.addProperty("weight", weight);
-		json.addProperty("ticks", ticks);
-		json.addProperty("name", Component.Serializer.toJson(name));
-	}
-
-	@Override
-	public void deserialize() {
-		super.deserialize();
-		fluid = FluidStackJS.fromJson(json.get("output"));
-	}
-
-	@Override
-	public void serialize() {
-		super.serialize();
-		if(serializeOutputs)json.add("output", fluid.toJson());
-	}
+	public static final RecipeSchema SCHEMA = new RecipeSchema(ExtractorRecipeJS.class, ExtractorRecipeJS::new, RESULT, NAME, WEIGHT, TICKS);
 }

@@ -44,6 +44,6 @@
 		"fabric-api": "*"
 	},
 	"suggests": {
-		"another-mod": "*"
+		"kubejs": ">=1902.6.1-build.300"
 	}
 }

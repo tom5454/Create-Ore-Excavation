@@ -41,9 +41,9 @@ repositories {
     maven { url = "https://maven.terraformersmc.com/" }
     maven { url = "https://maven.cafeteria.dev/releases" }
     maven {
-        name = 'Ladysnake Mods'
-        url = 'https://ladysnake.jfrog.io/artifactory/mods'
-    }
+		name = "Ladysnake Libs"
+		url = 'https://maven.ladysnake.org/releases'
+	}
     maven {
         name = "ModMaven"
         url = "https://modmaven.dev"
@@ -163,7 +163,7 @@ dependencies {
 	modImplementation("com.jozufozu.flywheel:flywheel-fabric-$flywheel_minecraft_version:$flywheel_version") {
 		exclude(group: "net.fabricmc.fabric")
 	}
-	modImplementation("dev.latvian.mods:kubejs-fabric:1902.6.0-build.142")
+	modImplementation("dev.latvian.mods:kubejs-fabric:1902.6.1-build.311")
 	implementation "com.google.code.findbugs:jsr305:3.0.2"
 }
 
