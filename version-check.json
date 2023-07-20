@@ -1,10 +1,11 @@
 {
 	"homepage": "https://www.curseforge.com/minecraft/mc-mods/create-ore-excavation",
 	"promos": {
-		"1.19.2-latest": "1.2.1",
+		"1.19.2-latest": "1.2.2",
 		"1.18.2-latest": "1.1.1"
 	},
 	"1.19.2": {
+		"1.2.2": "Updated KubeJS support to 6.1",
 		"1.2.1": "Added Spanish translation\nImproved ore vein finder third person model",
 		"1.2.0": "Update to Create 0.5.1",
 		"1.1.1": "Use ComponentWrapper.of for KubeJS names",
