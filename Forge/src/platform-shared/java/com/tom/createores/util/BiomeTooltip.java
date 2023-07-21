@@ -9,6 +9,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Holder.Kind;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -20,7 +21,7 @@ public class BiomeTooltip {
 
 	public static void listBiomes(TagKey<Biome> tag, List<Component> tooltip) {
 		boolean isShift = Screen.hasShiftDown();
-		Registry<Biome> biomeReg = Minecraft.getInstance().getConnection().registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
+		Registry<Biome> biomeReg = Minecraft.getInstance().getConnection().registryAccess().registryOrThrow(Registries.BIOME);
 		biomeReg.getTag(tag).
 		map(t -> {
 			Stream<Holder<Biome>> s = t.stream();

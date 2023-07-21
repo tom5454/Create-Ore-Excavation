@@ -15,7 +15,7 @@ apply plugin: 'org.spongepowered.mixin'
 
 version = project.mod_version
 group = 'com.tom5454.createoreexcavation' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'createoreexcavation-1.19'
+archivesBaseName = 'createoreexcavation-1.20'
 
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -36,7 +36,7 @@ minecraft {
     // Use non-default mappings at your own risk. They may not always work.
     // Simply re-run your setup task after changing the mappings to update your workspace.
     //mappings channel: 'official', version: '1.19.2'
-    mappings channel: 'parchment', version: '2022.08.28-1.19.2'
+    mappings channel: 'official', version: '1.20.1'
 
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.
@@ -58,6 +58,8 @@ minecraft {
 
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             property 'forge.enabledGameTestNamespaces', 'createoreexcavation'
+            
+            property 'production', 'true'
 
             mods {
                 createoreexcavation {
@@ -192,7 +194,7 @@ dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.19.2-43.2.11'
+    minecraft 'net.minecraftforge:forge:1.20.1-47.1.0'
     
     annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
 
@@ -209,19 +211,19 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
     
     // compile against the JEI API but do not include it at runtime
-    compileOnly fg.deobf("mezz.jei:jei-1.19.2-forge-api:11.6.0.1015")
-    compileOnly fg.deobf("mezz.jei:jei-1.19.2-common-api:11.6.0.1015")
+    compileOnly fg.deobf("mezz.jei:jei-1.20.1-forge-api:15.2.0.22")
+    compileOnly fg.deobf("mezz.jei:jei-1.20.1-common-api:15.2.0.22")
   	// at runtime, use the full JEI jar
-  	runtimeOnly fg.deobf("mezz.jei:jei-1.19.2-forge:11.6.0.1015")
+  	runtimeOnly fg.deobf("mezz.jei:jei-1.20.1-forge:15.2.0.22")
   	
-  	implementation fg.deobf("local:theoneprobe:1.19-6.2.2")
+  	implementation fg.deobf("curse.maven:the-one-probe-245211:4579432")
   	
-  	implementation fg.deobf("local:create:1.19.2-0.5.1.a")
-  	implementation fg.deobf("local:flywheel-forge:1.19.2-0.6.8.a-14")
+  	implementation fg.deobf("local:create:1.20.1-0.5.1.d")
+  	implementation fg.deobf("local:flywheel-forge:1.20-0.6.9-4")
   	
-  	implementation fg.deobf("dev.latvian.mods:kubejs-forge:1902.6.0-build.128")
+  	/*implementation fg.deobf("dev.latvian.mods:kubejs-forge:1902.6.0-build.128")
 	implementation fg.deobf("dev.latvian.mods:rhino-forge:1902.2.2-build.264")
-	implementation fg.deobf("dev.architectury:architectury-forge:6.3.56")
+	implementation fg.deobf("dev.architectury:architectury-forge:6.3.56")*/
 	
 	/*if(useLib) {
     	compileOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-api-forge:9.1.587")

@@ -1,0 +1,16 @@
+{
+  "type": "createoreexcavation:vein",
+  "amountMax": 30.0,
+  "amountMin": 10.0,
+  "biomeWhitelist": "minecraft:is_overworld",
+  "icon": {
+    "item": "minecraft:raw_copper"
+  },
+  "name": "{\"translate\":\"item.minecraft.raw_copper\"}",
+  "placement": {
+    "salt": 277506605,
+    "separation": 8,
+    "spacing": 128
+  },
+  "priority": 0
+}

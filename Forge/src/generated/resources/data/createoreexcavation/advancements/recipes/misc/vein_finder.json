@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_netherite_ingot": {
+    "diamond": {
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:netherite_ingot"
+              "minecraft:ender_eye"
             ]
           }
         ]
@@ -15,20 +15,21 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "createoreexcavation:netherite_drill_smithing"
+        "recipe": "createoreexcavation:vein_finder"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_netherite_ingot",
+      "diamond",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "createoreexcavation:netherite_drill_smithing"
+      "createoreexcavation:vein_finder"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

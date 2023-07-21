@@ -2,15 +2,14 @@ package com.tom.createores;
 
 import org.slf4j.Logger;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.MenuType.MenuSupplier;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -43,8 +42,8 @@ import com.simibubi.create.infrastructure.config.AllConfigs;
 import com.tom.createores.client.ClientRegistration;
 import com.tom.createores.recipe.DrillingRecipe;
 import com.tom.createores.recipe.ExcavatingRecipe;
-import com.tom.createores.recipe.ExcavatingRecipe.Serializer.RecipeFactory;
 import com.tom.createores.recipe.ExtractorRecipe;
+import com.tom.createores.recipe.VeinRecipe;
 
 @Mod(CreateOreExcavation.MODID)
 public class CreateOreExcavation {
@@ -55,20 +54,13 @@ public class CreateOreExcavation {
 
 	private static final DeferredRegister<MenuType<?>> MENU_TYPE = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MODID);
 	private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZER = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, MODID);
-	private static final DeferredRegister<RecipeType<?>> TYPE_REGISTER = DeferredRegister.create(Registry.RECIPE_TYPE_REGISTRY, MODID);
+	private static final DeferredRegister<RecipeType<?>> TYPE_REGISTER = DeferredRegister.create(Registries.RECIPE_TYPE, MODID);
 
 	public static final RecipeTypeGroup<DrillingRecipe> DRILLING_RECIPES = recipe("drilling", DrillingRecipe::new);
 	public static final RecipeTypeGroup<ExtractorRecipe> EXTRACTING_RECIPES = recipe("extracting", ExtractorRecipe::new);
+	public static final RecipeTypeGroup<VeinRecipe> VEIN_RECIPES = recipe("vein", VeinRecipe::new);
 
-	public static final CreativeModeTab MOD_TAB = new CreativeModeTab("createoreexcavation.tab") {
-
-		@Override
-		public ItemStack makeIcon() {
-			return new ItemStack(Registration.DIAMOND_DRILL_ITEM.get());
-		}
-	};
-
-	public static final TagKey<Item> DRILL_TAG = TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(MODID, "drills"));
+	public static final TagKey<Item> DRILL_TAG = TagKey.create(Registries.ITEM, new ResourceLocation(MODID, "drills"));
 
 	public CreateOreExcavation() {
 		// Register the setup method for modloading
@@ -97,10 +89,17 @@ public class CreateOreExcavation {
 		TYPE_REGISTER.register(bus);
 	}
 
-	private static <T extends ExcavatingRecipe> RecipeTypeGroup<T> recipe(String name, RecipeFactory<T> factory) {
+	private static <T extends ExcavatingRecipe> RecipeTypeGroup<T> recipe(String name, ExcavatingRecipe.RecipeFactory<T> factory) {
 		RecipeTypeGroup<T> rg = new RecipeTypeGroup<>(new ResourceLocation(MODID, name));
 		rg.recipeType = TYPE_REGISTER.register(name, () -> RecipeType.simple(new ResourceLocation(MODID, name)));
 		rg.serializer = RECIPE_SERIALIZER.register(name, () -> new ExcavatingRecipe.Serializer<>(rg, factory));
+		return rg;
+	}
+
+	private static <T extends VeinRecipe> RecipeTypeGroup<T> recipe(String name, VeinRecipe.RecipeFactory<T> factory) {
+		RecipeTypeGroup<T> rg = new RecipeTypeGroup<>(new ResourceLocation(MODID, name));
+		rg.recipeType = TYPE_REGISTER.register(name, () -> RecipeType.simple(new ResourceLocation(MODID, name)));
+		rg.serializer = RECIPE_SERIALIZER.register(name, () -> new VeinRecipe.Serializer<>(rg, factory));
 		return rg;
 	}
 
@@ -127,7 +126,7 @@ public class CreateOreExcavation {
 	}
 
 	private static <M extends AbstractContainerMenu> RegistryObject<MenuType<M>> menu(String name, MenuSupplier<M> create) {
-		return MENU_TYPE.register(name, () -> new MenuType<>(create));
+		return MENU_TYPE.register(name, () -> new MenuType<>(create, FeatureFlags.VANILLA_SET));
 	}
 
 	private void setup(final FMLCommonSetupEvent event) {

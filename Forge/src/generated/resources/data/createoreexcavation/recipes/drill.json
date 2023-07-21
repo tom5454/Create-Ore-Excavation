@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "group": "create",
   "key": {
     "b": {
@@ -16,5 +17,6 @@
   ],
   "result": {
     "item": "createoreexcavation:drill"
-  }
+  },
+  "show_notification": true
 }

@@ -15,7 +15,7 @@ public class DataGenerators {
 	@SubscribeEvent
 	public static void gatherData(GatherDataEvent event) {
 		DataGenerator generator = event.getGenerator();
-		generator.addProvider(event.includeServer(), new COERecipes(generator));
+		generator.addProvider(event.includeServer(), new COERecipes(generator.getPackOutput()));
 		if(event.includeClient())ClientRegistration.register();
 	}
 }

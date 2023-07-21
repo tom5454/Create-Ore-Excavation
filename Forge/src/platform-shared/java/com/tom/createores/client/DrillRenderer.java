@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
 import com.simibubi.create.foundation.ponder.PonderWorld;
 import com.simibubi.create.foundation.utility.RegisteredObjects;
@@ -84,7 +84,7 @@ public class DrillRenderer<T extends BlockEntity & IDrill> extends SafeBlockEnti
 		pPoseStack.pushPose();
 		float f = pBlockEntity.getBlockState().getValue(HORIZONTAL_FACING).toYRot();
 		pPoseStack.translate(0.5D, 0.5D, 0.5D);
-		pPoseStack.mulPose(Vector3f.YP.rotationDegrees(-f));
+		pPoseStack.mulPose(Axis.YP.rotationDegrees(-f));
 		pPoseStack.translate(0, 0.8f, 0);
 		pPoseStack.scale(1, -1, -1);
 
@@ -94,7 +94,7 @@ public class DrillRenderer<T extends BlockEntity & IDrill> extends SafeBlockEnti
 			pPoseStack.translate(0, 0.2f, 0);
 			long ticks = pBlockEntity.getLevel().getGameTime();
 			float rot = (ticks * 20) % 360;
-			pPoseStack.mulPose(Vector3f.YP.rotationDegrees(rot + pPartialTick * 20));
+			pPoseStack.mulPose(Axis.YP.rotationDegrees(rot + pPartialTick * 20));
 		}
 
 		shaft.render(pPoseStack, pBufferSource.getBuffer(RenderType.entityCutoutNoCull(SHAFT)), pPackedLight, pPackedOverlay);

@@ -28,12 +28,6 @@ public class DrillingRecipe extends ExcavatingRecipe {
 	}
 
 	@Override
-	public String toString() {
-		return String.format("DrillingRecipe [id=%s, drill=%s, output=%s, drillingFluid=%s, weight=%s, ticks=%s]", id,
-				drill, output, drillingFluid, weight, ticks);
-	}
-
-	@Override
 	protected void fromJson(JsonObject json) {
 		output = NonNullList.create();
 		for (JsonElement je : GsonHelper.getAsJsonArray(json, "output")) {

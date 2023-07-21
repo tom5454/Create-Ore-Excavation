@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -15,6 +16,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
+import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.recipe.ExtractorRecipe;
 import com.tom.createores.util.IOBlockType;
 
@@ -34,11 +36,6 @@ public class ExtractorBlockEntity extends ExcavatingBlockEntity<ExtractorRecipe>
 			return tankCap.cast();
 		}
 		return LazyOptional.empty();
-	}
-
-	@Override
-	protected boolean instanceofCheck(Object rec) {
-		return rec instanceof ExtractorRecipe;
 	}
 
 	@Override
@@ -95,5 +92,10 @@ public class ExtractorBlockEntity extends ExcavatingBlockEntity<ExtractorRecipe>
 		public int fillInternal(FluidStack resource, FluidAction action) {
 			return super.fill(resource, action);
 		}
+	}
+
+	@Override
+	protected RecipeType<ExtractorRecipe> getRecipeType() {
+		return CreateOreExcavation.EXTRACTING_RECIPES.getRecipeType();
 	}
 }

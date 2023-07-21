@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -17,6 +18,7 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 
+import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.recipe.DrillingRecipe;
 import com.tom.createores.util.IOBlockType;
 import com.tom.createores.util.QueueInventory;
@@ -78,9 +80,14 @@ public class DrillBlockEntity extends ExcavatingBlockEntity<DrillingRecipe> {
 
 	@Override
 	public void addToGoggleTooltip(List<Component> tooltip, DrillingRecipe rec) {
-		if(rec.getDrillingFluid().getRequiredAmount() != 0 && rec.getDrillingFluid().test(fluidTank.getFluid()) && fluidTank.getFluidAmount() >= rec.getDrillingFluid().getRequiredAmount()) {
+		if(rec.getDrillingFluid().getRequiredAmount() != 0 && (!rec.getDrillingFluid().test(fluidTank.getFluid()) || fluidTank.getFluidAmount() < rec.getDrillingFluid().getRequiredAmount())) {
 			tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.drill.noFluid")));
 		}
+	}
+
+	@Override
+	protected boolean validateRecipe(DrillingRecipe recipe) {
+		return super.validateRecipe(recipe) && (recipe.getDrillingFluid().getRequiredAmount() == 0 || recipe.getDrillingFluid().test(fluidTank.getFluid()));
 	}
 
 	@Override
@@ -99,11 +106,6 @@ public class DrillBlockEntity extends ExcavatingBlockEntity<DrillingRecipe> {
 	}
 
 	@Override
-	protected boolean instanceofCheck(Object rec) {
-		return rec instanceof DrillingRecipe;
-	}
-
-	@Override
 	protected boolean canExtract() {
 		return inventory.hasSpace() && current.getDrillingFluid().getRequiredAmount() == 0 ||
 				(current.getDrillingFluid().test(fluidTank.getFluid()) &&
@@ -114,5 +116,10 @@ public class DrillBlockEntity extends ExcavatingBlockEntity<DrillingRecipe> {
 	protected void onFinished() {
 		current.getOutput().stream().map(ProcessingOutput::rollOutput).filter(i -> !i.isEmpty()).forEach(inventory::add);
 		fluidTank.drain(current.getDrillingFluid().getRequiredAmount(), FluidAction.EXECUTE);
+	}
+
+	@Override
+	protected RecipeType<DrillingRecipe> getRecipeType() {
+		return CreateOreExcavation.DRILLING_RECIPES.getRecipeType();
 	}
 }

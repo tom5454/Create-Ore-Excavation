@@ -1,31 +1,25 @@
 package com.tom.createores;
 
-import java.util.List;
-
 import org.apache.commons.lang3.tuple.Pair;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
-import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.config.ModConfig.Type;
 
 public class Config {
 	public static class Server {
-		public IntValue generationChance;
 		public IntValue finiteAmountBase;
 		public BooleanValue defaultInfinite;
 		public IntValue maxExtractorsPerVein;
+		public IntValue veinFinderNear, veinFinderFar, veinFinderCd;
 
 		private Server(ForgeConfigSpec.Builder builder) {
 			builder.comment("IMPORTANT NOTICE:",
 					"You can add more entries using KubeJS",
 					"https://github.com/tom5454/Create-Ore-Excavation#kubejs").
 			define("importantInfo", true);
-
-			generationChance = builder.comment("Weight value for empty chunk").translation("config.coe.generationChance").
-					defineInRange("generationChance", 5000, 1, Integer.MAX_VALUE);
 
 			finiteAmountBase = builder.comment("Finite vein base amount").translation("config.coe.finiteAmountBase").
 					defineInRange("finiteAmountBase", 1000, 1, Integer.MAX_VALUE);
@@ -34,11 +28,19 @@ public class Config {
 
 			maxExtractorsPerVein = builder.comment("Max number of extractor per ore vein, Set to 0 for infinite").translation("config.coe.maxExtractorsPerVein")
 					.defineInRange("maxExtractorsPerVein", 0, 0, 64);
+
+			veinFinderNear = builder.comment("Vein Finder 'Found Nearby' range in chunks").translation("config.coe.veinFinderNear")
+					.defineInRange("veinFinderNear", 1, 1, 8);
+
+			veinFinderFar = builder.comment("Vein Finder accuracy for 'Found traces of ...'").translation("config.coe.veinFinderFar")
+					.defineInRange("veinFinderFar", 25, 1, 1000);
+
+			veinFinderCd = builder.comment("Vein Finder use cooldown in ticks").translation("config.coe.veinFinderCd")
+					.defineInRange("veinFinderCd", 100, 10, 1000);
 		}
 	}
 
 	public static class Common {
-		public ConfigValue<List<? extends String>> multiblockInvs;
 
 		public Common(ForgeConfigSpec.Builder builder) {
 			builder.comment("IMPORTANT NOTICE:",
@@ -67,16 +69,17 @@ public class Config {
 		SERVER = specPair.getLeft();
 	}
 
-	public static int generationChance, finiteAmountBase, maxExtractorsPerVein;
+	public static int finiteAmountBase, maxExtractorsPerVein, veinFinderNear, veinFinderFar, veinFinderCd;
 	public static boolean defaultInfinite;
 
 	public static void load(ModConfig modConfig) {
 		if(modConfig.getType() == Type.SERVER) {
-			generationChance = SERVER.generationChance.get();
 			finiteAmountBase = SERVER.finiteAmountBase.get();
 			defaultInfinite = SERVER.defaultInfinite.get();
 			maxExtractorsPerVein = SERVER.maxExtractorsPerVein.get();
-			OreVeinGenerator.invalidate();
+			veinFinderNear = SERVER.veinFinderNear.get();
+			veinFinderFar = SERVER.veinFinderFar.get();
+			veinFinderCd = SERVER.veinFinderCd.get();
 		}
 	}
 }

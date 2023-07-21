@@ -1,18 +1,15 @@
 {
   "type": "createoreexcavation:drilling",
-  "amountMax": 30.0,
-  "amountMin": 10.0,
-  "biomeWhitelist": "minecraft:is_overworld",
   "drill": {
     "tag": "createoreexcavation:drills"
   },
-  "name": "{\"translate\":\"item.minecraft.raw_iron\"}",
   "output": [
     {
       "item": "minecraft:raw_iron"
     }
   ],
+  "priority": 0,
   "stress": 256,
   "ticks": 600,
-  "weight": 10
+  "vein_id": "createoreexcavation:ore_vein_type/iron"
 }

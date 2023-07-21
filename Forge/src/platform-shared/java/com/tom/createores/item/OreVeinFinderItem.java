@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -16,9 +17,15 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 
+import com.mojang.datafixers.util.Pair;
+
+import com.tom.createores.Config;
 import com.tom.createores.OreDataCapability;
 import com.tom.createores.OreDataCapability.OreData;
+import com.tom.createores.OreVeinGenerator;
+import com.tom.createores.recipe.VeinRecipe;
 import com.tom.createores.util.ComponentJoiner;
+import com.tom.createores.util.RandomSpreadGenerator;
 
 public class OreVeinFinderItem extends Item {
 
@@ -46,13 +53,12 @@ public class OreVeinFinderItem extends Item {
 		ChunkPos center = new ChunkPos(pos);
 		OreData found = null;
 		List<OreData> nearby = new ArrayList<>();
-		List<OreData> far = new ArrayList<>();
-		for(int x = -2;x <= 2;x++) {
-			for(int z = -2;z <= 2;z++) {
+		int near = Config.veinFinderNear;
+		for(int x = -near;x <= near;x++) {
+			for(int z = -near;z <= near;z++) {
 				OreData d = OreDataCapability.getData(level.getChunk(center.x + x, center.z + z));
 				if(x == 0 && z == 0)found = d;
-				else if(Math.abs(x) <= 1 && Math.abs(z) <= 1)nearby.add(d);
-				else far.add(d);
+				else nearby.add(d);
 			}
 		}
 		player.displayClientMessage(Component.translatable("chat.coe.veinFinder.info"), false);
@@ -68,7 +74,14 @@ public class OreVeinFinderItem extends Item {
 		f = nearby.stream().map(d -> d.getRecipe(m)).filter(r -> r != null).map(r -> r.getName()).collect(ComponentJoiner.joining(nothing, comma));
 		player.displayClientMessage(Component.translatable("chat.coe.veinFinder.nearby", f), false);
 
-		f = far.stream().map(d -> d.getRecipe(m)).filter(r -> r != null).map(r -> r.getName()).collect(ComponentJoiner.joining(nothing, comma));
-		player.displayClientMessage(Component.translatable("chat.coe.veinFinder.far", f), false);
+		Pair<BlockPos, VeinRecipe> nearest = OreVeinGenerator.getPicker((ServerLevel) level).locate(pos, (ServerLevel) level, 16);
+		if(nearest != null) {
+			BlockPos at = nearest.getFirst();
+			int i = Math.round(RandomSpreadGenerator.distance2d(at, pos) / Config.veinFinderFar) * Config.veinFinderFar;
+			player.displayClientMessage(Component.translatable("chat.coe.veinFinder.far", Component.translatable("chat.coe.veinFinder.distance", nearest.getSecond().getName(), i)), false);
+		} else {
+			player.displayClientMessage(Component.translatable("chat.coe.veinFinder.far", nothing), false);
+		}
+		player.getCooldowns().addCooldown(this, Config.veinFinderCd);
 	}
 }

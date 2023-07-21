@@ -1,18 +1,14 @@
 {
   "type": "createoreexcavation:extracting",
-  "amountMax": 2.0,
-  "amountMin": 1.0,
-  "biomeWhitelist": "minecraft:is_overworld",
   "drill": {
     "tag": "createoreexcavation:drills"
   },
-  "name": "{\"translate\":\"block.minecraft.water\"}",
-  "neverFinite": true,
   "output": {
     "amount": 500,
     "fluid": "minecraft:water"
   },
+  "priority": 0,
   "stress": 256,
   "ticks": 20,
-  "weight": 10
+  "vein_id": "createoreexcavation:ore_vein_type/water"
 }

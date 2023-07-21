@@ -1,0 +1,20 @@
+{
+  "type": "createoreexcavation:drilling",
+  "drill": {
+    "tag": "createoreexcavation:drills"
+  },
+  "output": [
+    {
+      "count": 3,
+      "item": "minecraft:gold_nugget"
+    },
+    {
+      "chance": 0.5,
+      "item": "minecraft:gold_nugget"
+    }
+  ],
+  "priority": 0,
+  "stress": 192,
+  "ticks": 400,
+  "vein_id": "createoreexcavation:ore_vein_type/nether_gold"
+}

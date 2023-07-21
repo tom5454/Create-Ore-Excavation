@@ -2,7 +2,9 @@ package com.tom.createores;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.foundation.data.CreateRegistrate;
@@ -13,6 +15,7 @@ import com.tterrag.registrate.providers.RegistrateItemModelProvider;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
+import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 
 import com.tom.createores.block.DrillBlock;
@@ -33,8 +36,11 @@ import com.tom.createores.item.MultiBlockItem;
 import com.tom.createores.item.OreVeinFinderItem;
 
 public class Registration {
-	private static final CreateRegistrate REGISTRATE = CreateOreExcavation.registrate()
-			.creativeModeTab(() -> CreateOreExcavation.MOD_TAB);
+	private static final CreateRegistrate REGISTRATE = CreateOreExcavation.registrate();
+
+	public static final RegistryEntry<CreativeModeTab> TAB = REGISTRATE.defaultCreativeTab("create_ore_excavation",
+			c -> c.icon(() -> new ItemStack(Registration.DIAMOND_DRILL_ITEM.get()))
+			).register();
 
 	public static final BlockEntry<DrillBlock> DRILL_BLOCK = REGISTRATE.block("drilling_machine", DrillBlock::new)
 			.initialProperties(SharedProperties::copperMetal)
@@ -178,18 +184,22 @@ public class Registration {
 			.register();
 
 	public static void register() {
-		add("itemGroup.createoreexcavation.tab", "Create Ore Excavation");
-		add("config.coe.generationChance", "Weight value for empty chunk");
 		add("config.coe.finiteAmountBase", "Finite vein amount base");
 		add("config.coe.defaultInfinite", "Veins infinite by default");
 		add("config.coe.maxExtractorsPerVein", "Max number of extractor per ore vein, Set to 0 for infinite");
+		add("config.coe.veinFinderNear", "Vein Finder 'Found Nearby' range in chunks");
+		add("config.coe.veinFinderFar", "Vein Finder accuracy for 'Found traces of ...'");
+		add("config.coe.veinFinderCd", "Vein Finder use cooldown in ticks");
 		add("chat.coe.veinFinder.info", "Vein Finder Result:");
 		add("chat.coe.veinFinder.pos", "At: %d, %d");
 		add("chat.coe.veinFinder.found", "Found in Chunk: %s");
 		add("chat.coe.veinFinder.nothing", "Nothing");
 		add("chat.coe.veinFinder.nearby", "Found nearby: %s");
 		add("chat.coe.veinFinder.far", "Found traces of: %s");
+		add("chat.coe.veinFinder.distance", "%s (~%s blocks away)");
 		add("command.coe.setvein.success", "Successfully set vein to: %s");
+		add("command.coe.locate.success", "The nearest %s is at %s (%s blocks away)");
+		add("command.coe.locate.failed", "Could not find \"%s\" within reasonable distance");
 		add("info.coe.drill.noFluid", "The machine needs drilling fluid");
 		add("info.coe.drill.noDrill", "The machine needs drill item");
 		add("info.coe.drill.badDrill", "Drill not compatible");
@@ -199,8 +209,11 @@ public class Registration {
 		add("info.coe.drill.err_no_vein", "No vein to excavate");
 		add("info.coe.drill.err_vein_empty", "The vein is depleted");
 		add("info.coe.drill.err_too_many_excavators", "Too many vein extractors");
+		add("info.coe.drill.err_no_recipe", "Couldn't find a valid recipe for this vein");
+		add("info.coe.drill.noGround", "The machine must be on solid ground");
 		add("jei.coe.recipe.drilling", "Drilling Machine");
 		add("jei.coe.recipe.extracting", "Fluid Extractor");
+		add("jei.coe.recipe.veins", "Ore Veins");
 		add("tooltip.coe.variableImpact", "Variable Impact");
 		add("tooltip.coe.biome.whitelist", "Biome Whitelist:");
 		add("tooltip.coe.biome.blacklist", "Biome Blacklist:");
@@ -221,11 +234,11 @@ public class Registration {
 	}
 
 	private static Item.Properties tool(Item.Properties p) {
-		return p.tab(CreateOreExcavation.MOD_TAB).stacksTo(1);
+		return p.stacksTo(1);
 	}
 
 	private static Item.Properties item(Item.Properties p) {
-		return p.tab(CreateOreExcavation.MOD_TAB);
+		return p;
 	}
 
 	private static <T extends Item> NonNullBiConsumer<DataGenContext<Item, T>, RegistrateItemModelProvider> item2d(String texture) {
