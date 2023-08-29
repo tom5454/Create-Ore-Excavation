@@ -47,6 +47,7 @@ public class JEIHandler implements IModPlugin {
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
 		registration.addRecipeCatalyst(Registration.DRILL_BLOCK.asStack(), DRILLING);
 		registration.addRecipeCatalyst(Registration.EXTRACTOR_BLOCK.asStack(), EXTRACTING);
+		registration.addRecipeCatalyst(Registration.VEIN_FINDER_ITEM.asStack(), VEINS);
 	}
 
 	@Override

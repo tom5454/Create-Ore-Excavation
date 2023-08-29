@@ -10,9 +10,11 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
+import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.recipe.ExtractorRecipe;
 import com.tom.createores.util.IOBlockType;
 
@@ -32,11 +34,6 @@ public class ExtractorBlockEntity extends ExcavatingBlockEntity<ExtractorRecipe>
 	public <T> Storage<T> getCaps(IOBlockType type) {
 		if(type == IOBlockType.FLUID_OUT)return (Storage<T>) fluidTank;
 		return null;
-	}
-
-	@Override
-	protected boolean instanceofCheck(Object rec) {
-		return rec instanceof ExtractorRecipe;
 	}
 
 	@Override
@@ -93,5 +90,10 @@ public class ExtractorBlockEntity extends ExcavatingBlockEntity<ExtractorRecipe>
 			}
 			return f;
 		}
+	}
+
+	@Override
+	protected RecipeType<ExtractorRecipe> getRecipeType() {
+		return CreateOreExcavation.EXTRACTING_RECIPES.getRecipeType();
 	}
 }

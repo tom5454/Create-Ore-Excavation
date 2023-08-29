@@ -1,0 +1,16 @@
+{
+  "type": "createoreexcavation:vein",
+  "amountMax": 40.0,
+  "amountMin": 15.0,
+  "biomeWhitelist": "minecraft:is_overworld",
+  "icon": {
+    "item": "minecraft:coal"
+  },
+  "name": "{\"translate\":\"item.minecraft.coal\"}",
+  "placement": {
+    "salt": 1042639205,
+    "separation": 8,
+    "spacing": 128
+  },
+  "priority": 0
+}

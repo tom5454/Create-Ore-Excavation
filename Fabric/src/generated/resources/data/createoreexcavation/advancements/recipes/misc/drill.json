@@ -1,32 +1,33 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "diamond": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "createoreexcavation:drill"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "iron": {
       "conditions": {
         "items": [
           {
-            "tag": "c:diamonds"
+            "tag": "c:iron_ingots"
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
-    },
-    "has_the_recipe": {
-      "conditions": {
-        "recipe": "createoreexcavation:diamond_drill"
-      },
-      "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "diamond",
+      "iron",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "createoreexcavation:diamond_drill"
+      "createoreexcavation:drill"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

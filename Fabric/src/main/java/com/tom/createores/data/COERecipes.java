@@ -1,27 +1,30 @@
 package com.tom.createores.data;
 
+import java.util.Random;
 import java.util.function.Consumer;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.data.recipes.UpgradeRecipeBuilder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
+import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 import net.minecraft.world.level.material.Fluids;
 
 import com.simibubi.create.AllBlocks;
@@ -41,20 +44,22 @@ import com.tom.createores.Registration;
 import com.tom.createores.recipe.DrillingRecipe;
 import com.tom.createores.recipe.ExcavatingRecipe;
 import com.tom.createores.recipe.ExtractorRecipe;
-import com.tom.createores.recipe.IRecipe.ThreeState;
+import com.tom.createores.recipe.VeinRecipe;
+import com.tom.createores.util.ThreeState;
 
+import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
-import me.alphamode.forgetags.Tags;
 
 public class COERecipes extends FabricRecipeProvider {
+	private static Random seedRandom;
 
-	public COERecipes(FabricDataGenerator generatorIn) {
-		super(generatorIn);
+	public COERecipes(FabricDataOutput output) {
+		super(output);
 	}
 
 	@Override
-	protected void generateRecipes(Consumer<FinishedRecipe> consumer) {
-		ShapedRecipeBuilder.shaped(Registration.NORMAL_DRILL_ITEM.get())
+	public void buildRecipes(Consumer<FinishedRecipe> consumer) {
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.NORMAL_DRILL_ITEM.get())
 		.pattern("bi ")
 		.pattern("ibi")
 		.pattern(" ii")
@@ -64,7 +69,7 @@ public class COERecipes extends FabricRecipeProvider {
 		.unlockedBy("iron", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(Tags.Items.INGOTS_IRON).build()))
 		.save(consumer);
 
-		ShapedRecipeBuilder.shaped(Registration.DIAMOND_DRILL_ITEM.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.DIAMOND_DRILL_ITEM.get())
 		.pattern("bi ")
 		.pattern("idi")
 		.pattern(" ii")
@@ -75,9 +80,9 @@ public class COERecipes extends FabricRecipeProvider {
 		.unlockedBy("diamond", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(Tags.Items.GEMS_DIAMOND).build()))
 		.save(consumer);
 
-		netheriteSmithingM(consumer, Registration.DIAMOND_DRILL_ITEM.get(), Registration.NETHERITE_DRILL_ITEM.get());
+		netheriteSmithing(consumer, Registration.DIAMOND_DRILL_ITEM.get(), RecipeCategory.MISC, Registration.NETHERITE_DRILL_ITEM.get());
 
-		ShapedRecipeBuilder.shaped(Registration.VEIN_FINDER_ITEM.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.VEIN_FINDER_ITEM.get())
 		.pattern("ea ")
 		.pattern("rs ")
 		.pattern("  s")
@@ -95,8 +100,8 @@ public class COERecipes extends FabricRecipeProvider {
 		.patternLine("CmDmF")
 		.patternLine("bsssb")
 		.patternLine("BbbbB")
-		.key('B', TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c:brass_blocks")))
-		.key('b', TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c:brass_plates")))
+		.key('B', TagKey.create(Registries.ITEM, new ResourceLocation("c:brass_blocks")))
+		.key('b', TagKey.create(Registries.ITEM, new ResourceLocation("c:brass_plates")))
 		.key('e', AllItems.ELECTRON_TUBE.get())
 		.key('S', AllBlocks.SPOUT.get())
 		.key('C', AllBlocks.BRASS_CASING.get())
@@ -113,8 +118,8 @@ public class COERecipes extends FabricRecipeProvider {
 		.patternLine("CmDmb")
 		.patternLine("bsssb")
 		.patternLine("BbbbB")
-		.key('B', TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c:brass_blocks")))
-		.key('b', TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c:brass_plates")))
+		.key('B', TagKey.create(Registries.ITEM, new ResourceLocation("c:brass_blocks")))
+		.key('b', TagKey.create(Registries.ITEM, new ResourceLocation("c:brass_plates")))
 		.key('e', AllItems.ELECTRON_TUBE.get())
 		.key('H', AllBlocks.HOSE_PULLEY.get())
 		.key('C', AllBlocks.BRASS_CASING.get())
@@ -124,20 +129,25 @@ public class COERecipes extends FabricRecipeProvider {
 		.key('P', AllBlocks.MECHANICAL_PUMP.get())
 		.build(consumer);
 
-		new DrillingBuilder(Items.RAW_IRON, 10, 30*20).setBiomeWhitelist(BiomeTags.IS_OVERWORLD).veinSize(10, 30).save("iron", consumer);
-		new DrillingBuilder(Items.RAW_GOLD, 4, 30*20).setBiomeWhitelist(BiomeTags.IS_OVERWORLD).veinSize(2, 4).setStress(192).save("gold", consumer);
-		new DrillingBuilder(Items.RAW_COPPER, 10, 30*20).setBiomeWhitelist(BiomeTags.IS_OVERWORLD).veinSize(10, 30).save("copper", consumer);
-		new DrillingBuilder(Items.COAL, 20, 10*20).setBiomeWhitelist(BiomeTags.IS_OVERWORLD).veinSize(15, 40).save("coal", consumer);
-		new DrillingBuilder(Registration.RAW_DIAMOND.get(), 2, 60*20).setBiomeWhitelist(BiomeTags.IS_OVERWORLD).setStress(512).veinSize(0.5f, 2).save("diamond", consumer);
-		new DrillingBuilder(Registration.RAW_REDSTONE.get(), 10, 30*20).setBiomeWhitelist(BiomeTags.IS_OVERWORLD).veinSize(10, 30).save("redstone", consumer);
-		new DrillingBuilder(Registration.RAW_EMERALD.get(), 2, 60*20).setBiomeWhitelist(BiomeTags.IS_OVERWORLD).veinSize(0.2f, 1).setStress(512).save("emerald", consumer);
-		new DrillingBuilder(new ProcessingOutput(new ItemStack(Registration.RAW_DIAMOND.get()), 1F), 2, 20*20, Component.translatable("ore.coe.hardenedDiamond")).addOutput(Items.DIAMOND, 0.1f).setDrill(Ingredient.of(Registration.NETHERITE_DRILL_ITEM.get())).setDrillingFluid(FluidIngredient.fromFluid(Fluids.LAVA, 500)).setBiomeWhitelist(BiomeTags.IS_OVERWORLD).setStress(1024).veinSize(1f, 3f).save("hardened_diamond", consumer);
-		new DrillingBuilder(AllItems.RAW_ZINC.get(), 10, 30*20).setBiomeWhitelist(BiomeTags.IS_OVERWORLD).veinSize(8, 24).save("zinc", consumer);
+		seedRandom = new Random(10387320);
 
-		new DrillingBuilder(Items.GLOWSTONE_DUST, 10, 60*20).setBiomeWhitelist(BiomeTags.IS_NETHER).veinSize(5, 12).save("glowstone", consumer);
-		new DrillingBuilder(Items.QUARTZ, 10, 60*20).setBiomeWhitelist(BiomeTags.IS_NETHER).setStress(512).veinSize(8, 24).save("quartz", consumer);
+		new DrillingBuilder(Items.RAW_IRON, 30*20, 1024, 128).setBiomeWhitelist(BiomeTags.IS_OVERWORLD).veinSize(10, 30).save("iron", consumer);
+		new DrillingBuilder(Items.RAW_GOLD, 30*20, 1024, 512).setBiomeWhitelist(BiomeTags.IS_OVERWORLD).veinSize(2, 4).setStress(192).save("gold", consumer);
+		new DrillingBuilder(Items.RAW_COPPER, 30*20, 1024, 128).setBiomeWhitelist(BiomeTags.IS_OVERWORLD).veinSize(10, 30).save("copper", consumer);
+		new DrillingBuilder(Items.COAL, 10*20, 1024, 128).setBiomeWhitelist(BiomeTags.IS_OVERWORLD).veinSize(15, 40).save("coal", consumer);
+		new DrillingBuilder(Registration.RAW_DIAMOND.get(), 60*20, 2048, 1024).setBiomeWhitelist(BiomeTags.IS_OVERWORLD).setStress(512).veinSize(0.5f, 2).save("diamond", consumer);
+		new DrillingBuilder(Registration.RAW_REDSTONE.get(), 30*20, 1024, 256).setBiomeWhitelist(BiomeTags.IS_OVERWORLD).veinSize(10, 30).save("redstone", consumer);
+		new DrillingBuilder(Registration.RAW_EMERALD.get(), 60*20, 2048, 1024).setBiomeWhitelist(BiomeTags.IS_OVERWORLD).veinSize(0.2f, 1).setStress(512).save("emerald", consumer);
+		new DrillingBuilder(new ProcessingOutput(new ItemStack(Registration.RAW_DIAMOND.get()), 1F), 20*20, Component.translatable("ore.coe.hardenedDiamond"), 4096, 2048).addOutput(Items.DIAMOND, 0.1f).setDrill(Ingredient.of(Registration.NETHERITE_DRILL_ITEM.get())).setDrillingFluid(FluidIngredient.fromFluid(Fluids.LAVA, 500)).setBiomeWhitelist(BiomeTags.IS_OVERWORLD).setStress(1024).veinSize(1f, 3f).save("hardened_diamond", consumer);
+		new DrillingBuilder(AllItems.RAW_ZINC.get(), 30*20, 1024, 128).setBiomeWhitelist(BiomeTags.IS_OVERWORLD).veinSize(8, 24).save("zinc", consumer);
+		new DrillingBuilder(Items.LAPIS_LAZULI, 20*20, 1024, 128).setBiomeWhitelist(BiomeTags.IS_OVERWORLD).veinSize(8, 24).save("lapis", consumer);
 
-		new ExtractorBuilder(new FluidStack(Fluids.WATER, 500), 10, 20).setBiomeWhitelist(BiomeTags.IS_OVERWORLD).setFinite(ThreeState.NEVER).save("water", consumer);
+		new DrillingBuilder(Items.GLOWSTONE_DUST, 60*20, 1024, 128).setBiomeWhitelist(BiomeTags.IS_NETHER).veinSize(5, 12).save("glowstone", consumer);
+		new DrillingBuilder(Items.QUARTZ, 60*20, 1024, 128).setBiomeWhitelist(BiomeTags.IS_NETHER).setStress(512).veinSize(8, 24).save("quartz", consumer);
+		new DrillingBuilder(new ItemStack(Blocks.ANCIENT_DEBRIS), 0.2f, 200*20, 4096, 2048).addOutput(Items.GOLD_NUGGET, 0.8f).addOutput(Blocks.NETHERRACK, 0.8f).addOutput(Blocks.MAGMA_BLOCK, 0.5f).setBiomeWhitelist(BiomeTags.IS_NETHER).setDrill(Ingredient.of(Registration.NETHERITE_DRILL_ITEM.get())).setDrillingFluid(FluidIngredient.fromFluid(Fluids.LAVA, 1000)).setStress(2048).veinSize(0.5f, 0.8f).save("netherite", consumer);
+		new DrillingBuilder(new ItemStack(Items.GOLD_NUGGET, 3), 20*20, 2048, 1024).setBiomeWhitelist(BiomeTags.IS_NETHER).addOutput(Items.GOLD_NUGGET, 0.5f).veinSize(3, 8).setStress(192).save("nether_gold", consumer);
+
+		new ExtractorBuilder(new FluidStack(Fluids.WATER, 500), 20, 512, 128).setBiomeWhitelist(BiomeTags.IS_OVERWORLD).setFinite(ThreeState.NEVER).save("water", consumer);
 
 		processing("redstone_milling", AllRecipeTypes.MILLING, consumer, b -> b.withItemIngredients(Ingredient.of(Registration.RAW_REDSTONE.get())).output(new ItemStack(Items.REDSTONE, 3)));
 		processing("redstone_crushing", AllRecipeTypes.CRUSHING, consumer, b -> b.withItemIngredients(Ingredient.of(Registration.RAW_REDSTONE.get())).output(new ItemStack(Items.REDSTONE, 4)));
@@ -164,27 +174,29 @@ public class COERecipes extends FabricRecipeProvider {
 		return new ResourceLocation(CreateOreExcavation.MODID, name);
 	}
 
-	protected static void netheriteSmithingM(Consumer<FinishedRecipe> pFinishedRecipeConsumer, Item pIngredientItem, Item pResultItem) {
-		UpgradeRecipeBuilder.smithing(Ingredient.of(pIngredientItem), Ingredient.of(Items.NETHERITE_INGOT), pResultItem).unlocks("has_netherite_ingot", has(Items.NETHERITE_INGOT)).save(pFinishedRecipeConsumer, i(getItemName(pResultItem) + "_smithing"));
-	}
-
 	@SuppressWarnings("unchecked")
 	public static interface AbstractExcavatingBuilder<T extends AbstractExcavatingBuilder<T>> {
 
-		public default void init(int weight, int ticks, Component name) {
-			self().weight = weight;
+		public default void init(int ticks, Component name, int spacing, int separation) {
 			self().ticks = ticks;
-			self().veinName = name;
 			self().drill = Ingredient.of(CreateOreExcavation.DRILL_TAG);
 			self().stressMul = 256;
-			self().finite = ThreeState.DEFAULT;
-			self().amountMultiplierMin = 1;
-			self().amountMultiplierMax = 2;
+			initVein(ticks, name, spacing, separation);
+		}
+
+		public default void initVein(int ticks, Component name, int spacing, int separation) {
+			vein().veinName = name;
+			vein().finite = ThreeState.DEFAULT;
+			vein().amountMultiplierMin = 1;
+			vein().amountMultiplierMax = 2;
+			vein().placement = new RandomSpreadStructurePlacement(spacing / 8, separation / 16, RandomSpreadType.LINEAR, seedRandom.nextInt(Integer.MAX_VALUE));
 		}
 
 		public default ExcavatingRecipe self() {
 			return (ExcavatingRecipe) this;
 		}
+
+		public VeinRecipe vein();
 
 		public default T setDrill(Ingredient drill) {
 			self().drill = drill;
@@ -197,49 +209,65 @@ public class COERecipes extends FabricRecipeProvider {
 		}
 
 		public default T setBiomeWhitelist(TagKey<Biome> tag) {
-			self().biomeWhitelist = tag;
+			vein().biomeWhitelist = tag;
 			return (T) this;
 		}
 
 		public default T setBiomeBlacklist(TagKey<Biome> tag) {
-			self().biomeBlacklist = tag;
+			vein().biomeBlacklist = tag;
 			return (T) this;
 		}
 
 		public default T veinSize(float min, float max) {
-			self().amountMultiplierMin = min;
-			self().amountMultiplierMax = max;
+			vein().amountMultiplierMin = min;
+			vein().amountMultiplierMax = max;
 			return (T) this;
 		}
 
 		public default T setFinite(ThreeState finite) {
-			self().finite = finite;
+			vein().finite = finite;
+			return (T) this;
+		}
+
+		public default T setPriority(int priority) {
+			vein().priority = priority;
 			return (T) this;
 		}
 
 		public default void save(String name, Consumer<FinishedRecipe> consumer) {
+			ResourceLocation vein = i(vein().getGroup() + "/" + name);
+			self().veinId = vein;
 			consumer.accept(new Result(i(self().getGroup() + "/" + name), self().serializer, json -> {
 				new ExcavatingRecipe.Serializer<>(null, null).toJson(self(), json);
+			}));
+			consumer.accept(new Result(vein, vein().serializer, json -> {
+				new VeinRecipe.Serializer<>(null, null).toJson(vein(), json);
 			}));
 		}
 	}
 
 	public static class DrillingBuilder extends DrillingRecipe implements AbstractExcavatingBuilder<DrillingBuilder> {
+		private VeinRecipe vein;
 
-		public DrillingBuilder(ProcessingOutput output, int weight, int ticks, Component name) {
+		public DrillingBuilder(ProcessingOutput output, int ticks, Component name, int spacing, int separation) {
 			super(null, null, CreateOreExcavation.DRILLING_RECIPES.getSerializer());
-			init(weight, ticks, name);
+			init(ticks, name, spacing, separation);
 			this.output = NonNullList.create();
 			this.output.add(output);
 			this.drillingFluid = FluidIngredient.EMPTY;
+			vein.icon = output.getStack();
 		}
 
-		public DrillingBuilder(ItemStack output, int weight, int ticks) {
-			this(new ProcessingOutput(output, 1F), weight, ticks, output.getHoverName());
+		public DrillingBuilder(ItemStack output, float chance, int ticks, int spacing, int separation) {
+			this(new ProcessingOutput(output, chance), ticks, output.getHoverName(), spacing, separation);
 		}
 
-		public DrillingBuilder(ItemLike output, int weight, int ticks) {
-			this(new ItemStack(output), weight, ticks);
+		public DrillingBuilder(ItemStack output, int ticks, int spacing, int separation) {
+			this(new ProcessingOutput(output, 1F), ticks, output.getHoverName(), spacing, separation);
+		}
+
+		public DrillingBuilder(ItemLike output, int ticks, int spacing, int separation) {
+			this(new ItemStack(output), ticks, spacing, separation);
 		}
 
 		public DrillingBuilder setDrillingFluid(FluidIngredient drillingFluid) {
@@ -271,18 +299,42 @@ public class COERecipes extends FabricRecipeProvider {
 			addOutput(new ItemStack(output), chance);
 			return this;
 		}
+
+		@Override
+		public VeinRecipe vein() {
+			return vein;
+		}
+
+		@Override
+		public void initVein(int ticks, Component name, int spacing, int separation) {
+			vein = new VeinRecipe(null, null, CreateOreExcavation.VEIN_RECIPES.getSerializer());
+			AbstractExcavatingBuilder.super.initVein(ticks, name, spacing, separation);
+		}
 	}
 
 	public static class ExtractorBuilder extends ExtractorRecipe implements AbstractExcavatingBuilder<ExtractorBuilder> {
+		private VeinRecipe vein;
 
-		public ExtractorBuilder(FluidStack output, int weight, int ticks) {
-			this(output, weight, ticks, output.getDisplayName());
+		public ExtractorBuilder(FluidStack output, int ticks, int spacing, int separation) {
+			this(output, ticks, output.getDisplayName(), spacing, separation);
 		}
 
-		public ExtractorBuilder(FluidStack output, int weight, int ticks, Component name) {
+		public ExtractorBuilder(FluidStack output, int ticks, Component name, int spacing, int separation) {
 			super(null, null, CreateOreExcavation.EXTRACTING_RECIPES.getSerializer());
-			init(weight, ticks, name);
+			init(ticks, name, spacing, separation);
 			this.output = output;
+			vein.icon = new ItemStack(output.getFluid().getBucket());
+		}
+
+		@Override
+		public void initVein(int ticks, Component name, int spacing, int separation) {
+			vein = new VeinRecipe(null, null, CreateOreExcavation.VEIN_RECIPES.getSerializer());
+			AbstractExcavatingBuilder.super.initVein(ticks, name, spacing, separation);
+		}
+
+		@Override
+		public VeinRecipe vein() {
+			return vein;
 		}
 	}
 

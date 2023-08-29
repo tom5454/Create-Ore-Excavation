@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "group": "create",
   "key": {
     "a": {
@@ -22,5 +23,6 @@
   ],
   "result": {
     "item": "createoreexcavation:vein_finder"
-  }
+  },
+  "show_notification": true
 }

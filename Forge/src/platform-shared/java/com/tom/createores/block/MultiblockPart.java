@@ -17,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
@@ -33,7 +34,7 @@ public interface MultiblockPart extends IWrenchable {
 	}
 
 	public static NonNullUnaryOperator<BlockBehaviour.Properties> propsGhost() {
-		return props().andThen(p -> p.noLootTable());
+		return props().andThen(p -> p.noLootTable().pushReaction(PushReaction.BLOCK));
 	}
 
 	InteractionResult onActivate(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand,

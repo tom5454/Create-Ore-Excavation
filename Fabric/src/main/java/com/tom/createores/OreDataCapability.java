@@ -15,9 +15,8 @@ import com.tom.chunkstorage.api.ChunkStorageApi;
 import com.tom.chunkstorage.api.DataObject;
 import com.tom.chunkstorage.api.DataObjectKey;
 import com.tom.createores.block.entity.IDrill;
-import com.tom.createores.recipe.IRecipe;
-import com.tom.createores.recipe.IRecipe.IResourceRecipe;
-import com.tom.createores.recipe.IRecipe.ThreeState;
+import com.tom.createores.recipe.VeinRecipe;
+import com.tom.createores.util.ThreeState;
 
 public class OreDataCapability {
 	private static final DataObjectKey<OreData> KEY = ChunkStorageApi.registerObjectFactory(new ResourceLocation(CreateOreExcavation.MODID, "ore_vein_data"), OreData::new);
@@ -61,18 +60,18 @@ public class OreDataCapability {
 			return recipe;
 		}
 
-		public IRecipe getRecipe(RecipeManager mngr) {
-			return mngr.byKey(recipe).filter(r -> r instanceof IRecipe).map(r -> (IRecipe) r).orElse(null);
+		public VeinRecipe getRecipe(RecipeManager mngr) {
+			return mngr.byKey(recipe).filter(r -> r instanceof VeinRecipe).map(r -> (VeinRecipe) r).orElse(null);
 		}
 
 		public boolean isLoaded() {
 			return loaded;
 		}
 
-		public long getResourcesRemaining(IRecipe r) {
-			if(r instanceof IResourceRecipe rr && rr.isFinite() != ThreeState.NEVER) {
-				if(rr.isFinite() == ThreeState.DEFAULT && Config.defaultInfinite)return 0L;
-				double mul = (rr.getMaxAmount() - rr.getMinAmount()) * randomMul + rr.getMinAmount();
+		public long getResourcesRemaining(VeinRecipe r) {
+			if(r.isFinite() != ThreeState.NEVER) {
+				if(r.isFinite() == ThreeState.DEFAULT && Config.defaultInfinite)return 0L;
+				double mul = (r.getMaxAmount() - r.getMinAmount()) * randomMul + r.getMinAmount();
 				long am = Math.round(mul * Config.finiteAmountBase);
 				if(extractedAmount >= am)return -1L;
 				return am - extractedAmount;
@@ -118,10 +117,10 @@ public class OreDataCapability {
 		if(chunk.getLevel().isClientSide)throw new RuntimeException("Ore Data accessed from client");
 		OreData data = ChunkStorageApi.getOrCreateFromChunk(chunk, KEY);
 		if(data != null && !data.loaded) {
-			RandomSource rng = OreVeinGenerator.rngFromChunk(chunk);
-			IRecipe r = OreVeinGenerator.pick(chunk, rng);
+			VeinRecipe r = OreVeinGenerator.pick(chunk);
 			if(r != null) {
-				data.recipe = r.getRecipeId();
+				RandomSource rng = OreVeinGenerator.rngFromChunk(chunk);
+				data.recipe = r.getId();
 				data.randomMul = rng.nextFloat();
 			}
 			data.loaded = true;

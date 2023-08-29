@@ -16,6 +16,7 @@ import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.Registration;
 import com.tom.createores.recipe.DrillingRecipe;
 import com.tom.createores.recipe.ExtractorRecipe;
+import com.tom.createores.recipe.VeinRecipe;
 
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
@@ -28,20 +29,28 @@ public class EMIPlugin implements EmiPlugin {
 
 	public static final EmiRecipeCategory
 	DRILLING = register("drilling", DoubleItemIcon.of(Registration.DRILL_BLOCK.get(), Registration.NORMAL_DRILL_ITEM.get())),
-	EXTRACTING = register("extracting", DoubleItemIcon.of(Registration.EXTRACTOR_BLOCK.get(), Items.BUCKET));
+	EXTRACTING = register("extracting", DoubleItemIcon.of(Registration.EXTRACTOR_BLOCK.get(), Items.BUCKET)),
+	VEINS = register("veins", EmiStack.of(Registration.NORMAL_DRILL_ITEM.get()));
 
 	@Override
 	public void register(EmiRegistry registry) {
+		registry.addIngredientSerializer(VeinEmiStack.class, new VeinEmiStack.Serializer());
+
 		ALL.forEach((id, category) -> {
 			registry.addCategory(category);
 		});
 
 		registry.addWorkstation(DRILLING, EmiStack.of(Registration.DRILL_BLOCK.get()));
 		registry.addWorkstation(EXTRACTING, EmiStack.of(Registration.EXTRACTOR_BLOCK.get()));
+		registry.addWorkstation(VEINS, EmiStack.of(Registration.VEIN_FINDER_ITEM.get()));
 
 		consumeAllRecipes(r -> {
 			if(r instanceof ExtractorRecipe e)registry.addRecipe(new ExtractingEmiRecipe(e));
 			else if(r instanceof DrillingRecipe e)registry.addRecipe(new DrillingEmiRecipe(e));
+			else if(r instanceof VeinRecipe e) {
+				registry.addRecipe(new VeinEmiRecipe(e));
+				registry.addEmiStack(new VeinEmiStack(e));
+			}
 		});
 	}
 

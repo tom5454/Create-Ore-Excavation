@@ -222,6 +222,7 @@ public class Registration {
 		add("tooltip.coe.infiniteVeins", "Infinite veins");
 		add("tooltip.coe.page", "Page: %s/%s");
 		add("ore.coe.hardenedDiamond", "Hardened Diamond");
+		add("tag.item.createoreexcavation.drills", "All Drills");
 	}
 
 	public static void add(String key, String value) {

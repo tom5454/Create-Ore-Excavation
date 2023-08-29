@@ -9,11 +9,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 
+import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.recipe.DrillingRecipe;
 import com.tom.createores.util.IOBlockType;
 import com.tom.createores.util.QueueInventory;
@@ -85,11 +87,6 @@ public class DrillBlockEntity extends ExcavatingBlockEntity<DrillingRecipe> {
 	}
 
 	@Override
-	protected boolean instanceofCheck(Object rec) {
-		return rec instanceof DrillingRecipe;
-	}
-
-	@Override
 	protected boolean canExtract() {
 		return inventory.hasSpace() && current.getDrillingFluid().getRequiredAmount() == 0 ||
 				(current.getDrillingFluid().test(fluidTank.getFluid()) &&
@@ -105,5 +102,10 @@ public class DrillBlockEntity extends ExcavatingBlockEntity<DrillingRecipe> {
 				t.commit();
 			}
 		}
+	}
+
+	@Override
+	protected RecipeType<DrillingRecipe> getRecipeType() {
+		return CreateOreExcavation.DRILLING_RECIPES.getRecipeType();
 	}
 }

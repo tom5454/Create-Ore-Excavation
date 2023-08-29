@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "group": "create",
   "key": {
     "b": {
@@ -19,5 +20,6 @@
   ],
   "result": {
     "item": "createoreexcavation:diamond_drill"
-  }
+  },
+  "show_notification": true
 }

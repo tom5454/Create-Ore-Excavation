@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:ender_eye"
-            ]
+            "tag": "c:diamonds"
           }
         ]
       },
@@ -15,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "createoreexcavation:vein_finder"
+        "recipe": "createoreexcavation:diamond_drill"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +26,8 @@
   ],
   "rewards": {
     "recipes": [
-      "createoreexcavation:vein_finder"
+      "createoreexcavation:diamond_drill"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -22,6 +22,8 @@ import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStruct
 import com.mojang.datafixers.util.Pair;
 
 import com.tom.createores.CreateOreExcavation;
+import com.tom.createores.OreDataCapability;
+import com.tom.createores.OreDataCapability.OreData;
 import com.tom.createores.recipe.VeinRecipe;
 
 public class RandomSpreadGenerator {
@@ -94,6 +96,11 @@ public class RandomSpreadGenerator {
 				if(pos != null) {
 					float d = distance2d(pos, pPos);
 					if(d < dist) {
+						if (level.isLoaded(pos)) {
+							OreData data = OreDataCapability.getData(level.getChunkAt(pos));
+							r = data.getRecipe(level.getRecipeManager());
+							if (r == null)continue;
+						}
 						found = Pair.of(pos, r);
 						dist = d;
 					}

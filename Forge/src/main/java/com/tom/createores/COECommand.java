@@ -76,6 +76,16 @@ public class COECommand {
 								)
 						)
 				);
+		l.then(Commands.literal("removevein").requires(s -> s.hasPermission(2)).
+				then(Commands.argument("pos", BlockPosArgument.blockPos()).
+						executes(c -> {
+							BlockPos p = BlockPosArgument.getLoadedBlockPos(c, "pos");
+							setVein(c.getSource(), p, null, 0F);
+							c.getSource().sendSuccess(() -> Component.translatable("command.coe.setvein.success", Component.translatable("chat.coe.veinFinder.nothing")), true);
+							return 1;
+						})
+						)
+				);
 		l.then(Commands.literal("locate").requires(s -> s.hasPermission(2)).
 				then(Commands.argument("recipe", ResourceLocationArgument.id()).suggests(ALL_RECIPES).
 						executes(c -> {

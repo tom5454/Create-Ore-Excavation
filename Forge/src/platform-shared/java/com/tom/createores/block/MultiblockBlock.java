@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.Property;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -89,11 +88,6 @@ public class MultiblockBlock extends Block implements MultiblockGhostPart, IBE<M
 	@Override
 	public Direction getParentDir(BlockState state) {
 		return state.getValue(FACING);
-	}
-
-	@Override
-	public PushReaction getPistonPushReaction(BlockState pState) {
-		return PushReaction.BLOCK;
 	}
 
 	@Override

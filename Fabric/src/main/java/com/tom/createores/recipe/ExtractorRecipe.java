@@ -30,12 +30,12 @@ public class ExtractorRecipe extends ExcavatingRecipe {
 
 	@Override
 	protected void fromNetwork(FriendlyByteBuf buffer) {
-		output = FluidStack.fromBuffer(buffer);
+		output = FluidStack.readFromPacket(buffer);
 	}
 
 	@Override
 	protected void toNetwork(FriendlyByteBuf buffer) {
-		output.toBuffer(buffer);
+		output.writeToPacket(buffer);
 	}
 
 	public FluidStack getOutput() {
