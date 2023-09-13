@@ -1,11 +1,12 @@
 {
 	"homepage": "https://www.curseforge.com/minecraft/mc-mods/create-ore-excavation",
 	"promos": {
-		"1.20.1-latest": "1.3.1",
+		"1.20.1-latest": "1.4.0",
 		"1.19.2-latest": "1.2.2",
 		"1.18.2-latest": "1.1.1"
 	},
 	"1.20.1": {
+		"1.4.0": "Added Korean, Italian and Portuguese translations\nAdded the drilling fluid option for fluid excavators\nAdded KubeJS support",
 		"1.3.1": "Added Russian translation\nAdded /coe removevein subcommand\nFixed ghost ore veins after vein changing vein recipes",
 		"1.3.0": "1.20 port\nImproved Ore Vein Generation and Ore Vein Finder\nAdded /coe locate <ore vein id>"
 	},

@@ -163,7 +163,7 @@ dependencies {
 	modImplementation("com.jozufozu.flywheel:flywheel-fabric-$flywheel_minecraft_version:$flywheel_version") {
 		exclude(group: "net.fabricmc.fabric")
 	}
-	//modImplementation("dev.latvian.mods:kubejs-fabric:1902.6.1-build.311")
+	modImplementation("dev.latvian.mods:kubejs-fabric:2001.6.3-build.45")
 	implementation "com.google.code.findbugs:jsr305:3.0.2"
 	
 	switch (recipe_viewer.toLowerCase(Locale.ROOT)) {

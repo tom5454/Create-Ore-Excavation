@@ -9,7 +9,6 @@ import net.minecraft.world.item.ItemStack;
 import com.simibubi.create.compat.jei.DoubleItemIcon;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
-import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.simibubi.create.foundation.ponder.ui.LayoutHelper;
 
 import com.tom.createores.Registration;
@@ -40,14 +39,6 @@ public class DrillingCategory extends ExcavatingCategory<DrillingRecipe> {
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, DrillingRecipe recipe, IFocusGroup focuses) {
 		super.setRecipe(builder, recipe, focuses);
-
-		if(recipe.getDrillingFluid() != FluidIngredient.EMPTY) {
-			builder
-			.addSlot(RecipeIngredientRole.INPUT, 51 + 18, 3)
-			.setBackground(CreateRecipeCategory.getRenderedSlot(), -1, -1)
-			.addIngredients(JeiPlatform.FLUID_STACK, JeiPlatform.wrapFluid(CreateRecipeCategory.withImprovedVisibility(recipe.getDrillingFluid().getMatchingFluidStacks())))
-			.addTooltipCallback(CreateRecipeCategory.addFluidTooltip(recipe.getDrillingFluid().getRequiredAmount()));
-		}
 
 		int xOffset = getBackground().getWidth() / 2;
 		int yOffset = 86;

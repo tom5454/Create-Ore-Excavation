@@ -18,7 +18,7 @@ import com.simibubi.create.foundation.gui.element.GuiGameElement;
 
 import com.google.common.collect.Lists;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonObject;
 
 import com.tom.createores.Registration;
 import com.tom.createores.recipe.VeinRecipe;
@@ -72,14 +72,17 @@ public class VeinEmiStack extends EmiStack {
 		@Override
 		public EmiIngredient deserialize(JsonElement element) {
 			RecipeManager mngr = Minecraft.getInstance().getConnection().getRecipeManager();
-			ResourceLocation r = ResourceLocation.tryParse(element.getAsString());
+			ResourceLocation r = ResourceLocation.tryParse(element.getAsJsonObject().get("value").getAsString());
 			VeinRecipe rec = mngr.byKey(r).map(v -> v instanceof VeinRecipe e ? e : null).orElse(null);
 			return rec != null ? new VeinEmiStack(rec) : null;
 		}
 
 		@Override
 		public JsonElement serialize(VeinEmiStack stack) {
-			return new JsonPrimitive(stack.recipe.getId().toString());
+			JsonObject json = new JsonObject();
+			json.addProperty("type", "coe:vein");
+			json.addProperty("value", stack.recipe.getId().toString());
+			return json;
 		}
 	}
 

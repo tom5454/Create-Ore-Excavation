@@ -11,6 +11,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
+import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.simibubi.create.foundation.item.SmartInventory;
 
 import com.google.gson.JsonObject;
@@ -24,6 +25,7 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory> {
 	public ResourceLocation veinId;
 	public Ingredient drill;
 	public int priority, ticks, stressMul;
+	public FluidIngredient drillingFluid;
 	protected boolean isNet;
 
 	public ExcavatingRecipe(ResourceLocation id, RecipeType<?> type, RecipeSerializer<?> serializer) {
@@ -82,6 +84,10 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory> {
 		return stressMul;
 	}
 
+	public FluidIngredient getDrillingFluid() {
+		return drillingFluid;
+	}
+
 	protected abstract void fromJson(JsonObject json);
 	protected abstract void toJson(JsonObject json);
 	protected abstract void fromNetwork(FriendlyByteBuf buffer);
@@ -104,6 +110,9 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory> {
 			r.priority = GsonHelper.getAsInt(json, "priority", 0);
 			r.stressMul = GsonHelper.getAsInt(json, "stress", 256);
 			r.veinId = new ResourceLocation(GsonHelper.getAsString(json, "vein_id"));
+			r.drillingFluid = FluidIngredient.EMPTY;
+			if (GsonHelper.isValidNode(json, "fluid"))
+				r.drillingFluid = FluidIngredient.deserialize(json.get("fluid"));
 			r.fromJson(json);
 			return r;
 		}
@@ -114,6 +123,8 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory> {
 			json.addProperty("stress", recipe.stressMul);
 			json.addProperty("priority", recipe.priority);
 			json.addProperty("vein_id", recipe.veinId.toString());
+			if(recipe.drillingFluid != FluidIngredient.EMPTY)
+				json.add("fluid", recipe.drillingFluid.serialize());
 			recipe.toJson(json);
 		}
 
@@ -126,6 +137,10 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory> {
 			r.priority = buffer.readVarInt();
 			r.veinId = buffer.readResourceLocation();
 			r.fromNetwork(buffer);
+			if(buffer.readBoolean())
+				r.drillingFluid = FluidIngredient.read(buffer);
+			else
+				r.drillingFluid = FluidIngredient.EMPTY;
 			r.isNet = true;
 			return r;
 		}
@@ -138,6 +153,12 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory> {
 			buffer.writeVarInt(recipe.priority);
 			buffer.writeResourceLocation(recipe.veinId);
 			recipe.toNetwork(buffer);
+			if(recipe.drillingFluid.getRequiredAmount() == 0) {
+				buffer.writeBoolean(false);
+			} else {
+				buffer.writeBoolean(true);
+				recipe.drillingFluid.write(buffer);
+			}
 		}
 	}
 

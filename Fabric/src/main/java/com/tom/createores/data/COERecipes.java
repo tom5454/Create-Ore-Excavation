@@ -181,6 +181,7 @@ public class COERecipes extends FabricRecipeProvider {
 			self().ticks = ticks;
 			self().drill = Ingredient.of(CreateOreExcavation.DRILL_TAG);
 			self().stressMul = 256;
+			self().drillingFluid = FluidIngredient.EMPTY;
 			initVein(ticks, name, spacing, separation);
 		}
 
@@ -254,7 +255,6 @@ public class COERecipes extends FabricRecipeProvider {
 			init(ticks, name, spacing, separation);
 			this.output = NonNullList.create();
 			this.output.add(output);
-			this.drillingFluid = FluidIngredient.EMPTY;
 			vein.icon = output.getStack();
 		}
 

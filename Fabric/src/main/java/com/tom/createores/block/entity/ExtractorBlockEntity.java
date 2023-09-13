@@ -21,47 +21,50 @@ import com.tom.createores.util.IOBlockType;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 
-public class ExtractorBlockEntity extends ExcavatingBlockEntity<ExtractorRecipe> {
-	private Tank fluidTank;
+public class ExtractorBlockEntity extends ExcavatingBlockEntityImpl<ExtractorRecipe> {
+	private Tank fluidTankOut;
 
 	public ExtractorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
-		fluidTank = new Tank();
+		fluidTankOut = new Tank();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> Storage<T> getCaps(IOBlockType type) {
-		if(type == IOBlockType.FLUID_OUT)return (Storage<T>) fluidTank;
+		if(type == IOBlockType.FLUID_IN)return (Storage<T>) fluidTank;
+		if(type == IOBlockType.FLUID_OUT)return (Storage<T>) fluidTankOut;
 		return null;
 	}
 
 	@Override
 	protected boolean canExtract() {
-		return fluidTank.fillInternal(current.getOutput(), true) == current.getOutput().getAmount();
+		return super.canExtract() && fluidTankOut.fillInternal(current.getOutput(), true) == current.getOutput().getAmount();
 	}
 
 	@Override
 	protected void onFinished() {
-		fluidTank.fillInternal(current.getOutput(), false);
+		fluidTankOut.fillInternal(current.getOutput(), false);
+		super.onFinished();
 	}
 
 	@Override
 	protected void read(CompoundTag tag, boolean clientPacket) {
 		super.read(tag, clientPacket);
-		fluidTank.readFromNBT(tag.getCompound("tank"));
+		fluidTankOut.readFromNBT(tag.getCompound("tank"));
 	}
 
 	@Override
 	protected void write(CompoundTag tag, boolean clientPacket) {
 		super.write(tag, clientPacket);
-		tag.put("tank", fluidTank.writeToNBT(new CompoundTag()));
+		tag.put("tank", fluidTankOut.writeToNBT(new CompoundTag()));
 	}
 
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-		containedFluidTooltip(tooltip, isPlayerSneaking, fluidTank);
+		tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.extractor.output")));
+		containedFluidTooltip(tooltip, isPlayerSneaking, fluidTankOut);
 		return true;
 	}
 
@@ -95,5 +98,10 @@ public class ExtractorBlockEntity extends ExcavatingBlockEntity<ExtractorRecipe>
 	@Override
 	protected RecipeType<ExtractorRecipe> getRecipeType() {
 		return CreateOreExcavation.EXTRACTING_RECIPES.getRecipeType();
+	}
+
+	@Override
+	protected String getTankInName() {
+		return "tankIn";
 	}
 }

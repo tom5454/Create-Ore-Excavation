@@ -221,9 +221,9 @@ dependencies {
   	implementation fg.deobf("local:create:1.20.1-0.5.1.d")
   	implementation fg.deobf("local:flywheel-forge:1.20-0.6.9-4")
   	
-  	/*implementation fg.deobf("dev.latvian.mods:kubejs-forge:1902.6.0-build.128")
-	implementation fg.deobf("dev.latvian.mods:rhino-forge:1902.2.2-build.264")
-	implementation fg.deobf("dev.architectury:architectury-forge:6.3.56")*/
+  	implementation fg.deobf("dev.latvian.mods:kubejs-forge:2001.6.3-build.45")
+	implementation fg.deobf("dev.latvian.mods:rhino-forge:2001.2.2-build.6")
+	implementation fg.deobf("dev.architectury:architectury-forge:9.1.12")
 	
 	/*if(useLib) {
     	compileOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-api-forge:9.1.587")

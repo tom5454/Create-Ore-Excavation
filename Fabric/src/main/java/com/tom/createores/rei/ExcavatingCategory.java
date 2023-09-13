@@ -12,6 +12,7 @@ import net.minecraft.world.item.crafting.RecipeManager;
 
 import com.simibubi.create.compat.rei.category.WidgetUtil;
 import com.simibubi.create.compat.rei.display.CreateDisplay;
+import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 
 import com.tom.createores.recipe.ExcavatingRecipe;
@@ -47,6 +48,10 @@ public abstract class ExcavatingCategory<R extends ExcavatingRecipe> implements 
 		widgets.add(Widgets.createRecipeBase(bounds));
 		widgets.add(Widgets.createSlot(new Point(origin.x + 51, origin.y + 3)).disableBackground().markInput().entries(EntryIngredients.ofIngredient(recipe.drill)));
 		widgets.add(WidgetUtil.textured(AllGuiTextures.JEI_SLOT, origin.x + 50, origin.y + 2));
+		if(recipe.getDrillingFluid() != FluidIngredient.EMPTY) {
+			widgets.add(WidgetUtil.textured(AllGuiTextures.JEI_SLOT, origin.x + 50 + 18, origin.y + 2));
+			widgets.add(Widgets.createSlot(new Point(origin.x + 51 + 18, origin.y + 3)).disableBackground().markInput().entries(EntryIngredients.of(ReiPlatform.wrapFluid(recipe.getDrillingFluid().getMatchingFluidStacks().get(0)))));
+		}
 		setupDisplay0(display, bounds, widgets);
 		widgets.add(new WidgetWithBounds() {
 

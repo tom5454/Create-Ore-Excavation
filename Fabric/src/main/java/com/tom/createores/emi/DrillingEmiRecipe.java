@@ -7,7 +7,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
-import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.simibubi.create.foundation.ponder.ui.LayoutHelper;
 
 import com.tom.createores.CreateOreExcavation;
@@ -23,17 +22,12 @@ public class DrillingEmiRecipe extends ExcavatingEmiRecipe<DrillingRecipe> {
 		super(EMIPlugin.DRILLING, recipe);
 		ResourceLocation rid = recipe.getId();
 		this.id = new ResourceLocation("emi", CreateOreExcavation.MODID + "/drilling/" + rid.getNamespace() + "/" + rid.getPath());
-		if(recipe.drillingFluid != FluidIngredient.EMPTY)
-			input.add(fluidStack(recipe.drillingFluid.getMatchingFluidStacks().get(0)));
 		output = recipe.output.stream().map(ProcessingOutput::getStack).map(EmiStack::of).toList();
 	}
 
 	@Override
 	public void addWidgets(WidgetHolder widgets) {
 		super.addWidgets(widgets);
-
-		if(recipe.drillingFluid != FluidIngredient.EMPTY)
-			addSlot(widgets, input.get(2), 29 + 18, 6);
 
 		int xOffset = 134 / 2;
 		int yOffset = 86;

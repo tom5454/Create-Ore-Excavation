@@ -211,6 +211,8 @@ public class Registration {
 		add("info.coe.drill.err_too_many_excavators", "Too many vein extractors");
 		add("info.coe.drill.err_no_recipe", "Couldn't find a valid recipe for this vein");
 		add("info.coe.drill.noGround", "The machine must be on solid ground");
+		add("info.coe.drill.fluidInfo", "Drilling Fluid:");
+		add("info.coe.extractor.output", "Extractor Output:");
 		add("jei.coe.recipe.drilling", "Drilling Machine");
 		add("jei.coe.recipe.extracting", "Fluid Extractor");
 		add("jei.coe.recipe.veins", "Ore Veins");

@@ -7,6 +7,7 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.state.BlockState;
 
 import com.simibubi.create.compat.emi.recipes.CreateEmiRecipe;
+import com.simibubi.create.foundation.fluid.FluidIngredient;
 
 import com.tom.createores.recipe.ExcavatingRecipe;
 import com.tom.createores.recipe.VeinRecipe;
@@ -25,6 +26,8 @@ public abstract class ExcavatingEmiRecipe<T extends ExcavatingRecipe> extends Cr
 		mngr.byKey(recipe.veinId).ifPresent(rec -> {
 			if(rec instanceof VeinRecipe r)input.add(new VeinEmiStack(r));
 		});
+		if(recipe.drillingFluid != FluidIngredient.EMPTY)
+			input.add(fluidStack(recipe.drillingFluid.getMatchingFluidStacks().get(0)));
 	}
 
 	@Override
@@ -40,6 +43,9 @@ public abstract class ExcavatingEmiRecipe<T extends ExcavatingRecipe> extends Cr
 			if(rec instanceof VeinRecipe r)
 				addSlot(widgets, new VeinEmiStack(r), 100, 3);
 		});
+
+		if(recipe.drillingFluid != FluidIngredient.EMPTY)
+			addSlot(widgets, input.get(2), 29 + 18, 6);
 	}
 
 	protected abstract BlockState getBlock();

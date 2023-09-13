@@ -11,7 +11,6 @@ import com.simibubi.create.compat.rei.DoubleItemIcon;
 import com.simibubi.create.compat.rei.category.WidgetUtil;
 import com.simibubi.create.compat.rei.display.CreateDisplay;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
-import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.ponder.ui.LayoutHelper;
 import com.simibubi.create.foundation.utility.Lang;
@@ -26,7 +25,6 @@ import me.shedaniel.rei.api.client.gui.widgets.Widgets;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
-import me.shedaniel.rei.api.common.util.EntryIngredients;
 
 public class DrillingCategory extends ExcavatingCategory<DrillingRecipe> {
 
@@ -48,10 +46,6 @@ public class DrillingCategory extends ExcavatingCategory<DrillingRecipe> {
 	public void setupDisplay0(CreateDisplay<DrillingRecipe> display, Rectangle bounds, List<Widget> widgets) {
 		DrillingRecipe recipe = display.getRecipe();
 		Point origin = new Point(bounds.getX(), bounds.getY() + 4);
-		if(recipe.getDrillingFluid() != FluidIngredient.EMPTY) {
-			widgets.add(WidgetUtil.textured(AllGuiTextures.JEI_SLOT, origin.x + 50 + 18, origin.y + 2));
-			widgets.add(Widgets.createSlot(new Point(origin.x + 51 + 18, origin.y + 3)).disableBackground().markInput().entries(EntryIngredients.of(ReiPlatform.wrapFluid(recipe.getDrillingFluid().getMatchingFluidStacks().get(0)))));
-		}
 		int xOffset = bounds.getWidth() / 2;
 		int yOffset = 86;
 

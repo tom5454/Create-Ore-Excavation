@@ -20,57 +20,59 @@ import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.recipe.ExtractorRecipe;
 import com.tom.createores.util.IOBlockType;
 
-public class ExtractorBlockEntity extends ExcavatingBlockEntity<ExtractorRecipe> {
-	private Tank fluidTank;
-	private LazyOptional<FluidTank> tankCap;
+public class ExtractorBlockEntity extends ExcavatingBlockEntityImpl<ExtractorRecipe> {
+	private Tank fluidTankOut;
+	private LazyOptional<FluidTank> tankCapOut;
 
 	public ExtractorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
-		fluidTank = new Tank();
-		tankCap = LazyOptional.of(() -> fluidTank);
+		fluidTankOut = new Tank();
+		tankCapOut = LazyOptional.of(() -> fluidTankOut);
 	}
 
 	@Override
 	public <T> LazyOptional<T> getCaps(Capability<T> cap, IOBlockType type) {
 		if(type == IOBlockType.FLUID_OUT && cap == ForgeCapabilities.FLUID_HANDLER) {
-			return tankCap.cast();
+			return tankCapOut.cast();
 		}
-		return LazyOptional.empty();
+		return super.getCaps(cap, type);
 	}
 
 	@Override
 	protected boolean canExtract() {
-		return fluidTank.fillInternal(current.getOutput(), FluidAction.SIMULATE) == current.getOutput().getAmount();
+		return super.canExtract() && fluidTankOut.fillInternal(current.getOutput(), FluidAction.SIMULATE) == current.getOutput().getAmount();
 	}
 
 	@Override
 	protected void onFinished() {
-		fluidTank.fillInternal(current.getOutput(), FluidAction.EXECUTE);
+		fluidTankOut.fillInternal(current.getOutput(), FluidAction.EXECUTE);
+		super.onFinished();
 	}
 
 	@Override
 	protected void read(CompoundTag tag, boolean clientPacket) {
 		super.read(tag, clientPacket);
-		fluidTank.readFromNBT(tag.getCompound("tank"));
+		fluidTankOut.readFromNBT(tag.getCompound("tank"));
 	}
 
 	@Override
 	protected void write(CompoundTag tag, boolean clientPacket) {
 		super.write(tag, clientPacket);
-		tag.put("tank", fluidTank.writeToNBT(new CompoundTag()));
+		tag.put("tank", fluidTankOut.writeToNBT(new CompoundTag()));
 	}
 
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-		containedFluidTooltip(tooltip, isPlayerSneaking, tankCap.cast());
+		tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.extractor.output")));
+		containedFluidTooltip(tooltip, isPlayerSneaking, tankCapOut.cast());
 		return true;
 	}
 
 	@Override
 	public void invalidate() {
 		super.invalidate();
-		tankCap.invalidate();
+		tankCapOut.invalidate();
 	}
 
 	private class Tank extends FluidTank {
@@ -97,5 +99,10 @@ public class ExtractorBlockEntity extends ExcavatingBlockEntity<ExtractorRecipe>
 	@Override
 	protected RecipeType<ExtractorRecipe> getRecipeType() {
 		return CreateOreExcavation.EXTRACTING_RECIPES.getRecipeType();
+	}
+
+	@Override
+	protected String getTankInName() {
+		return "tankIn";
 	}
 }

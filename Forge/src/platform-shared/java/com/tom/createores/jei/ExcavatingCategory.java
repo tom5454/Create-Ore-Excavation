@@ -10,6 +10,7 @@ import net.minecraft.world.item.crafting.RecipeManager;
 
 import com.simibubi.create.compat.jei.EmptyBackground;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
+import com.simibubi.create.foundation.fluid.FluidIngredient;
 
 import com.tom.createores.recipe.ExcavatingRecipe;
 import com.tom.createores.recipe.VeinRecipe;
@@ -55,6 +56,14 @@ public abstract class ExcavatingCategory<T extends ExcavatingRecipe> implements 
 				.addSlot(RecipeIngredientRole.CATALYST, 100, 3)
 				.addIngredient(VeinIngredient.VEIN, r);
 		});
+
+		if(recipe.getDrillingFluid() != FluidIngredient.EMPTY) {
+			builder
+			.addSlot(RecipeIngredientRole.INPUT, 51 + 18, 3)
+			.setBackground(CreateRecipeCategory.getRenderedSlot(), -1, -1)
+			.addIngredients(JeiPlatform.FLUID_STACK, JeiPlatform.wrapFluid(CreateRecipeCategory.withImprovedVisibility(recipe.getDrillingFluid().getMatchingFluidStacks())))
+			.addTooltipCallback(CreateRecipeCategory.addFluidTooltip(recipe.getDrillingFluid().getRequiredAmount()));
+		}
 	}
 
 	@Override

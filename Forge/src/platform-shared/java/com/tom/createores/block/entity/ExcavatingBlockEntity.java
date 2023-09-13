@@ -150,6 +150,11 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 						}
 						progress = 0;
 					}
+				} else if(!current.getDrill().test(drillStack)) {
+					R old = current;
+					updateRecipe();
+					if (old != current)
+						progress = 0;
 				}
 			} else if(progress > 10) {
 				progress = 0;

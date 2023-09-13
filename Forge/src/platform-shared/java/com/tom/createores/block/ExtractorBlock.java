@@ -22,7 +22,7 @@ public class ExtractorBlock extends MultiblockController implements IBE<Extracto
 
 	private static final MultiblockPartType[][][] LAYOUT = new MultiblockPartType[][][] {
 		{
-			{BLANK,   BLANK,     BLANK},
+			{BLANK,   FLUID_IN,  BLANK},
 			{KINETIC, BLANK,     BLANK},
 			{BLANK,   FLUID_OUT, BLANK}
 		},
