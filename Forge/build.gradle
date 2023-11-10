@@ -188,6 +188,10 @@ repositories {
             includeGroup "local"
         }
 	}
+	maven {
+        name = "JourneyMap (Public)"
+        url = "https://jm.gserv.me/repository/maven-public/"
+    }
 }
 
 dependencies {
@@ -218,12 +222,14 @@ dependencies {
   	
   	implementation fg.deobf("curse.maven:the-one-probe-245211:4579432")
   	
-  	implementation fg.deobf("local:create:1.20.1-0.5.1.d")
-  	implementation fg.deobf("local:flywheel-forge:1.20-0.6.9-4")
+  	implementation fg.deobf("com.simibubi.create:create-1.20.1:0.5.1.f-26:slim") { transitive = false }
+    implementation fg.deobf("com.jozufozu.flywheel:flywheel-forge-1.20.1:0.6.10-7")
   	
   	implementation fg.deobf("dev.latvian.mods:kubejs-forge:2001.6.3-build.45")
 	implementation fg.deobf("dev.latvian.mods:rhino-forge:2001.2.2-build.6")
 	implementation fg.deobf("dev.architectury:architectury-forge:9.1.12")
+	
+	implementation fg.deobf('curse.maven:journeymap-32274:4841242')
 	
 	/*if(useLib) {
     	compileOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-api-forge:9.1.587")

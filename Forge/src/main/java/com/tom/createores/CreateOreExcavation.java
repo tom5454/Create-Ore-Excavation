@@ -22,6 +22,7 @@ import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -40,6 +41,8 @@ import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 
 import com.tom.createores.client.ClientRegistration;
+import com.tom.createores.jm.JMEventListener;
+import com.tom.createores.network.NetworkHandler;
 import com.tom.createores.recipe.DrillingRecipe;
 import com.tom.createores.recipe.ExcavatingRecipe;
 import com.tom.createores.recipe.ExtractorRecipe;
@@ -51,6 +54,7 @@ public class CreateOreExcavation {
 	public static final Logger LOGGER = LogUtils.getLogger();
 
 	private static CreateRegistrate registrate;
+	public static boolean journeyMap;
 
 	private static final DeferredRegister<MenuType<?>> MENU_TYPE = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MODID);
 	private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZER = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, MODID);
@@ -77,6 +81,8 @@ public class CreateOreExcavation {
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.commonSpec);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.serverSpec);
 		FMLJavaModLoadingContext.get().getModEventBus().register(ForgeConfig.class);
+
+		journeyMap = ModList.get().isLoaded("journeymap");
 
 		// Register ourselves for server and other game events we are interested in
 		MinecraftForge.EVENT_BUS.register(this);
@@ -134,10 +140,13 @@ public class CreateOreExcavation {
 		Registration.postRegister();
 		BlockStressValues.registerProvider(MODID, AllConfigs.server().kinetics.stressValues);
 		COECommand.init();
+		NetworkHandler.init();
 	}
 
 	private void doClientStuff(final FMLClientSetupEvent event) {
 		event.enqueueWork(ClientRegistration::register);
+		if (journeyMap)
+			JMEventListener.register();
 	}
 
 	private void enqueueIMC(final InterModEnqueueEvent event) {

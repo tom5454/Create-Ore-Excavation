@@ -71,6 +71,10 @@ repositories {
             includeGroup "local"
         }
 	}
+	maven {
+        name = "JourneyMap (Public)"
+        url = "https://jm.gserv.me/repository/maven-public/"
+    }
 }
 
 loom {
@@ -173,6 +177,9 @@ dependencies {
         case "disabled": break
         default: println("Unknown recipe viewer specified: $recipe_viewer. Must be JEI, REI, EMI, or disabled.")
     }
+    
+    modApi(group: 'info.journeymap', name: 'journeymap-api', version: '1.20-1.9-fabric-SNAPSHOT', changing: true)
+    modImplementation('curse.maven:journeymap-32274:4841232')
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }

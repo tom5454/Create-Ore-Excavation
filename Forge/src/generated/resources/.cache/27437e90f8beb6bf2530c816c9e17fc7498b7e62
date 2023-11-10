@@ -1,11 +1,11 @@
-// 1.20.1	2023-09-12T18:23:13.327295	Registrate Provider for createoreexcavation [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.20.1	2023-11-10T22:10:34.918081	Registrate Provider for createoreexcavation [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 ab1bbafb4f5b819e8f1742e1ce79d15a4acde589 assets/createoreexcavation/blockstates/drilling_machine.json
 4447c4025e38e242f026b0801fbcf1cb00de9310 assets/createoreexcavation/blockstates/extractor.json
 455904ef454e8e3ad3470132985375d2b5065ac1 assets/createoreexcavation/blockstates/io_block.json
 98e5e9e87e06afb931e7e981a7dfc6b3e6b2c7be assets/createoreexcavation/blockstates/kinetic_input.json
 1fe99c03129c60fc557434997253bfbcfe747119 assets/createoreexcavation/blockstates/multiblock.json
-b723b096aea2703cd16da8cfacb866726e63f3da assets/createoreexcavation/lang/en_ud.json
-ae101f76bd24ad3b0ce137112de5a9bf79b041f4 assets/createoreexcavation/lang/en_us.json
+b2c9f36f3b5633b5c910dff97c69457af22f75a1 assets/createoreexcavation/lang/en_ud.json
+413b7266fc07b8c1900c36ce0358755e19fe8b85 assets/createoreexcavation/lang/en_us.json
 3d3078e7e65efb7e67935c1407c53a79bfe90042 assets/createoreexcavation/models/block/io_block.json
 3d3078e7e65efb7e67935c1407c53a79bfe90042 assets/createoreexcavation/models/block/kinetic_in.json
 3d3078e7e65efb7e67935c1407c53a79bfe90042 assets/createoreexcavation/models/block/multiblock_ghost.json

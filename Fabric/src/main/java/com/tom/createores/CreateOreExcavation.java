@@ -18,6 +18,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 
+import com.tom.createores.network.Packets;
 import com.tom.createores.recipe.DrillingRecipe;
 import com.tom.createores.recipe.ExcavatingRecipe;
 import com.tom.createores.recipe.ExtractorRecipe;
@@ -31,6 +32,7 @@ public class CreateOreExcavation implements ModInitializer {
 	public static final Logger LOGGER = LogUtils.getLogger();
 
 	private static CreateRegistrate registrate;
+	public static boolean journeyMap;
 
 	public static final RecipeTypeGroup<DrillingRecipe> DRILLING_RECIPES = recipe("drilling", DrillingRecipe::new);
 	public static final RecipeTypeGroup<ExtractorRecipe> EXTRACTING_RECIPES = recipe("extracting", ExtractorRecipe::new);
@@ -52,6 +54,7 @@ public class CreateOreExcavation implements ModInitializer {
 			LOGGER.info("Create Ore Excavation config just got changed on the file system!");
 			Config.load(c);
 		});
+		Packets.init();
 
 		Registration.register();
 	}

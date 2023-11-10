@@ -61,7 +61,7 @@ public class OreDataCapability {
 		}
 
 		public VeinRecipe getRecipe(RecipeManager mngr) {
-			return mngr.byKey(recipe).filter(r -> r instanceof VeinRecipe).map(r -> (VeinRecipe) r).orElse(null);
+			return recipe != null ? mngr.byKey(recipe).filter(r -> r instanceof VeinRecipe).map(r -> (VeinRecipe) r).orElse(null) : null;
 		}
 
 		public boolean isLoaded() {

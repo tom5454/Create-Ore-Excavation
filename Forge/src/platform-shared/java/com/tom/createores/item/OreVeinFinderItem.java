@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -23,6 +26,8 @@ import com.tom.createores.Config;
 import com.tom.createores.OreDataCapability;
 import com.tom.createores.OreDataCapability.OreData;
 import com.tom.createores.OreVeinGenerator;
+import com.tom.createores.network.NetworkHandler;
+import com.tom.createores.network.OreVeinInfoPacket;
 import com.tom.createores.recipe.VeinRecipe;
 import com.tom.createores.util.ComponentJoiner;
 import com.tom.createores.util.RandomSpreadGenerator;
@@ -71,6 +76,17 @@ public class OreVeinFinderItem extends Item {
 		else f = nothing;
 		player.displayClientMessage(Component.translatable("chat.coe.veinFinder.found", f), false);
 
+		CompoundTag infoTag = new CompoundTag();
+		ResourceLocation id = found.getRecipeId();
+		if (id != null)infoTag.putString("found", id.toString());
+		infoTag.putInt("x", pos.getX());
+		infoTag.putInt("z", pos.getZ());
+
+		ResourceLocation rl = nearby.stream().map(d -> d.getRecipe(m)).filter(r -> r != null).map(VeinRecipe::getId).findFirst().orElse(null);
+		if (rl != null) {
+			infoTag.putString("nearby", rl.toString());
+		}
+
 		f = nearby.stream().map(d -> d.getRecipe(m)).filter(r -> r != null).map(r -> r.getName()).collect(ComponentJoiner.joining(nothing, comma));
 		player.displayClientMessage(Component.translatable("chat.coe.veinFinder.nearby", f), false);
 
@@ -79,9 +95,12 @@ public class OreVeinFinderItem extends Item {
 			BlockPos at = nearest.getFirst();
 			int i = Math.round(RandomSpreadGenerator.distance2d(at, pos) / Config.veinFinderFar) * Config.veinFinderFar;
 			player.displayClientMessage(Component.translatable("chat.coe.veinFinder.far", Component.translatable("chat.coe.veinFinder.distance", nearest.getSecond().getName(), i)), false);
+			infoTag.putString("far", nearest.getSecond().getId().toString());
+			infoTag.putInt("dist", i);
 		} else {
 			player.displayClientMessage(Component.translatable("chat.coe.veinFinder.far", nothing), false);
 		}
+		NetworkHandler.sendTo((ServerPlayer) player, new OreVeinInfoPacket(infoTag));
 		player.getCooldowns().addCooldown(this, Config.veinFinderCd);
 	}
 }

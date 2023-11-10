@@ -33,6 +33,9 @@
 		],
 		"jei_mod_plugin": [
 			"com.tom.createores.jei.JEIHandler"
+		],
+		"journeymap": [
+			"com.tom.createores.jm.JMPlugin"
 		]
 	},
 	"mixins": [

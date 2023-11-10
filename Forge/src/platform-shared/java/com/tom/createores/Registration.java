@@ -225,6 +225,7 @@ public class Registration {
 		add("tooltip.coe.page", "Page: %s/%s");
 		add("ore.coe.hardenedDiamond", "Hardened Diamond");
 		add("tag.item.createoreexcavation.drills", "All Drills");
+		add("jm.coe.veinsOverlayToggle", "Create: Ore Excavation veins overlay");
 	}
 
 	public static void add(String key, String value) {

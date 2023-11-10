@@ -55,6 +55,7 @@
   "jei.coe.recipe.drilling": "Drilling Machine",
   "jei.coe.recipe.extracting": "Fluid Extractor",
   "jei.coe.recipe.veins": "Ore Veins",
+  "jm.coe.veinsOverlayToggle": "Create: Ore Excavation veins overlay",
   "ore.coe.hardenedDiamond": "Hardened Diamond",
   "tag.item.createoreexcavation.drills": "All Drills",
   "tooltip.coe.biome.blacklist": "Biome Blacklist:",

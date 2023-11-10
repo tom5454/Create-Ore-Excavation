@@ -7,6 +7,7 @@ import java.util.List;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 
@@ -16,7 +17,10 @@ import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.LangBuilder;
 
+import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.Registration;
+import com.tom.createores.jm.JMEventListener;
+import com.tom.createores.network.ClientNetwork;
 
 public class CreateOreExcavationClient implements ClientModInitializer {
 
@@ -24,12 +28,17 @@ public class CreateOreExcavationClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		ClientRegistration.register();
 		EntityModelLayerRegistry.registerModelLayer(DrillRenderer.LAYER_LOCATION, DrillRenderer::createModel);
+		ClientNetwork.init();
 
 		ItemTooltipCallback.EVENT.register((stack, ctx, lines) -> {
 			if(stack.getItem() == Registration.DRILL_BLOCK.get().asItem() || stack.getItem() == Registration.EXTRACTOR_BLOCK.get().asItem()) {
 				appendVariableStress(lines);
 			}
 		});
+
+		CreateOreExcavation.journeyMap = FabricLoader.getInstance().isModLoaded("journeymap");
+		if (CreateOreExcavation.journeyMap)
+			JMEventListener.init();
 	}
 
 	public static void appendVariableStress(List<Component> tooltip) {
