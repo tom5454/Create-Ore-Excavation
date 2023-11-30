@@ -12,7 +12,7 @@
   "chat.coe.veinFinder.nothing": "无矿脉",
   "chat.coe.veinFinder.pos": "在：%d，%d",
   "command.coe.locate.failed": "在合理距离内找不到“%s”",
-  "command.coe.locate.success": "最近的%s在%s（~%s格远）",
+  "command.coe.locate.success": "最近的%s在%s（%s格远）",
   "command.coe.setvein.success": "成功将矿脉设置为: %s",
   "config.coe.defaultInfinite": "矿脉默认无限多",
   "config.coe.finiteAmountBase": "有限矿脉数量基数",
