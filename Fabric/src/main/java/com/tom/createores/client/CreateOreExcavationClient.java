@@ -42,6 +42,7 @@ public class CreateOreExcavationClient implements ClientModInitializer {
 	}
 
 	public static void appendVariableStress(List<Component> tooltip) {
+		if (Minecraft.getInstance().player == null) return;
 		boolean hasGoggles = GogglesItem.isWearingGoggles(Minecraft.getInstance().player);
 		boolean hasStressImpact = StressImpact.isEnabled();
 		LangBuilder rpmUnit = Lang.translate("generic.unit.rpm");
