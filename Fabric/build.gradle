@@ -108,7 +108,7 @@ dependencies {
 	implementation "com.electronwill.night-config:core:3.6.3"
     implementation "com.electronwill.night-config:toml:3.6.3"
 	modImplementation("curse.maven:forge-config-api-port-fabric-547434:4583000")
-    modImplementation(include("com.tom5454.chunkstorage:ChunkStorageFabric-120:1.0.3")) {
+    modImplementation(include("com.tom5454.chunkstorage:ChunkStorageFabric-120:1.0.4")) {
 		exclude(group: "net.fabricmc.fabric-loader")
 	}
     modImplementation("com.tterrag.registrate_fabric:Registrate:1.3.62-MC1.20.1") {

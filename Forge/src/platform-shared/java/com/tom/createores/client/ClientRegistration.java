@@ -7,6 +7,7 @@ import com.simibubi.create.foundation.ponder.PonderRegistrationHelper;
 import com.simibubi.create.foundation.ponder.PonderRegistry;
 import com.simibubi.create.foundation.ponder.PonderTag;
 import com.simibubi.create.infrastructure.ponder.AllPonderTags;
+import com.tterrag.registrate.providers.ProviderType;
 
 import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.Registration;
@@ -24,6 +25,8 @@ public class ClientRegistration {
 
 		HELPER.addStoryBoard(Registration.DRILL_BLOCK, "drilling_machine", PonderScenes::oreFinder, AllPonderTags.KINETIC_SOURCES, DRILLING);
 
-		PonderLocalization.provideRegistrateLang(CreateOreExcavation.registrate());
+		CreateOreExcavation.registrate().addDataGenerator(ProviderType.LANG, prov -> {
+			PonderLocalization.provideRegistrateLang(CreateOreExcavation.registrate());
+		});
 	}
 }
