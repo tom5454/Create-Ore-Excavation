@@ -5,7 +5,7 @@ Download: [CurseForge](https://www.curseforge.com/minecraft/mc-mods/create-ore-e
 
 ## KubeJS
 1.20:
-```
+```js
 
 ServerEvents.recipes(event => {
 	
