@@ -18,8 +18,8 @@ import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.recipe.ExtractorRecipe;
 import com.tom.createores.util.IOBlockType;
 
+import io.github.fabricators_of_create.porting_lib.fluids.FluidStack;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
-import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 
 public class ExtractorBlockEntity extends ExcavatingBlockEntityImpl<ExtractorRecipe> {
 	private Tank fluidTankOut;

@@ -47,8 +47,8 @@ import com.tom.createores.recipe.ExtractorRecipe;
 import com.tom.createores.recipe.VeinRecipe;
 import com.tom.createores.util.ThreeState;
 
+import io.github.fabricators_of_create.porting_lib.fluids.FluidStack;
 import io.github.fabricators_of_create.porting_lib.tags.Tags;
-import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 
 public class COERecipes extends FabricRecipeProvider {
 	private static Random seedRandom;
