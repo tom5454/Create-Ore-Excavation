@@ -9,6 +9,8 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 
 import net.minecraftforge.common.data.ExistingFileHelper;
 
+import com.simibubi.create.foundation.ponder.PonderLocalization;
+
 import com.tom.createores.CreateOreExcavation;
 
 public class COEDataGenerator implements DataGeneratorEntrypoint {
@@ -18,5 +20,6 @@ public class COEDataGenerator implements DataGeneratorEntrypoint {
 		ExistingFileHelper helper = ExistingFileHelper.withResources(paths);
 		CreateOreExcavation.registrate().setupDatagen(fabricDataGenerator, helper);
 		fabricDataGenerator.addProvider(new COERecipes(fabricDataGenerator));
+		PonderLocalization.provideRegistrateLang(CreateOreExcavation.registrate());
 	}
 }

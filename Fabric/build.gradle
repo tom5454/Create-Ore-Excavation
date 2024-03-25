@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.2-SNAPSHOT'
+	id 'fabric-loom' version '1.5-SNAPSHOT'
 	id 'maven-publish'
 	
 }
@@ -63,6 +63,7 @@ repositories {
 		name = "tom5454 maven"
 		url = "https://raw.githubusercontent.com/tom5454/maven/main"
 	}
+	maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" }
     maven {
     	url = "http://localhost:8000"
 		allowInsecureProtocol true
@@ -157,9 +158,9 @@ dependencies {
 	modImplementation("com.simibubi.create:create-fabric-${project.minecraft_version}:${project.create_version}+mc${project.minecraft_version}") {
 		exclude(group: "net.fabricmc.fabric")
 	}
-	modImplementation("io.github.fabricators_of_create.Porting-Lib:Porting-Lib:$port_lib_version+$minecraft_version") {
-		exclude(group: "net.fabricmc.fabric")
-	}
+	for (String module in port_lib_modules.split(",")) {
+        modApi("io.github.fabricators_of_create.Porting-Lib:$module:$port_lib_version+$minecraft_version")
+    }
 	modImplementation("com.jozufozu.flywheel:flywheel-fabric-$flywheel_minecraft_version:$flywheel_version") {
 		exclude(group: "net.fabricmc.fabric")
 	}

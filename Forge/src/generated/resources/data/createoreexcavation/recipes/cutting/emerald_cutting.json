@@ -5,6 +5,7 @@
       "item": "createoreexcavation:raw_emerald"
     }
   ],
+  "processingTime": 250,
   "results": [
     {
       "item": "minecraft:emerald"

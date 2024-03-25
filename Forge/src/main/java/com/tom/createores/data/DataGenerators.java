@@ -6,6 +6,8 @@ import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import com.simibubi.create.foundation.ponder.PonderLocalization;
+
 import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.client.ClientRegistration;
 
@@ -16,6 +18,9 @@ public class DataGenerators {
 	public static void gatherData(GatherDataEvent event) {
 		DataGenerator generator = event.getGenerator();
 		generator.addProvider(event.includeServer(), new COERecipes(generator));
-		if(event.includeClient())ClientRegistration.register();
+		if(event.includeClient()) {
+			ClientRegistration.register();
+			PonderLocalization.provideRegistrateLang(CreateOreExcavation.registrate());
+		}
 	}
 }

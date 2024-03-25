@@ -5,6 +5,7 @@
       "item": "createoreexcavation:raw_diamond"
     }
   ],
+  "processingTime": 250,
   "results": [
     {
       "item": "minecraft:diamond"
