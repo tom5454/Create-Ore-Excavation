@@ -1,4 +1,4 @@
-// 1.20.1	2023-11-10T22:04:29.6175588	Create Ore Excavation/Registrate Provider for createoreexcavation [Recipes, Advancements, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.20.1	2024-03-25T19:08:53.8867594	Create Ore Excavation/Registrate Provider for createoreexcavation [Recipes, Advancements, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 3d3078e7e65efb7e67935c1407c53a79bfe90042 assets\createoreexcavation\models\block\kinetic_in.json
 a9dc84f410d3d407319a5039301180926f2c7849 data\createoreexcavation\tags\items\drills.json
 98e5e9e87e06afb931e7e981a7dfc6b3e6b2c7be assets\createoreexcavation\blockstates\kinetic_input.json

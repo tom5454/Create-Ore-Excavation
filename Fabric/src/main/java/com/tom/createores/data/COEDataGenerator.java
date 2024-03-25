@@ -9,6 +9,7 @@ import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator.Pack;
 
+import com.simibubi.create.foundation.ponder.PonderLocalization;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateDataProvider;
 
@@ -36,5 +37,6 @@ public class COEDataGenerator implements DataGeneratorEntrypoint {
 		Pack pack = generator.createPack();
 		CreateOreExcavation.registrate().setupDatagen(pack, helper);
 		pack.addProvider(COERecipes::new);
+		PonderLocalization.provideRegistrateLang(CreateOreExcavation.registrate());
 	}
 }

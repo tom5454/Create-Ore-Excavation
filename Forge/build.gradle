@@ -229,7 +229,7 @@ dependencies {
 	implementation fg.deobf("dev.latvian.mods:rhino-forge:2001.2.2-build.6")
 	implementation fg.deobf("dev.architectury:architectury-forge:9.1.12")
 	
-	implementation fg.deobf('curse.maven:journeymap-32274:4841242')
+	implementation fg.deobf('curse.maven:journeymap-32274:5208416')
 	
 	/*if(useLib) {
     	compileOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-api-forge:9.1.587")

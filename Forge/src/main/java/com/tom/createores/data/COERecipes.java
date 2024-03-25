@@ -151,11 +151,11 @@ public class COERecipes extends RecipeProvider {
 
 		new ExtractorBuilder(new FluidStack(Fluids.WATER, 500), 20, 512, 128).setBiomeWhitelist(BiomeTags.IS_OVERWORLD).setFinite(ThreeState.NEVER).save("water", consumer);
 
-		processing("redstone_milling", AllRecipeTypes.MILLING, consumer, b -> b.withItemIngredients(Ingredient.of(Registration.RAW_REDSTONE.get())).output(new ItemStack(Items.REDSTONE, 3)));
-		processing("redstone_crushing", AllRecipeTypes.CRUSHING, consumer, b -> b.withItemIngredients(Ingredient.of(Registration.RAW_REDSTONE.get())).output(new ItemStack(Items.REDSTONE, 4)));
+		processing("redstone_milling", AllRecipeTypes.MILLING, consumer, b -> b.withItemIngredients(Ingredient.of(Registration.RAW_REDSTONE.get())).output(new ItemStack(Items.REDSTONE, 3)).duration(250));
+		processing("redstone_crushing", AllRecipeTypes.CRUSHING, consumer, b -> b.withItemIngredients(Ingredient.of(Registration.RAW_REDSTONE.get())).output(new ItemStack(Items.REDSTONE, 4)).duration(250));
 
-		processing("diamond_cutting", AllRecipeTypes.CUTTING, consumer, b -> b.withItemIngredients(Ingredient.of(Registration.RAW_DIAMOND.get())).output(Items.DIAMOND));
-		processing("emerald_cutting", AllRecipeTypes.CUTTING, consumer, b -> b.withItemIngredients(Ingredient.of(Registration.RAW_EMERALD.get())).output(Items.EMERALD));
+		processing("diamond_cutting", AllRecipeTypes.CUTTING, consumer, b -> b.withItemIngredients(Ingredient.of(Registration.RAW_DIAMOND.get())).output(Items.DIAMOND).duration(250));
+		processing("emerald_cutting", AllRecipeTypes.CUTTING, consumer, b -> b.withItemIngredients(Ingredient.of(Registration.RAW_EMERALD.get())).output(Items.EMERALD).duration(250));
 	}
 
 	@SuppressWarnings("unchecked")

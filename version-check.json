@@ -1,11 +1,12 @@
 {
 	"homepage": "https://www.curseforge.com/minecraft/mc-mods/create-ore-excavation",
 	"promos": {
-		"1.20.1-latest": "1.4.2",
+		"1.20.1-latest": "1.4.3",
 		"1.19.2-latest": "1.2.2",
 		"1.18.2-latest": "1.1.1"
 	},
 	"1.20.1": {
+		"1.4.3": "Fixed raw redstone milling not working",
 		"1.4.2": "Updated Simplized Chinese translation",
 		"1.4.1": "Added JourneyMap veins overlay",
 		"1.4.0": "Added Korean, Italian and Portuguese translations\nAdded the drilling fluid option for fluid excavators\nAdded KubeJS support",
