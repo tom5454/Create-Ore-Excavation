@@ -6,6 +6,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 
+import com.simibubi.create.foundation.ponder.PonderLocalization;
+
 import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.client.ClientRegistration;
 
@@ -24,6 +26,7 @@ public class DataGenerators {
 		if (event.includeClient()) {
 			generator.addProvider(new COEItemModels(generator, event.getExistingFileHelper()));
 			ClientRegistration.register();
+			PonderLocalization.provideRegistrateLang(CreateOreExcavation.registrate());
 		}
 	}
 }

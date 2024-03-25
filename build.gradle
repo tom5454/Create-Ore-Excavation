@@ -226,11 +226,10 @@ dependencies {
   	// at runtime, use the full JEI jar
   	runtimeOnly fg.deobf("mezz.jei:jei-1.18.2-forge:10.2.1.1004")
   	
-    //implementation fg.deobf("curse.maven:create-328085:3872145")
     //implementation fg.deobf("curse.maven:createaddition-439890:3876683")
     
-    implementation fg.deobf("local:create:1.18.2-0.5.1.a")
-    implementation fg.deobf("local:flywheel-forge:1.18.2-0.6.8.a-99")
+    implementation fg.deobf("com.simibubi.create:create-1.18.2:0.5.1.f-332:slim") { transitive = false }
+    implementation fg.deobf("com.jozufozu.flywheel:flywheel-forge-1.18.2:0.6.10-105")
     //implementation fg.deobf("local:createaddition:1.18.2-20220813a")
     
     implementation fg.deobf("curse.maven:configured-457570:3721946")
