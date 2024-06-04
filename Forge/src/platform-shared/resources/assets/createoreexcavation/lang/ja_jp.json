@@ -40,7 +40,7 @@
   "item.createoreexcavation.raw_emerald": "エメラルドの原石",
   "item.createoreexcavation.raw_redstone": "レッドストーンの原石",
   "item.createoreexcavation.vein_finder": "鉱脈ファインダー",
-  "itemGroup.createoreexcavation.tab": "Create Ore Excavation",
+  "itemGroup.createoreexcavation.create_ore_excavation": "Create Ore Excavation",
   "jei.coe.recipe.drilling": "採掘機械",
   "jei.coe.recipe.extracting": "液体抽出機",
   "ore.coe.hardenedDiamond": "硬化ダイヤモンド",

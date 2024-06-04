@@ -40,7 +40,7 @@
   "item.createoreexcavation.raw_emerald": "Ruwe Smaragd",
   "item.createoreexcavation.raw_redstone": "Ruwe Redstone",
   "item.createoreexcavation.vein_finder": "Ertsader vinder",
-  "itemGroup.createoreexcavation.tab": "Create Erts Uitgraving",
+  "itemGroup.createoreexcavation.create_ore_excavation": "Create Erts Uitgraving",
   "jei.coe.recipe.drilling": "Boor Machine",
   "jei.coe.recipe.extracting": "Vloeistofbron Extractor",
   "ore.coe.hardenedDiamond": "Hard geworden diamant",

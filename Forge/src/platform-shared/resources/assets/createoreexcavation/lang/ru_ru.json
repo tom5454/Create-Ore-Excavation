@@ -42,7 +42,7 @@
   "item.createoreexcavation.raw_emerald": "Сырой изумруд",
   "item.createoreexcavation.raw_redstone": "Сырая красная пыль",
   "item.createoreexcavation.vein_finder": "Детектор жил",
-  "itemGroup.createoreexcavation.tab": "Create Ore Excavation",
+  "itemGroup.createoreexcavation.create_ore_excavation": "Create Ore Excavation",
   "jei.coe.recipe.drilling": "Буровая машина",
   "jei.coe.recipe.extracting": "Жидкостный экстрактор",
   "ore.coe.hardenedDiamond": "Твёрдый алмаз",

@@ -51,7 +51,7 @@
   "item.createoreexcavation.raw_emerald": "粗绿宝石",
   "item.createoreexcavation.raw_redstone": "粗红石",
   "item.createoreexcavation.vein_finder": "探矿杖",
-  "itemGroup.createoreexcavation.tab": "机械动力：矿石开掘",
+  "itemGroup.createoreexcavation.create_ore_excavation": "机械动力：矿石开掘",
   "jei.coe.recipe.drilling": "矿物开采",
   "jei.coe.recipe.extracting": "流体开采",
   "jei.coe.recipe.veins": "矿脉",
