@@ -42,7 +42,7 @@
   "item.createoreexcavation.raw_emerald": "Esmeralda en bruto",
   "item.createoreexcavation.raw_redstone": "Redstone sin procesar",
   "item.createoreexcavation.vein_finder": "Buscador de vetas de mineral",
-  "itemGroup.createoreexcavation.tab": "Crear excavación de mineral",
+  "itemGroup.createoreexcavation": "Crear excavación de mineral",
   "jei.coe.recipe.drilling": "Perforadora",
   "jei.coe.recipe.extracting": "Extractor de fluidos",
   "ore.coe.hardenedDiamond": "Diamante endurecido",

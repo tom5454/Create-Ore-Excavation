@@ -108,7 +108,11 @@ public class DrillBlockEntity extends ExcavatingBlockEntity<DrillingRecipe> {
 
 	@Override
 	protected boolean canExtract() {
-		return inventory.hasSpace() && current.getDrillingFluid().getRequiredAmount() == 0 ||
+		return inventory.hasSpace() && testFluid();
+	}
+
+	private boolean testFluid() {
+		return current.getDrillingFluid().getRequiredAmount() == 0 ||
 				(current.getDrillingFluid().test(fluidTank.getFluid()) &&
 						fluidTank.getFluidAmount() >= current.getDrillingFluid().getRequiredAmount());
 	}
