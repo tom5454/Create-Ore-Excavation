@@ -156,6 +156,29 @@ public class COERecipes extends RecipeProvider {
 
 		processing("diamond_cutting", AllRecipeTypes.CUTTING, consumer, b -> b.withItemIngredients(Ingredient.of(Registration.RAW_DIAMOND.get())).output(Items.DIAMOND).duration(250));
 		processing("emerald_cutting", AllRecipeTypes.CUTTING, consumer, b -> b.withItemIngredients(Ingredient.of(Registration.RAW_EMERALD.get())).output(Items.EMERALD).duration(250));
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.VEIN_ATLAS_ITEM.get())
+		.pattern("ca")
+		.pattern("mb")
+		.define('c', Tags.Items.CHESTS)
+		.define('a', Tags.Items.GEMS_AMETHYST)
+		.define('m', Items.MAP)
+		.define('b', Items.WRITABLE_BOOK)
+		.group("create")
+		.unlockedBy("map", InventoryChangeTrigger.TriggerInstance.hasItems(Items.MAP))
+		.save(consumer);
+
+		MechanicalCraftingRecipeBuilder.shapedRecipe(Registration.SAMPLE_DRILL_BLOCK.get())
+		.patternLine("beb")
+		.patternLine("mCb")
+		.patternLine("sDs")
+		.key('b', TagKey.create(Registries.ITEM, new ResourceLocation("forge:plates/brass")))
+		.key('e', AllItems.ELECTRON_TUBE.get())
+		.key('C', AllBlocks.BRASS_CASING.get())
+		.key('m', AllItems.PRECISION_MECHANISM.get())
+		.key('D', AllBlocks.MECHANICAL_DRILL.get())
+		.key('s', AllItems.STURDY_SHEET.get())
+		.build(consumer);
 	}
 
 	@SuppressWarnings("unchecked")

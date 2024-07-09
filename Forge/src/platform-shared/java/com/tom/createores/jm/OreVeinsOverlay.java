@@ -160,7 +160,7 @@ public enum OreVeinsOverlay {
 	}
 
 	public void setVeinInfo(ChunkPos posIn, ResourceLocation id) {
-		DimChunkPos pos = new DimChunkPos(mc.level.dimension(), posIn.x, posIn.z);
+		DimChunkPos pos = new DimChunkPos(mc.level, posIn);
 		if (chunkData.containsKey(pos)) {
 			PolygonOverlay ov = chunkOverlays.remove(pos);
 			if (activated && ov != null)api.remove(ov);

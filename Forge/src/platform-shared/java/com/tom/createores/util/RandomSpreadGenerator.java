@@ -3,6 +3,7 @@ package com.tom.createores.util;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -84,7 +85,7 @@ public class RandomSpreadGenerator {
 		return null;
 	}
 
-	public Pair<BlockPos, VeinRecipe> locate(BlockPos pPos, ServerLevel level, int radius) {
+	public Pair<BlockPos, VeinRecipe> locate(BlockPos pPos, ServerLevel level, int radius, Predicate<VeinRecipe> filter) {
 		int i = SectionPos.blockToSectionCoord(pPos.getX());
 		int j = SectionPos.blockToSectionCoord(pPos.getZ());
 		for(int k = 0; k <= radius; ++k) {
@@ -92,6 +93,7 @@ public class RandomSpreadGenerator {
 			float dist = Float.MAX_VALUE;
 			for (int j2 = 0; j2 < recipes.size(); j2++) {
 				VeinRecipe r = recipes.get(j2);
+				if (!filter.test(r))continue;
 				BlockPos pos = getNearestGenerated(level, i, j, k, level.getSeed(), r);
 				if(pos != null) {
 					float d = distance2d(pos, pPos);
@@ -100,6 +102,7 @@ public class RandomSpreadGenerator {
 							OreData data = OreDataCapability.getData(level.getChunkAt(pos));
 							r = data.getRecipe(level.getRecipeManager());
 							if (r == null)continue;
+							if (!filter.test(r))continue;
 						}
 						found = Pair.of(pos, r);
 						dist = d;

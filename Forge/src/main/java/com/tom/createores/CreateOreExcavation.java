@@ -179,4 +179,8 @@ public class CreateOreExcavation {
 	public static CreateRegistrate registrate() {
 		return registrate;
 	}
+
+	public static boolean isModLoaded(String id) {
+		return ModList.get().isLoaded(id);
+	}
 }

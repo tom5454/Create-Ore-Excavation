@@ -2,7 +2,9 @@ package com.tom.createores.util;
 
 import java.util.Objects;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 
 public class DimChunkPos {
@@ -15,6 +17,14 @@ public class DimChunkPos {
 		this.dimension = dimension;
 		this.x = x;
 		this.z = z;
+	}
+
+	public DimChunkPos(Level level, ChunkPos p) {
+		this(level.dimension(), p.x, p.z);
+	}
+
+	public DimChunkPos(Level level, BlockPos p) {
+		this(level, new ChunkPos(p));
 	}
 
 	@Override

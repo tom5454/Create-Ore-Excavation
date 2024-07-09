@@ -3,6 +3,7 @@ package com.tom.createores;
 import org.slf4j.Logger;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -121,5 +122,9 @@ public class CreateOreExcavation implements ModInitializer {
 		OreDataCapability.init();
 		//BlockStressValues.registerProvider(MODID, AllConfigs.SERVER.kinetics.stressValues);
 		COECommand.init();
+	}
+
+	public static boolean isModLoaded(String string) {
+		return FabricLoader.getInstance().isModLoaded(string);
 	}
 }

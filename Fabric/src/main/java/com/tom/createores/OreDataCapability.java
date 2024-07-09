@@ -68,6 +68,10 @@ public class OreDataCapability {
 			return loaded;
 		}
 
+		public float getRandomMul() {
+			return randomMul;
+		}
+
 		public long getResourcesRemaining(VeinRecipe r) {
 			if(r.isFinite() != ThreeState.NEVER) {
 				if(r.isFinite() == ThreeState.DEFAULT && Config.defaultInfinite)return 0L;

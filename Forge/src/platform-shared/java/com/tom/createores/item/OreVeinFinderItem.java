@@ -1,10 +1,15 @@
 package com.tom.createores.item;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -26,6 +31,7 @@ import com.tom.createores.Config;
 import com.tom.createores.OreDataCapability;
 import com.tom.createores.OreDataCapability.OreData;
 import com.tom.createores.OreVeinGenerator;
+import com.tom.createores.Registration;
 import com.tom.createores.network.NetworkHandler;
 import com.tom.createores.network.OreVeinInfoPacket;
 import com.tom.createores.recipe.VeinRecipe;
@@ -55,6 +61,17 @@ public class OreVeinFinderItem extends Item {
 	}
 
 	private void detect(Level level, BlockPos pos, Player player) {
+		ItemStack atlas = ItemStack.EMPTY;
+		for (int i = 0;i < player.getInventory().getContainerSize(); i++) {
+			ItemStack is = player.getInventory().getItem(i);
+			if (is.getItem() == Registration.VEIN_ATLAS_ITEM.get()) {
+				atlas = is;
+				break;
+			}
+		}
+		CompoundTag atlasTag = atlas.getTag();
+		Predicate<VeinRecipe> filter = atlasTag != null ? makeFilter(atlasTag) : a -> true;
+
 		ChunkPos center = new ChunkPos(pos);
 		OreData found = null;
 		List<OreData> nearby = new ArrayList<>();
@@ -90,7 +107,7 @@ public class OreVeinFinderItem extends Item {
 		f = nearby.stream().map(d -> d.getRecipe(m)).filter(r -> r != null).map(r -> r.getName()).collect(ComponentJoiner.joining(nothing, comma));
 		player.displayClientMessage(Component.translatable("chat.coe.veinFinder.nearby", f), false);
 
-		Pair<BlockPos, VeinRecipe> nearest = OreVeinGenerator.getPicker((ServerLevel) level).locate(pos, (ServerLevel) level, 16);
+		Pair<BlockPos, VeinRecipe> nearest = OreVeinGenerator.getPicker((ServerLevel) level).locate(pos, (ServerLevel) level, 16, filter);
 		if(nearest != null) {
 			BlockPos at = nearest.getFirst();
 			int i = Math.round(RandomSpreadGenerator.distance2d(at, pos) / Config.veinFinderFar) * Config.veinFinderFar;
@@ -102,5 +119,23 @@ public class OreVeinFinderItem extends Item {
 		}
 		NetworkHandler.sendTo((ServerPlayer) player, new OreVeinInfoPacket(infoTag));
 		player.getCooldowns().addCooldown(this, Config.veinFinderCd);
+	}
+
+	private Predicate<VeinRecipe> makeFilter(CompoundTag atlasTag) {
+		String vt = atlasTag.getString(OreVeinAtlasItem.TARGET);
+		ResourceLocation target = ResourceLocation.tryParse(vt);
+		if (!vt.isEmpty() && target != null) {
+			return v -> target.equals(v.getId());
+		}
+		Set<ResourceLocation> exclude = new HashSet<>();
+		ListTag ex = atlasTag.getList(OreVeinAtlasItem.EXCLUDE, Tag.TAG_STRING);
+		for (int i = 0;i < ex.size(); i++) {
+			ResourceLocation v = ResourceLocation.tryParse(ex.getString(i));
+			if (v != null)exclude.add(v);
+		}
+		if (exclude.isEmpty())return a -> true;
+		return v -> {
+			return !exclude.contains(v.getId());
+		};
 	}
 }

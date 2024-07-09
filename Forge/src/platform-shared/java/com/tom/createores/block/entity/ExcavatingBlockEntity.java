@@ -1,12 +1,14 @@
 package com.tom.createores.block.entity;
 
 import static net.minecraft.ChatFormatting.GOLD;
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 
 import java.util.Comparator;
 import java.util.List;
 
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -32,9 +34,11 @@ import com.simibubi.create.foundation.utility.Lang;
 import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.OreDataCapability;
 import com.tom.createores.OreDataCapability.OreData;
+import com.tom.createores.Registration;
 import com.tom.createores.client.ClientUtil;
 import com.tom.createores.recipe.ExcavatingRecipe;
 import com.tom.createores.recipe.VeinRecipe;
+import com.tom.createores.util.DimChunkPos;
 import com.tom.createores.util.NumberFormatter;
 
 public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends SmartBlockEntity implements MultiblockCapHandler, IDrill {
@@ -48,6 +52,7 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 	protected VeinRecipe vein;
 	protected OreData data;
 	protected ExcavatorState state = ExcavatorState.NO_VEIN;
+	protected boolean completedOneCycle;
 
 	protected ExcavatingBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -147,6 +152,7 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 						if(state == ExcavatorState.NO_ERROR) {
 							onFinished();
 							data.extract(1);
+							completedOneCycle = true;
 						}
 						progress = 0;
 					}
@@ -191,6 +197,7 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 		super.read(tag, clientPacket);
 		progress = tag.getInt("progress");
 		drillStack = ItemStack.of(tag.getCompound("drill"));
+		completedOneCycle = tag.getBoolean("finishedOnce");
 		if(clientPacket) {
 			state = ExcavatorState.VALUES[tag.getByte("state")];
 			if(tag.contains("veinId")) {
@@ -213,6 +220,7 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 		super.write(tag, clientPacket);
 		tag.putInt("progress", progress);
 		tag.put("drill", drillStack.save(new CompoundTag()));
+		tag.putBoolean("finishedOnce", completedOneCycle);
 		if(clientPacket) {
 			tag.putByte("state", (byte) state.ordinal());
 			if(vein != null) {
@@ -237,11 +245,6 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 	}
 
 	@Override
-	public boolean isActive() {
-		return recipeClient != null;
-	}
-
-	@Override
 	public ItemStack getDrill() {
 		return drillStack;
 	}
@@ -263,6 +266,16 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 
 	public InteractionResult onClick(Player player, InteractionHand hand) {
 		ItemStack item = player.getItemInHand(hand);
+		if (item.getItem() == Registration.VEIN_ATLAS_ITEM.get()) {
+			if(!level.isClientSide) {
+				if (completedOneCycle) {
+					Registration.VEIN_ATLAS_ITEM.get().addVein(player, item, vein, new DimChunkPos(level, worldPosition), data.getRandomMul());
+				} else {
+					player.displayClientMessage(Component.translatable("chat.coe.sampleDrill.notDone"), true);
+				}
+			}
+			return InteractionResult.SUCCESS;
+		}
 		if(!item.isEmpty() && item.is(CreateOreExcavation.DRILL_TAG)) {
 			if(drillStack.isEmpty()) {
 				if(!level.isClientSide)drillStack = item.split(1);
@@ -295,6 +308,55 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 	@Override
 	protected AABB createRenderBoundingBox() {
 		return new AABB(worldPosition.offset(-1, -1, -1), worldPosition.offset(1, 0, 1));
+	}
+
+	@Override
+	public Direction getFacing() {
+		return getBlockState().getValue(HORIZONTAL_FACING);
+	}
+
+	@Override
+	public boolean shouldRenderRubble() {
+		return completedOneCycle || (recipeClient != null && progress > 0);
+	}
+
+	@Override
+	public float getYOffset() {
+		return 0.8f;
+	}
+
+	@Override
+	public float getDrillOffset() {
+		return isActive() ? 0.2f : 0.0f;
+	}
+
+	private boolean isActive() {
+		return recipeClient != null && hasRotation;
+	}
+
+	@Override
+	public float getRotation() {
+		if (isActive()) {
+			long ticks = getLevel().getGameTime();
+			float rot = (ticks * 20) % 360;
+			return rot;
+		}
+		return 0f;
+	}
+
+	@Override
+	public float getPrevRotation() {
+		if (isActive()) {
+			long ticks = getLevel().getGameTime() - 1;
+			float rot = (ticks * 20) % 360;
+			return rot;
+		}
+		return 0f;
+	}
+
+	@Override
+	public boolean shouldRenderShaft() {
+		return true;
 	}
 
 	public static enum ExcavatorState {

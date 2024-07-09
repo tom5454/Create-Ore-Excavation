@@ -115,6 +115,10 @@ public class OreDataCapability implements ICapabilityProvider, INBTSerializable<
 			return 0L;
 		}
 
+		public float getRandomMul() {
+			return randomMul;
+		}
+
 		public void extract(int a) {
 			extractedAmount += a;
 		}

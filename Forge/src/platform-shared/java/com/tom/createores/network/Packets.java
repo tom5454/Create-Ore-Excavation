@@ -12,6 +12,7 @@ public class Packets {
 
 	public static void init() {
 		addPacket(OreVeinInfoPacket.VEIN_INFO_S2C, OreVeinInfoPacket.class, OreVeinInfoPacket::new);
+		addPacket(OreVeinAtlasClickPacket.ATLAS_CLICK_S2C, OreVeinAtlasClickPacket.class, OreVeinAtlasClickPacket::new);
 	}
 
 	public static <T extends Packet> void addPacket(ResourceLocation rl, Class<T> clazz, Function<FriendlyByteBuf, T> factory) {

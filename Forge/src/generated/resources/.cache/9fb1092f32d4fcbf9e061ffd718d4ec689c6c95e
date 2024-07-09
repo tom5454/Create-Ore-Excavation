@@ -1,6 +1,7 @@
-// 1.20.1	2024-03-25T19:08:49.7509317	Recipes
+// 1.20.1	2024-06-28T21:51:44.5315697	Recipes
 b96e2ab7e7ed6fcffb596155e98a7acf5ef5f215 data/createoreexcavation/advancements/recipes/misc/diamond_drill.json
 27d21495c0c40cc6b04bdfa60945a8873e9a41c4 data/createoreexcavation/advancements/recipes/misc/drill.json
+3cebe580068b883fd501658cf0aa70ad65f38331 data/createoreexcavation/advancements/recipes/misc/vein_atlas.json
 2c13535b614d55713d0792841180dd3c772fd503 data/createoreexcavation/advancements/recipes/misc/vein_finder.json
 8c8bc2b93ecbce570450d8a38ade2e162e56af5e data/createoreexcavation/recipes/crushing/redstone_crushing.json
 0bdebb19fb4e4db661939d864c3cebfde35b011e data/createoreexcavation/recipes/cutting/diamond_cutting.json
@@ -40,6 +41,8 @@ d31cbf2e7360c764c44d91b944424a5113f7b74e data/createoreexcavation/recipes/ore_ve
 7fc365030e1c56af5793dc6dad1fb28286f0a251 data/createoreexcavation/recipes/ore_vein_type/redstone.json
 437485f4a652967dc6f03690b59776ed5e4c72aa data/createoreexcavation/recipes/ore_vein_type/water.json
 6a836d5e7929cb97df3017c65764ebaca5a24817 data/createoreexcavation/recipes/ore_vein_type/zinc.json
+70885651ed3b370b3a8e2537017c86e88be7f0df data/createoreexcavation/recipes/sample_drill.json
+33256601062aeeca037084385455a0e3b73a95b9 data/createoreexcavation/recipes/vein_atlas.json
 58e288343cd1e7719b5134e73ffdda1c9bc7ba33 data/createoreexcavation/recipes/vein_finder.json
 18c98e19e1868ee97fbdd03bb932e897bd517615 data/minecraft/advancements/recipes/misc/netherite_drill_smithing.json
 ee280f0a588626666be9d49b0cc64981f4f83648 data/minecraft/recipes/netherite_drill_smithing.json

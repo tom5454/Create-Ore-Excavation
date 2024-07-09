@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "create",
+  "key": {
+    "a": {
+      "tag": "c:amethyst"
+    },
+    "b": {
+      "item": "minecraft:writable_book"
+    },
+    "c": {
+      "tag": "c:chests"
+    },
+    "m": {
+      "item": "minecraft:map"
+    }
+  },
+  "pattern": [
+    "ca",
+    "mb"
+  ],
+  "result": {
+    "item": "createoreexcavation:vein_atlas"
+  },
+  "show_notification": true
+}

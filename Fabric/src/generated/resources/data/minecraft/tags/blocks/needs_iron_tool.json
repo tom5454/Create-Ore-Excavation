@@ -5,6 +5,7 @@
     "createoreexcavation:kinetic_input",
     "createoreexcavation:multiblock",
     "createoreexcavation:io_block",
-    "createoreexcavation:extractor"
+    "createoreexcavation:extractor",
+    "createoreexcavation:sample_drill"
   ]
 }
