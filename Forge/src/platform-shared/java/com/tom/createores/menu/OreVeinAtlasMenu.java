@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import com.tom.createores.Config;
 import com.tom.createores.Registration;
 import com.tom.createores.network.OreVeinAtlasClickPacket.Option;
+import com.tom.createores.network.OreVeinAtlasClickPacket2;
 
 public class OreVeinAtlasMenu extends AbstractContainerMenu {
 	private ItemStack heldItem;
@@ -54,5 +55,9 @@ public class OreVeinAtlasMenu extends AbstractContainerMenu {
 
 	public boolean isDefaultInfinite() {
 		return sync.get(2) != 0;
+	}
+
+	public void click2(OreVeinAtlasClickPacket2.Option opt, int id) {
+		Registration.VEIN_ATLAS_ITEM.get().menuClicked2(heldItem, opt, id);
 	}
 }

@@ -66,6 +66,7 @@ public abstract class PagedListWidget<D, T> extends AbstractWidget {
 
 	public void updateContent() {
 		listEntries.forEach(ListEntry::update);
+		page = Mth.clamp(page, 0, Math.max(Mth.ceil(list.get().size() / (float) getLines()), 0));
 		backButton.active = page > 0;
 		forwardButton.active = (page + 1) * getLines() < list.get().size();
 	}

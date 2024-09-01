@@ -31,6 +31,7 @@ import com.tom.createores.item.OreVeinAtlasItem;
 import com.tom.createores.network.NetworkHandler;
 import com.tom.createores.network.OreVeinAtlasClickPacket;
 import com.tom.createores.network.OreVeinAtlasClickPacket.Option;
+import com.tom.createores.network.OreVeinAtlasClickPacket2;
 import com.tom.createores.recipe.VeinRecipe;
 import com.tom.createores.util.DimChunkPos;
 import com.tom.createores.util.NumberFormatter;
@@ -41,6 +42,8 @@ public class OreVeinAtlasScreen extends AbstractContainerScreen<OreVeinAtlasMenu
 	private static final ResourceLocation EXCLUDE = ResourceLocation.tryBuild(CreateOreExcavation.MODID, "textures/gui/atlas_exclude.png");
 	private static final ResourceLocation TARGET = ResourceLocation.tryBuild(CreateOreExcavation.MODID, "textures/gui/atlas_target.png");
 	private static final ResourceLocation BUTTON_LOCATION = ResourceLocation.tryBuild(CreateOreExcavation.MODID, "textures/gui/atlas_buttons.png");
+	private static final ResourceLocation SHOW = ResourceLocation.tryBuild(CreateOreExcavation.MODID, "textures/gui/atlas_show.png");
+	private static final ResourceLocation HIDE = ResourceLocation.tryBuild(CreateOreExcavation.MODID, "textures/gui/atlas_hidden.png");
 
 	private static final Button.OnPress NULL_PRESS = b -> {};
 
@@ -55,6 +58,8 @@ public class OreVeinAtlasScreen extends AbstractContainerScreen<OreVeinAtlasMenu
 	private Component veinTypesTitle = Component.translatable("info.coe.atlas.vein_types");
 	private PageButton backButton;
 	private Vein selected;
+	private boolean showHidden;
+	private ToggleHideButton toggleHideButton;
 
 	public OreVeinAtlasScreen(OreVeinAtlasMenu p_97741_, Inventory p_97742_, Component p_97743_) {
 		super(p_97741_, p_97742_, p_97743_);
@@ -74,7 +79,9 @@ public class OreVeinAtlasScreen extends AbstractContainerScreen<OreVeinAtlasMenu
 		int j = this.topPos;
 		discovered = addRenderableWidget(new VeinsListWidget(i + 20, j + 24, 110, 140));
 		veinTypes = addRenderableWidget(new VeinTypesListWidget(i + 150, j + 24, 110, 140));
-		backButton = this.addRenderableWidget(new PageButton(i + 20 + 4, j + 24 + 140 - 12, false, p_98287_ -> this.pageBack(), true));
+		backButton = addRenderableWidget(new PageButton(i + 20 + 4, j + 24 + 140 - 12, false, p_98287_ -> this.pageBack(), true));
+		toggleHideButton = addRenderableWidget(new ToggleHideButton(i + 118, j + 9, b -> toggleHide()));
+		toggleHideButton.setTooltip(Tooltip.create(Component.translatable("tooltip.coe.atlas.show_hide")));
 		backButton.active = false;
 		discovered.list = () -> veinsListSorted;
 		veinTypes.list = () -> veinTypesListSorted;
@@ -85,10 +92,33 @@ public class OreVeinAtlasScreen extends AbstractContainerScreen<OreVeinAtlasMenu
 		veinTypes.updateContent();
 	}
 
+	private void toggleHide() {
+		if (selected != null) {
+			toggleHideButton.hideMode = selected.hidden = !selected.hidden;
+			send2(OreVeinAtlasClickPacket2.Option.TOGGLE_HIDE, veinsList.indexOf(selected));
+			updateVeinsList();
+		} else {
+			toggleHideButton.hideMode = showHidden = !showHidden;
+			updateVeinsList();
+		}
+	}
+
 	private void pageBack() {
 		backButton.active = false;
 		discovered.setVisible(true);
 		selected = null;
+		toggleHideButton.hideMode = showHidden;
+		toggleHideButton.setTooltip(Tooltip.create(Component.translatable("tooltip.coe.atlas.show_hide")));
+		toggleHideButton.setX(leftPos + 118);
+		toggleHideButton.setY(topPos + 9);
+	}
+
+	public void setSelected(Vein selected) {
+		this.selected = selected;
+		toggleHideButton.hideMode = selected.hidden;
+		toggleHideButton.setTooltip(Tooltip.create(Component.translatable("tooltip.coe.atlas.hide_vein")));
+		toggleHideButton.setX(leftPos + 18);
+		toggleHideButton.setY(topPos + 24);
 	}
 
 	private void updateVeinTypesList() {
@@ -99,7 +129,7 @@ public class OreVeinAtlasScreen extends AbstractContainerScreen<OreVeinAtlasMenu
 
 	private void updateVeinsList() {
 		veinsListSorted.clear();
-		veinsListSorted.addAll(veinsList);
+		veinsList.stream().filter(e -> e.hidden == showHidden).forEach(veinsListSorted::add);
 		discovered.updateContent();
 	}
 
@@ -130,8 +160,9 @@ public class OreVeinAtlasScreen extends AbstractContainerScreen<OreVeinAtlasMenu
 			var dim = ResourceLocation.tryParse(v.getString(OreVeinAtlasItem.DIMENSION));
 			var pos = new DimChunkPos(ResourceKey.create(Registries.DIMENSION, dim), x, z);
 			float size = v.getFloat(OreVeinAtlasItem.SIZE);
+			boolean hide = v.getBoolean(OreVeinAtlasItem.HIDE);
 			if (Minecraft.getInstance().level.getRecipeManager().byKey(vid).orElse(null) instanceof VeinRecipe vr) {
-				veinsList.add(new Vein(pos, vr, size));
+				veinsList.add(new Vein(pos, vr, size, hide));
 			}
 		}
 
@@ -190,7 +221,45 @@ public class OreVeinAtlasScreen extends AbstractContainerScreen<OreVeinAtlasMenu
 		gr.drawString(font, veinTypesTitle, 205 - font.width(veinTypesTitle) / 2, 16, 4210752, false);
 	}
 
-	private static record Vein(DimChunkPos pos, VeinRecipe recipe, float size) {}
+	private static class Vein {
+		private final DimChunkPos pos;
+		private final VeinRecipe recipe;
+		private final float size;
+		private boolean hidden;
+
+		public Vein(DimChunkPos pos, VeinRecipe recipe, float size, boolean hidden) {
+			this.pos = pos;
+			this.recipe = recipe;
+			this.size = size;
+			this.hidden = hidden;
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((pos == null) ? 0 : pos.hashCode());
+			result = prime * result + ((recipe == null) ? 0 : recipe.id.hashCode());
+			result = prime * result + Float.floatToIntBits(size);
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) return true;
+			if (obj == null) return false;
+			if (getClass() != obj.getClass()) return false;
+			Vein other = (Vein) obj;
+			if (pos == null) {
+				if (other.pos != null) return false;
+			} else if (!pos.equals(other.pos)) return false;
+			if (recipe == null) {
+				if (other.recipe != null) return false;
+			} else if (!recipe.id.equals(other.recipe.id)) return false;
+			if (Float.floatToIntBits(size) != Float.floatToIntBits(other.size)) return false;
+			return true;
+		}
+	}
 
 	private static record VeinWidgetHolder(VeinInfoButton btn) {}
 
@@ -234,7 +303,7 @@ public class OreVeinAtlasScreen extends AbstractContainerScreen<OreVeinAtlasMenu
 			RenderSystem.enableDepthTest();
 			pGuiGraphics.blitNineSliced(BUTTON_LOCATION, this.getX(), this.getY(), this.getWidth(), this.getHeight(), 20, 4, 200, 20, 0, this.getBtnTextureY());
 			pGuiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
-			int i = this.active ? 16777215 : 10526880;
+			int i = isHovered ? 0xFCFCA0 : 0xC0C0C0;
 			this.renderScrollingText(pGuiGraphics, minecraft.font, 20, i | Mth.ceil(this.alpha * 255.0F) << 24);
 			renderItem(pGuiGraphics);
 		}
@@ -273,6 +342,35 @@ public class OreVeinAtlasScreen extends AbstractContainerScreen<OreVeinAtlasMenu
 		}
 	}
 
+	private class ToggleHideButton extends Button {
+		private boolean hideMode;
+
+		private ToggleHideButton(int pX, int pY, Button.OnPress pOnPress) {
+			super(pX, pY, 16, 16, Component.empty(), pOnPress, DEFAULT_NARRATION);
+		}
+
+		@Override
+		protected void renderWidget(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+			pGuiGraphics.setColor(1.0F, 1.0F, 1.0F, this.alpha);
+			RenderSystem.enableBlend();
+			RenderSystem.enableDepthTest();
+			pGuiGraphics.blitNineSliced(BUTTON_LOCATION, this.getX(), this.getY(), this.getWidth(), this.getHeight(), 20, 4, 200, 20, 0, this.getBtnTextureY());
+			pGuiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+			pGuiGraphics.blit(hideMode ? HIDE : SHOW, this.getX(), this.getY(), 16, 16, 0, 0, 16, 16, 16, 16);
+		}
+
+		private int getBtnTextureY() {
+			int i = 1;
+			if (!this.active) {
+				i = 0;
+			} else if (this.isHoveredOrFocused()) {
+				i = 2;
+			}
+
+			return 46 + i * 20;
+		}
+	}
+
 	private class VeinInfoButton extends VeinTypeButton {
 		private Vein vein;
 
@@ -284,7 +382,7 @@ public class OreVeinAtlasScreen extends AbstractContainerScreen<OreVeinAtlasMenu
 		public void onPress() {
 			discovered.setVisible(false);
 			backButton.active = true;
-			selected = vein;
+			setSelected(vein);
 		}
 
 		public void setVein(Vein vein) {
@@ -449,6 +547,10 @@ public class OreVeinAtlasScreen extends AbstractContainerScreen<OreVeinAtlasMenu
 
 	private void send(Option opt, ResourceLocation id) {
 		NetworkHandler.sendDataToServer(new OreVeinAtlasClickPacket(opt, id));
+	}
+
+	private void send2(OreVeinAtlasClickPacket2.Option opt, int id) {
+		NetworkHandler.sendDataToServer(new OreVeinAtlasClickPacket2(opt, id));
 	}
 
 	public void target(VeinRecipe data) {

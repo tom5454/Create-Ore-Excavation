@@ -89,8 +89,10 @@
   "ore.coe.hardenedDiamond": "Hardened Diamond",
   "tag.item.createoreexcavation.drills": "All Drills",
   "tooltip.coe.atlas.exclude": "Vein Excluded",
+  "tooltip.coe.atlas.hide_vein": "Hide Vein",
   "tooltip.coe.atlas.include": "Click to exclude",
   "tooltip.coe.atlas.set_target": "Set Target",
+  "tooltip.coe.atlas.show_hide": "Show Hidden Veins",
   "tooltip.coe.atlas.switch_target": "Switch Target",
   "tooltip.coe.atlas.target": "Vein Targeted",
   "tooltip.coe.biome.blacklist": "Biome Blacklist:",
@@ -100,5 +102,6 @@
   "tooltip.coe.page": "Page: %s/%s",
   "tooltip.coe.processTime": "Ticks: %s",
   "tooltip.coe.variableImpact": "Variable Impact",
+  "tooltip.coe.vein_finder.filtered": "Ore Vein Finder filtered using the Atlas",
   "upgrade.createoreexcavation.vein_finder.adjective": "Vein Surveyor"
 }

@@ -15,8 +15,8 @@ public class OreVeinInfo {
 	private PolygonOverlay overlay;
 	public final ResourceLocation id;
 
-	public OreVeinInfo(DimChunkPos pos, VeinRecipe vein) {
-		int color = 0xFFFFFF00;
+	public OreVeinInfo(DimChunkPos pos, VeinRecipe vein, boolean legacy) {
+		int color = legacy ? 0xFF777777 : 0xFFFFFF00;
 		var displayId = "coe_vein_" + pos.x + ',' + pos.z;
 		var shapeProps = new ShapeProperties()
 				.setStrokeWidth(1)
@@ -42,5 +42,29 @@ public class OreVeinInfo {
 
 	public PolygonOverlay getOverlay() {
 		return overlay;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((overlay == null) ? 0 : overlay.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		OreVeinInfo other = (OreVeinInfo) obj;
+		if (id == null) {
+			if (other.id != null) return false;
+		} else if (!id.equals(other.id)) return false;
+		if (overlay == null) {
+			if (other.overlay != null) return false;
+		} else if (!overlay.equals(other.overlay)) return false;
+		return true;
 	}
 }

@@ -186,7 +186,8 @@ dependencies {
         default: println("Unknown recipe viewer specified: $recipe_viewer. Must be JEI, REI, EMI, or disabled.")
     }
     
-    modApi(group: 'info.journeymap', name: 'journeymap-api', version: '1.20-1.9-fabric-SNAPSHOT', changing: true)
+    //modApi(group: 'info.journeymap', name: 'journeymap-api', version: '2.0+1.20-fabric-SNAPSHOT', changing: true)
+    modApi("local:journeymap-api:1.20-1.9-fabric-S")//JourneyMap maven is missing the maven-metadata
     modImplementation('curse.maven:journeymap-32274:4841232')
     
     modCompileOnly("cc.tweaked:cc-tweaked-1.20.1-fabric-api:1.108.4")

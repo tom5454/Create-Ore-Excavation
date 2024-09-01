@@ -18,6 +18,7 @@ import net.minecraft.world.level.Level;
 import com.tom.createores.Registration;
 import com.tom.createores.menu.OreVeinAtlasMenu;
 import com.tom.createores.network.OreVeinAtlasClickPacket.Option;
+import com.tom.createores.network.OreVeinAtlasClickPacket2;
 import com.tom.createores.recipe.VeinRecipe;
 import com.tom.createores.util.DimChunkPos;
 import com.tom.createores.util.PlatformMenuProvider;
@@ -32,6 +33,7 @@ public class OreVeinAtlasItem extends Item implements PlatformMenuProvider {
 	public static final String POS_X = "x";
 	public static final String POS_Z = "z";
 	public static final String VEIN_ID = "id";
+	public static final String HIDE = "hide";
 
 	public OreVeinAtlasItem(Properties p_41383_) {
 		super(p_41383_);
@@ -135,6 +137,25 @@ public class OreVeinAtlasItem extends Item implements PlatformMenuProvider {
 			String st = id.toString();
 			ex.removeIf(t -> t instanceof StringTag s && s.getAsString().equals(st));
 			break;
+
+		default:
+			break;
+		}
+	}
+
+	public void menuClicked2(ItemStack is, OreVeinAtlasClickPacket2.Option opt, int id) {
+		var tag = is.getOrCreateTag();
+
+		switch (opt) {
+		case TOGGLE_HIDE:
+		{
+			ListTag veins = tag.getList(VEINS, Tag.TAG_COMPOUND);
+			if (veins.size() > id) {
+				var v = veins.getCompound(id);
+				v.putBoolean(HIDE, !v.getBoolean(HIDE));
+			}
+		}
+		break;
 
 		default:
 			break;

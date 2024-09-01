@@ -7,15 +7,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -24,6 +29,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import com.tom.createores.CreateOreExcavation;
+import com.tom.createores.Registration;
+import com.tom.createores.item.OreVeinAtlasItem;
 import com.tom.createores.recipe.VeinRecipe;
 import com.tom.createores.util.DimChunkPos;
 
@@ -36,7 +43,8 @@ public enum OreVeinsOverlay {
 	INSTANCE;
 	private static final Gson gson = new GsonBuilder().create();
 	private IClientAPI api;
-	private Map<DimChunkPos, OreVeinInfo> chunkData = new HashMap<>();
+	private Map<DimChunkPos, OreVeinInfo> chunkDataLegacy = new HashMap<>();
+	private Map<DimChunkPos, OreVeinInfo> chunkDataAtlas = new HashMap<>();
 	private Map<DimChunkPos, PolygonOverlay> chunkOverlays = new HashMap<>();
 	private List<OreDistanceInfo> oreDistanceInfos = new ArrayList<>();
 	private List<OreNearbyInfo> oreNearbyInfos = new ArrayList<>();
@@ -69,7 +77,7 @@ public enum OreVeinsOverlay {
 						VeinRecipe v = mngr.byKey(key).filter(r -> r instanceof VeinRecipe).map(r -> (VeinRecipe) r).orElse(null);
 						if (v != null) {
 							var p = new DimChunkPos(lvl, x, z);
-							chunkData.put(p, new OreVeinInfo(p, v));
+							chunkDataLegacy.put(p, new OreVeinInfo(p, v, true));
 						}
 					});
 				});
@@ -78,7 +86,7 @@ public enum OreVeinsOverlay {
 			}
 		}
 
-		chunkData.forEach((k, data) -> {
+		chunkDataLegacy.forEach((k, data) -> {
 			if (!k.dimension.equals(level.dimension())) return;
 			showOverlay(data.getOverlay());
 			chunkOverlays.put(k, data.getOverlay());
@@ -107,7 +115,7 @@ public enum OreVeinsOverlay {
 		modFolder.mkdirs();
 		try {
 			Map<ResourceLocation, List<Map<String, Object>>> dimMap = new HashMap<>();
-			chunkData.forEach((k, v) -> {
+			chunkDataLegacy.forEach((k, v) -> {
 				Map<String, Object> m = new HashMap<>();
 				m.put("x", k.x);
 				m.put("z", k.z);
@@ -130,7 +138,8 @@ public enum OreVeinsOverlay {
 			e.printStackTrace();
 		}
 
-		chunkData.clear();
+		chunkDataLegacy.clear();
+		chunkDataAtlas.clear();
 		chunkOverlays.clear();
 		oreDistanceInfos.clear();
 		oreNearbyInfos.clear();
@@ -161,15 +170,15 @@ public enum OreVeinsOverlay {
 
 	public void setVeinInfo(ChunkPos posIn, ResourceLocation id) {
 		DimChunkPos pos = new DimChunkPos(mc.level, posIn);
-		if (chunkData.containsKey(pos)) {
+		if (chunkDataLegacy.containsKey(pos)) {
 			PolygonOverlay ov = chunkOverlays.remove(pos);
 			if (activated && ov != null)api.remove(ov);
 		}
 		RecipeManager mngr = Minecraft.getInstance().getConnection().getRecipeManager();
 		VeinRecipe vein = mngr.byKey(id).filter(r -> r instanceof VeinRecipe).map(r -> (VeinRecipe) r).orElse(null);
 		if (vein != null) {
-			var info = new OreVeinInfo(pos, vein);
-			chunkData.put(pos, info);
+			var info = new OreVeinInfo(pos, vein, true);
+			chunkDataLegacy.put(pos, info);
 			if (activated) showOverlay(info.getOverlay());
 			chunkOverlays.put(pos, info.getOverlay());
 		}
@@ -206,8 +215,56 @@ public enum OreVeinsOverlay {
 	}
 
 	public void tick() {
+		if (mc.level == null)return;
+		long time = mc.level.getGameTime();
+		if (time % 20 == 0 && isActivated()) {
+			ItemStack atlas = ItemStack.EMPTY;
+			int c = mc.player.getInventory().getContainerSize();
+			for (int i = 0;i<c;i++) {
+				var is = mc.player.getInventory().getItem(i);
+				if (is.getItem() == Registration.VEIN_ATLAS_ITEM.get()) {
+					atlas = is;
+					break;
+				}
+			}
+			Set<DimChunkPos> found = new HashSet<>();
+			if (!atlas.isEmpty() && atlas.getTag() != null) {
+				ListTag veins = atlas.getTag().getList(OreVeinAtlasItem.VEINS, Tag.TAG_COMPOUND);
+				for (int i = 0;i < veins.size(); i++) {
+					var v = veins.getCompound(i);
+					if (v.getBoolean(OreVeinAtlasItem.HIDE))continue;
+					int x = v.getInt(OreVeinAtlasItem.POS_X);
+					int z = v.getInt(OreVeinAtlasItem.POS_Z);
+					var vid = ResourceLocation.tryParse(v.getString(OreVeinAtlasItem.VEIN_ID));
+					var dim = ResourceLocation.tryParse(v.getString(OreVeinAtlasItem.DIMENSION));
+					if (!dim.equals(mc.level.dimension().location()))continue;
+					var pos = new DimChunkPos(ResourceKey.create(Registries.DIMENSION, dim), x, z);
+					if (Minecraft.getInstance().level.getRecipeManager().byKey(vid).orElse(null) instanceof VeinRecipe vr) {
+						found.add(pos);
+						OreVeinInfo info = new OreVeinInfo(pos, vr, false);
+						if (chunkDataAtlas.containsKey(pos)) {
+							if (!chunkDataAtlas.get(pos).equals(info)) {
+								PolygonOverlay ov = chunkOverlays.remove(pos);
+								if (activated && ov != null)api.remove(ov);
+							} else continue;
+						}
+						chunkDataAtlas.put(pos, info);
+						if (activated) showOverlay(info.getOverlay());
+						chunkOverlays.put(pos, info.getOverlay());
+						chunkDataLegacy.remove(pos);
+					}
+				}
+			}
+			chunkDataAtlas.keySet().removeIf(e -> {
+				if (!found.contains(e)) {
+					PolygonOverlay ov = chunkOverlays.remove(e);
+					if (activated && ov != null)api.remove(ov);
+					return true;
+				}
+				return false;
+			});
+		}
 		if (!oreDistanceInfos.isEmpty()) {
-			long time = mc.level.getGameTime();
 			oreDistanceInfos.removeIf(i -> {
 				var t = i.timedOut(time);
 				if (t)api.remove(i.getOverlay());
@@ -215,7 +272,6 @@ public enum OreVeinsOverlay {
 			});
 		}
 		if (!oreNearbyInfos.isEmpty()) {
-			long time = mc.level.getGameTime();
 			oreNearbyInfos.removeIf(i -> {
 				var t = i.timedOut(time);
 				if (t)api.remove(i.getOverlay());

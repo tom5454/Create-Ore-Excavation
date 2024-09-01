@@ -89,8 +89,10 @@
   "ore.coe.hardenedDiamond": "puoɯɐıᗡ pǝuǝpɹɐH",
   "tag.item.createoreexcavation.drills": "sןןıɹᗡ ןןⱯ",
   "tooltip.coe.atlas.exclude": "pǝpnןɔxƎ uıǝΛ",
+  "tooltip.coe.atlas.hide_vein": "uıǝΛ ǝpıH",
   "tooltip.coe.atlas.include": "ǝpnןɔxǝ oʇ ʞɔıןƆ",
   "tooltip.coe.atlas.set_target": "ʇǝbɹɐ⟘ ʇǝS",
+  "tooltip.coe.atlas.show_hide": "suıǝΛ uǝppıH ʍoɥS",
   "tooltip.coe.atlas.switch_target": "ʇǝbɹɐ⟘ ɥɔʇıʍS",
   "tooltip.coe.atlas.target": "pǝʇǝbɹɐ⟘ uıǝΛ",
   "tooltip.coe.biome.blacklist": ":ʇsıןʞɔɐןᗺ ǝɯoıᗺ",
@@ -100,5 +102,6 @@
   "tooltip.coe.page": "%s/%s :ǝbɐԀ",
   "tooltip.coe.processTime": "%s :sʞɔı⟘",
   "tooltip.coe.variableImpact": "ʇɔɐdɯI ǝןqɐıɹɐΛ",
+  "tooltip.coe.vein_finder.filtered": "sɐןʇⱯ ǝɥʇ buısn pǝɹǝʇןıɟ ɹǝpuıℲ uıǝΛ ǝɹO",
   "upgrade.createoreexcavation.vein_finder.adjective": "ɹoʎǝʌɹnS uıǝΛ"
 }

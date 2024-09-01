@@ -17,9 +17,11 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.ChunkPos;
@@ -58,6 +60,34 @@ public class OreVeinFinderItem extends Item {
 			detect(ctx.getLevel(), ctx.getClickedPos(), ctx.getPlayer());
 
 		return InteractionResult.SUCCESS;
+	}
+
+	@Override
+	public void appendHoverText(ItemStack pStack, Level pLevel, List<Component> pTooltipComponents,
+			TooltipFlag pIsAdvanced) {
+		if (pStack.hasTag() && pStack.getTag().getBoolean("isFiltered")) {
+			pTooltipComponents.add(Component.translatable("tooltip.coe.vein_finder.filtered"));
+		}
+	}
+
+	@Override
+	public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
+		if (!pLevel.isClientSide && pEntity instanceof Player player && pLevel.getGameTime() % 20 == 10) {
+			boolean hasAtlas = false;
+			for (int i = 0;i < player.getInventory().getContainerSize(); i++) {
+				ItemStack is = player.getInventory().getItem(i);
+				if (is.getItem() == Registration.VEIN_ATLAS_ITEM.get()) {
+					hasAtlas = true;
+					break;
+				}
+			}
+			pStack.getOrCreateTag().putBoolean("isFiltered", hasAtlas);
+		}
+	}
+
+	@Override
+	public boolean isFoil(ItemStack pStack) {
+		return (pStack.hasTag() && pStack.getTag().getBoolean("isFiltered")) || super.isFoil(pStack);
 	}
 
 	private void detect(Level level, BlockPos pos, Player player) {

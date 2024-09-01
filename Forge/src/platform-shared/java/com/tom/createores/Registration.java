@@ -287,6 +287,9 @@ public class Registration {
 		add("tooltip.coe.atlas.target", "Vein Targeted");
 		add("tooltip.coe.atlas.switch_target", "Switch Target");
 		add("tooltip.coe.atlas.set_target", "Set Target");
+		add("tooltip.coe.atlas.show_hide", "Show Hidden Veins");
+		add("tooltip.coe.atlas.hide_vein", "Hide Vein");
+		add("tooltip.coe.vein_finder.filtered", "Ore Vein Finder filtered using the Atlas");
 		add("ore.coe.hardenedDiamond", "Hardened Diamond");
 		add("tag.item.createoreexcavation.drills", "All Drills");
 		add("jm.coe.veinsOverlayToggle", "Create: Ore Excavation veins overlay");

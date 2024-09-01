@@ -63,8 +63,9 @@ public class RandomSpreadGenerator {
 			if(chunkpos.x == chunk.x && chunkpos.z == chunk.z) {
 				WorldgenRandom rng = new WorldgenRandom(new LegacyRandomSource(0L));
 				rng.setLargeFeatureSeed(level.getSeed(), chunk.x, chunk.z);
-				BlockPos pos = new BlockPos(QuartPos.toBlock(rng.nextInt(4)), QuartPos.toBlock(minY + rng.nextInt(maxY)), QuartPos.toBlock(rng.nextInt(4))).offset(chunk.getWorldPosition());
-				if(level.findClosestBiome3d(b -> recipe.canGenerate(level, b), pos, 1, 1, 1) != null)
+				Holder<Biome> biome = level.getNoiseBiome(QuartPos.fromSection(chunk.x) + rng.nextInt(4), minY + rng.nextInt(maxY), QuartPos.fromSection(chunk.z) + rng.nextInt(4));
+
+				if (recipe.canGenerate(level, biome))
 					return recipe;
 			}
 			if(recipe == last)break;
@@ -79,7 +80,14 @@ public class RandomSpreadGenerator {
 			int j = SectionPos.blockToSectionCoord(pPos.getZ());
 			for(int k = 0; k <= radius; ++k) {
 				BlockPos pos = getNearestGenerated(level, i, j, k, level.getSeed(), r);
-				if(pos != null)return pos;
+				if(pos != null) {
+					if (level.isLoaded(pos)) {
+						OreData data = OreDataCapability.getData(level.getChunkAt(pos));
+						r = data.getRecipe(level.getRecipeManager());
+						if (r == null || !r.id.equals(id))continue;
+					}
+					return pos;
+				}
 			}
 		}
 		return null;
