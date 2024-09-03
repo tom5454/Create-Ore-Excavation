@@ -1,11 +1,12 @@
 {
 	"homepage": "https://www.curseforge.com/minecraft/mc-mods/create-ore-excavation",
 	"promos": {
-		"1.20.1-latest": "1.5.1",
+		"1.20.1-latest": "1.5.2",
 		"1.19.2-latest": "1.2.3",
 		"1.18.2-latest": "1.1.3"
 	},
 	"1.20.1": {
+		"1.5.2": "Updated to Create 0.5.1h",
 		"1.5.1": "Added hide vein button to the Ore Vein Atlas\nJourneyMap overlay now shows the veins from the atlas in the Inventory\nUpdated Mexican Spanish Translation\nImproved locate command accuracy",
 		"1.5.0": "Added Sample Drill, Ore Vein Atlas\nAdded Ore Vein Finder Turtles\nImproved ore vein finder\nImproved ponders\nFixed drilling machine and fluid extractor models",
 		"1.4.4": "Added Mexican Spanish Translation",

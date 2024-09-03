@@ -5,25 +5,21 @@ import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-import com.simibubi.create.AllEnchantments;
 import com.simibubi.create.content.equipment.armor.BacktankBlockEntity;
-import com.simibubi.create.content.equipment.armor.BacktankUtil;
 import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.equipment.goggles.IHaveHoveringInformation;
+import com.simibubi.create.foundation.blockEntity.ComparatorUtil;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 
@@ -95,9 +91,7 @@ public class SampleDrillBlockEntity extends SmartBlockEntity implements IHaveGog
 			BlockEntity be = level.getBlockEntity(worldPosition.above());
 			if (be instanceof BacktankBlockEntity t) {
 				int air = t.getAirLevel();
-				int level = getTagEnchantmentLevel(AllEnchantments.CAPACITY.get(), t.getEnchantmentTag());
-				int max = BacktankUtil.maxAir(level);
-				if (air > max / 5) {
+				if (t.getComparatorOutput() > ComparatorUtil.fractionToRedstoneLevel(0.2f)) {
 					int op = Mth.clamp(air / 80, 1, 4);
 					t.setAirLevel(air - op);
 					progress += op;
@@ -113,28 +107,11 @@ public class SampleDrillBlockEntity extends SmartBlockEntity implements IHaveGog
 		updateVein();
 		BlockEntity be = level.getBlockEntity(worldPosition.above());
 		if (be instanceof BacktankBlockEntity t) {
-			int level = getTagEnchantmentLevel(AllEnchantments.CAPACITY.get(), t.getEnchantmentTag());
-			int max = BacktankUtil.maxAir(level);
-			airTankLevel = t.getAirLevel() / (float) max;
+			airTankLevel = t.getComparatorOutput() / (float) ComparatorUtil.fractionToRedstoneLevel(1f);
 		} else {
 			airTankLevel = -1f;
 		}
 		notifyUpdate();
-	}
-
-	private static int getTagEnchantmentLevel(Enchantment p_44844_, ListTag listtag) {
-		if (listtag == null || listtag.isEmpty())return 0;
-		ResourceLocation resourcelocation = EnchantmentHelper.getEnchantmentId(p_44844_);
-
-		for(int i = 0; i < listtag.size(); ++i) {
-			CompoundTag compoundtag = listtag.getCompound(i);
-			ResourceLocation resourcelocation1 = EnchantmentHelper.getEnchantmentId(compoundtag);
-			if (resourcelocation1 != null && resourcelocation1.equals(resourcelocation)) {
-				return EnchantmentHelper.getEnchantmentLevel(compoundtag);
-			}
-		}
-
-		return 0;
 	}
 
 	@Override
