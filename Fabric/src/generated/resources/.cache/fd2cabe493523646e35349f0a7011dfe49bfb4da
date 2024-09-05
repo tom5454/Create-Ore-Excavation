@@ -1,8 +1,8 @@
-// 1.20.1	2024-08-31T20:06:59.9325289	Create Ore Excavation/Recipes
+// 1.20.1	2024-09-05T19:05:08.851663	Create Ore Excavation/Recipes
 95745b1125b69c6b3387b9a5c19772f8d34d8839 data\createoreexcavation\recipes\milling\redstone_milling.json
 8fd68dd1b0678600c04e649de67409c500a8c123 data\createoreexcavation\recipes\drilling\glowstone.json
-8fef68b69de76b81d26cd553602324d005d51b70 data\createoreexcavation\recipes\drilling\gold.json
 90c48f97e4d0828f71041aee9969e138a7df5c60 data\createoreexcavation\recipes\extractor.json
+8fef68b69de76b81d26cd553602324d005d51b70 data\createoreexcavation\recipes\drilling\gold.json
 80b0c5486b06800a6f57f54aafd0a2d0ba3010aa data\createoreexcavation\recipes\ore_vein_type\hardened_diamond.json
 2246f0e6974ccd8a34b9a72b1c9b77effa167f98 data\createoreexcavation\recipes\drilling_machine.json
 1f481d32c6d02c4e4dd33ca4036b82d2c0e52bc2 data\createoreexcavation\recipes\drilling\quartz.json
@@ -39,8 +39,8 @@ e435ed4339490f59ac3e75bebb5b5b6385847de0 data\createoreexcavation\recipes\vein_f
 c0af1487509ec2a35bafb7773ec4cbcab1cf0cf6 data\createoreexcavation\recipes\drilling\netherite.json
 f74839169dd2bb067c258a72cac93c4672a5a5be data\createoreexcavation\recipes\ore_vein_type\netherite.json
 699c5e47718c61196ed7478005cd2b9904e0ca32 data\createoreexcavation\recipes\ore_vein_type\diamond.json
-d53030686d52dd164e8fb3ac242576c273d3cff8 data\createoreexcavation\recipes\drilling\hardened_diamond.json
 c2aeb3ebe087643ae5c741a9ff1921b534f58044 data\createoreexcavation\recipes\ore_vein_type\copper.json
+d53030686d52dd164e8fb3ac242576c273d3cff8 data\createoreexcavation\recipes\drilling\hardened_diamond.json
 d31cbf2e7360c764c44d91b944424a5113f7b74e data\createoreexcavation\recipes\ore_vein_type\nether_gold.json
 7fc365030e1c56af5793dc6dad1fb28286f0a251 data\createoreexcavation\recipes\ore_vein_type\redstone.json
 d09ae1a460eb30ed94ee3193cccc3622e3cc830b data\createoreexcavation\recipes\drilling\zinc.json
