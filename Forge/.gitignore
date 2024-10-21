@@ -1,0 +1,12 @@
+.gradle
+.classpath
+.settings
+.eclipse
+bin
+build
+codes
+.project
+*.launch
+run
+old_stuff
+runs

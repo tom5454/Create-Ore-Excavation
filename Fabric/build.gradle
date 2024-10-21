@@ -198,10 +198,10 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 sourceSets {
 	main {
 		java {
-			srcDir "../CreateOreExcavation-1.20/src/platform-shared/java"
+			srcDir "../Forge/src/platform-shared/java"
 		}
 		resources {
-			srcDir "../CreateOreExcavation-1.20/src/platform-shared/resources"
+			srcDir "../Forge/src/platform-shared/resources"
 		}
 	}
 }

@@ -1,0 +1,38 @@
+{
+  "type": "fabric",
+  "name": "createoreexcavation-fabric-1.20",
+  "mcVer": "1.20",
+  "verId": "1.20.1",
+  "display": "[Fabric] Create Ore Excavation 1.20",
+  "git": "Create-Ore-Excavation/Fabric",
+  "subver": [
+	"1.20.1"
+  ],
+  "j17": true,
+  "depProjects": [
+    {
+      "slug": "create-fabric",
+      "type": "requiredDependency"
+    },
+    {
+      "slug": "chunk-storage-api-fabric",
+      "type": "embeddedLibrary"
+    },
+    {
+      "slug": "roughly-enough-items",
+      "type": "optionalDependency"
+    },
+    {
+      "slug": "jei",
+      "type": "optionalDependency"
+    },
+    {
+      "slug": "emi",
+      "type": "optionalDependency"
+    },
+    {
+      "slug": "kubejs",
+      "type": "optionalDependency"
+    }
+  ]
+}
