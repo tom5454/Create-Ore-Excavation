@@ -4,7 +4,7 @@
   "mcVer": "1.20",
   "verId": "1.20.1",
   "display": "[Fabric] Create Ore Excavation 1.20",
-  "git": "Create-Ore-Excavation/Fabric",
+  "onGit": true,
   "subver": [
 	"1.20.1"
   ],

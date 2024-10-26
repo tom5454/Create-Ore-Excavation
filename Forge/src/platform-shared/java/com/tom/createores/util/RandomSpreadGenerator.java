@@ -83,8 +83,8 @@ public class RandomSpreadGenerator {
 				if(pos != null) {
 					if (level.isLoaded(pos)) {
 						OreData data = OreDataCapability.getData(level.getChunkAt(pos));
-						r = data.getRecipe(level.getRecipeManager());
-						if (r == null || !r.id.equals(id))continue;
+						VeinRecipe vr = data.getRecipe(level.getRecipeManager());
+						if (vr == null || !vr.id.equals(id))continue;
 					}
 					return pos;
 				}

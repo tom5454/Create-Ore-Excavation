@@ -90,7 +90,7 @@ public class COECommand {
 				then(Commands.argument("recipe", ResourceLocationArgument.id()).suggests(ALL_RECIPES).
 						executes(c -> {
 							Recipe<?> rl = ResourceLocationArgument.getRecipe(c, "recipe");
-							if(rl instanceof VeinRecipe r) {
+							if(rl instanceof VeinRecipe) {
 								BlockPos blockpos = BlockPos.containing(c.getSource().getPosition());
 								Stopwatch stopwatch = Stopwatch.createStarted(Util.TICKER);
 								BlockPos at = OreVeinGenerator.getPicker(c.getSource().getLevel()).locate(rl.getId(), blockpos, c.getSource().getLevel(), 100);

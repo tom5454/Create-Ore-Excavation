@@ -4,7 +4,7 @@
   "mcVer": "1.20",
   "verId": "1.20.1",
   "display": "[Forge] Create Ore Excavation 1.20",
-  "git": "Create-Ore-Excavation/Forge",
+  "onGit": true,
   "subver": [
 	"1.20.1"
   ],
