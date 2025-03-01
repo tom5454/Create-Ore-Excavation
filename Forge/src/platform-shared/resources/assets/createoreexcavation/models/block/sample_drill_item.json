@@ -3,8 +3,8 @@
 	"parent": "block/block",
 	"textures": {
 		"1": "create:block/brass_casing",
-		"3": "create:block/copper_plating",
-		"4": "create:block/copper_gearbox",
+		"3": "create:block/copper_underside",
+		"4": "create:block/encased_pipe",
 		"7": "block/polished_andesite",
 		"9": "create:block/railway_casing_side",
 		"10": "create:block/andesite_casing_very_short",

@@ -3,6 +3,7 @@ package com.tom.createores.client;
 // Exported for Minecraft version 1.17 - 1.18 with Mojang mappings
 // Paste this class into your mod and generate all required imports
 
+import net.createmod.ponder.api.level.PonderLevel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -16,6 +17,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
@@ -25,8 +27,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
-import com.simibubi.create.foundation.ponder.PonderWorld;
-import com.simibubi.create.foundation.utility.RegisteredObjects;
 
 import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.block.entity.IDrill;
@@ -96,7 +96,7 @@ public class DrillRenderer<T extends BlockEntity & IDrill> extends SafeBlockEnti
 
 		ItemStack drill = pBlockEntity.getDrill();
 		if (!drill.isEmpty()) {
-			ResourceLocation rl = RegisteredObjects.getKeyOrThrow(drill.getItem());
+			ResourceLocation rl = BuiltInRegistries.ITEM.getKey(drill.getItem());
 			ResourceLocation tex = new ResourceLocation(rl.getNamespace(), "textures/entity/drill/" + rl.getPath() + ".png");
 			head.render(pPoseStack, pBufferSource.getBuffer(RenderType.entityCutoutNoCull(tex)), pPackedLight, pPackedOverlay);
 		}
@@ -105,7 +105,7 @@ public class DrillRenderer<T extends BlockEntity & IDrill> extends SafeBlockEnti
 
 		BlockPos below = pBlockEntity.getBelow();
 		BlockState state = pBlockEntity.getLevel().getBlockState(below);
-		if(pBlockEntity.shouldRenderRubble() && !state.isAir() && !(pBlockEntity.getLevel() instanceof PonderWorld)) {
+		if(pBlockEntity.shouldRenderRubble() && !state.isAir() && !(pBlockEntity.getLevel() instanceof PonderLevel)) {
 			try {
 				TextureAtlasSprite particle = PlatformClient.getBlockTexture(state, pBlockEntity.getLevel(), below);
 				rubble.render(pPoseStack, particle.wrap(pBufferSource.getBuffer(RenderType.cutout())), pPackedLight, pPackedOverlay);

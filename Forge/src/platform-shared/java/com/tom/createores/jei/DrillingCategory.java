@@ -3,13 +3,13 @@ package com.tom.createores.jei;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.createmod.catnip.layout.LayoutHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
 import com.simibubi.create.compat.jei.DoubleItemIcon;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
-import com.simibubi.create.foundation.ponder.ui.LayoutHelper;
 
 import com.tom.createores.Registration;
 import com.tom.createores.recipe.DrillingRecipe;
@@ -47,7 +47,7 @@ public class DrillingCategory extends ExcavatingCategory<DrillingRecipe> {
 				.addSlot(RecipeIngredientRole.OUTPUT, (xOffset) + layoutEntry.posX() + 1, yOffset + layoutEntry.posY() + 1)
 				.setBackground(CreateRecipeCategory.getRenderedSlot(layoutEntry.output()), -1, -1)
 				.addItemStack(layoutEntry.output().getStack())
-				.addTooltipCallback(CreateRecipeCategory.addStochasticTooltip(layoutEntry.output()))
+				.addRichTooltipCallback(CreateRecipeCategory.addStochasticTooltip(layoutEntry.output()))
 				);
 	}
 

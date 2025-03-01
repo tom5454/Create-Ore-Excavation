@@ -6,6 +6,7 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 import java.util.Comparator;
 import java.util.List;
 
+import net.createmod.catnip.lang.FontHelper.Palette;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -28,8 +29,7 @@ import com.simibubi.create.content.kinetics.base.IRotate.SpeedLevel;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.item.TooltipHelper;
-import com.simibubi.create.foundation.item.TooltipHelper.Palette;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 
 import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.OreDataCapability;
@@ -40,6 +40,7 @@ import com.tom.createores.recipe.ExcavatingRecipe;
 import com.tom.createores.recipe.VeinRecipe;
 import com.tom.createores.util.DimChunkPos;
 import com.tom.createores.util.NumberFormatter;
+import com.tom.createores.util.TooltipUtil;
 
 public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends SmartBlockEntity implements MultiblockCapHandler, IDrill {
 	protected int progress;
@@ -60,44 +61,42 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 		setLazyTickRate(20);
 	}
 
-	@SuppressWarnings({ "deprecation", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		VeinRecipe veinR = veinClient != null ? level.getRecipeManager().byKey(veinClient).filter(e -> e instanceof VeinRecipe).map(r -> (VeinRecipe) r).orElse(null) : null;
 		Component vein = veinR != null ? veinR.getName() : Component.translatable("chat.coe.veinFinder.nothing");
 		R rec = recipeClient != null ? level.getRecipeManager().byKey(recipeClient).filter(r -> r.getType() == getRecipeType()).map(r -> (R) r).orElse(null) : null;
-		tooltip.add(Component.literal(spacing).append(Component.translatable("chat.coe.veinFinder.found", vein)));
+		TooltipUtil.forGoggles(tooltip, Component.translatable("chat.coe.veinFinder.found", vein));
 		if(!hasRotation) {
-			tooltip.add(componentSpacing.plainCopy()
-					.append(Lang.translateDirect("tooltip.speedRequirement")
-							.withStyle(GOLD)));
+			TooltipUtil.forGoggles(tooltip, CreateLang.translateDirect("tooltip.speedRequirement")
+					.withStyle(GOLD));
 			Component hint =
-					Lang.translateDirect("gui.contraptions.not_fast_enough", I18n.get(getBlockState().getBlock()
+					CreateLang.translateDirect("gui.contraptions.not_fast_enough", I18n.get(getBlockState().getBlock()
 							.getDescriptionId()));
 			List<Component> cutString = TooltipHelper.cutTextComponent(hint, Palette.GRAY_AND_WHITE);
 			for (int i = 0; i < cutString.size(); i++)
-				tooltip.add(componentSpacing.plainCopy()
-						.append(cutString.get(i)));
+				TooltipUtil.forGoggles(tooltip, cutString.get(i).copy());
 		}
 		if(drillStack.isEmpty())
-			tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.drill.noDrill")));
+			TooltipUtil.forGoggles(tooltip, Component.translatable("info.coe.drill.noDrill"));
 		else
-			tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.drill.installed", drillStack.getHoverName())));
+			TooltipUtil.forGoggles(tooltip, Component.translatable("info.coe.drill.installed", drillStack.getHoverName()));
 
 		if(!level.getBlockState(getBelow()).isCollisionShapeFullBlock(level, getBelow())) {
-			tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.drill.noGround")));
+			TooltipUtil.forGoggles(tooltip, Component.translatable("info.coe.drill.noGround"));
 		}
 
 		if(rec != null) {
-			tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.drill.progress")).append(": [").append(ClientUtil.makeProgressBar(progress / (float) rec.getTicks())).append("]"));
-			if(resourceRemClient != 0)tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.drill.resourceRemaining", NumberFormatter.formatNumber(resourceRemClient))));
+			TooltipUtil.forGoggles(tooltip, Component.translatable("info.coe.drill.progress").append(": [").append(ClientUtil.makeProgressBar(progress / (float) rec.getTicks())).append("]"));
+			if(resourceRemClient != 0)TooltipUtil.forGoggles(tooltip, Component.translatable("info.coe.drill.resourceRemaining", NumberFormatter.formatNumber(resourceRemClient)));
 			if(!rec.getDrill().test(drillStack)) {
-				tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.drill.badDrill")));
+				TooltipUtil.forGoggles(tooltip, Component.translatable("info.coe.drill.badDrill"));
 			}
 			addToGoggleTooltip(tooltip, rec);
 		}
 		if(state != ExcavatorState.NO_ERROR) {
-			tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.drill.err_" + state.name().toLowerCase())));
+			TooltipUtil.forGoggles(tooltip, Component.translatable("info.coe.drill.err_" + state.name().toLowerCase()));
 		}
 
 		return true;

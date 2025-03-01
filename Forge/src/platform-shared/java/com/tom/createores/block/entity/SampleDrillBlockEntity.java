@@ -16,9 +16,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
 import com.simibubi.create.content.equipment.armor.BacktankBlockEntity;
-import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
-import com.simibubi.create.content.equipment.goggles.IHaveHoveringInformation;
 import com.simibubi.create.foundation.blockEntity.ComparatorUtil;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
@@ -30,6 +30,7 @@ import com.tom.createores.client.ClientUtil;
 import com.tom.createores.recipe.VeinRecipe;
 import com.tom.createores.util.DimChunkPos;
 import com.tom.createores.util.NumberFormatter;
+import com.tom.createores.util.TooltipUtil;
 
 public class SampleDrillBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation, IHaveHoveringInformation, IDrill {
 	public static final int DRILL_TIME = 200;
@@ -50,27 +51,27 @@ public class SampleDrillBlockEntity extends SmartBlockEntity implements IHaveGog
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		VeinRecipe veinR = veinClient != null ? level.getRecipeManager().byKey(veinClient).filter(e -> e instanceof VeinRecipe).map(r -> (VeinRecipe) r).orElse(null) : null;
 		Component vein = veinR != null ? veinR.getName() : Component.translatable("chat.coe.veinFinder.nothing");
-		tooltip.add(Component.literal(spacing).append(Component.translatable("chat.coe.veinFinder.found", vein)));
+		TooltipUtil.forGoggles(tooltip, Component.translatable("chat.coe.veinFinder.found", vein));
 
 		if(!level.getBlockState(worldPosition.below()).isCollisionShapeFullBlock(level, worldPosition.below())) {
-			tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.drill.noGround")));
+			TooltipUtil.forGoggles(tooltip, Component.translatable("info.coe.drill.noGround"));
 		}
 
 		if (drilling) {
 			if (progress < DRILL_TIME)
-				tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.drill.progress")).append(": [").append(ClientUtil.makeProgressBar(progress / (float) DRILL_TIME)).append("]"));
+				TooltipUtil.forGoggles(tooltip, Component.translatable("info.coe.drill.progress").append(": [").append(ClientUtil.makeProgressBar(progress / (float) DRILL_TIME)).append("]"));
 			else
-				tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.sample_drill.done")));
+				TooltipUtil.forGoggles(tooltip, Component.translatable("info.coe.sample_drill.done"));
 		} else if(airTankLevel > 0.2f) {
-			tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.sample_drill.click_to_start")));
+			TooltipUtil.forGoggles(tooltip, Component.translatable("info.coe.sample_drill.click_to_start"));
 		}
-		if(resourceRemClient != 0)tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.drill.resourceRemaining", NumberFormatter.formatNumber(resourceRemClient))));
+		if(resourceRemClient != 0)TooltipUtil.forGoggles(tooltip, Component.translatable("info.coe.drill.resourceRemaining", NumberFormatter.formatNumber(resourceRemClient)));
 		if (airTankLevel < 0)
-			tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.sample_drill.no_air")));
+			TooltipUtil.forGoggles(tooltip, Component.translatable("info.coe.sample_drill.no_air"));
 		else if (airTankLevel < 0.21f)
-			tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.sample_drill.low_air")));
+			TooltipUtil.forGoggles(tooltip, Component.translatable("info.coe.sample_drill.low_air"));
 		else
-			tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.sample_drill.air")).append(": [").append(ClientUtil.makeProgressBar(airTankLevel)).append("]"));
+			TooltipUtil.forGoggles(tooltip, Component.translatable("info.coe.sample_drill.air").append(": [").append(ClientUtil.makeProgressBar(airTankLevel)).append("]"));
 		return true;
 	}
 

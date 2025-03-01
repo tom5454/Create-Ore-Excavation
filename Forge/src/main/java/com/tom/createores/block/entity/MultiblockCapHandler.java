@@ -3,7 +3,7 @@ package com.tom.createores.block.entity;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
-import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 
 import com.tom.createores.util.IOBlockType;
 

@@ -19,6 +19,7 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.recipe.ExtractorRecipe;
 import com.tom.createores.util.IOBlockType;
+import com.tom.createores.util.TooltipUtil;
 
 public class ExtractorBlockEntity extends ExcavatingBlockEntityImpl<ExtractorRecipe> {
 	private Tank fluidTankOut;
@@ -64,7 +65,7 @@ public class ExtractorBlockEntity extends ExcavatingBlockEntityImpl<ExtractorRec
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-		tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.extractor.output")));
+		TooltipUtil.forGoggles(tooltip, Component.translatable("info.coe.extractor.output"));
 		containedFluidTooltip(tooltip, isPlayerSneaking, tankCapOut.cast());
 		return true;
 	}

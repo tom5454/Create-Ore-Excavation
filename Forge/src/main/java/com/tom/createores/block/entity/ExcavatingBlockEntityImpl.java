@@ -16,6 +16,7 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import com.tom.createores.recipe.ExcavatingRecipe;
 import com.tom.createores.util.IOBlockType;
+import com.tom.createores.util.TooltipUtil;
 
 public abstract class ExcavatingBlockEntityImpl<R extends ExcavatingRecipe> extends ExcavatingBlockEntity<R> {
 	protected FluidTank fluidTank;
@@ -56,7 +57,7 @@ public abstract class ExcavatingBlockEntityImpl<R extends ExcavatingRecipe> exte
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-		tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.drill.fluidInfo")));
+		TooltipUtil.forGoggles(tooltip, Component.translatable("info.coe.drill.fluidInfo"));
 		containedFluidTooltip(tooltip, isPlayerSneaking, tankCap.cast());
 		return true;
 	}
@@ -64,7 +65,7 @@ public abstract class ExcavatingBlockEntityImpl<R extends ExcavatingRecipe> exte
 	@Override
 	public void addToGoggleTooltip(List<Component> tooltip, R rec) {
 		if(rec.getDrillingFluid().getRequiredAmount() != 0 && (!rec.getDrillingFluid().test(fluidTank.getFluid()) || fluidTank.getFluidAmount() < rec.getDrillingFluid().getRequiredAmount())) {
-			tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.drill.noFluid")));
+			TooltipUtil.forGoggles(tooltip, Component.translatable("info.coe.drill.noFluid"));
 		}
 	}
 

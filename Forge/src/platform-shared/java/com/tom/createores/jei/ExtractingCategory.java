@@ -43,7 +43,7 @@ public class ExtractingCategory extends ExcavatingCategory<ExtractorRecipe> {
 		.addSlot(RecipeIngredientRole.OUTPUT, xOffset - 8, yOffset - 8)
 		.setBackground(CreateRecipeCategory.getRenderedSlot(), -1, -1)
 		.addIngredient(JeiPlatform.FLUID_STACK, JeiPlatform.wrapFluid(CreateRecipeCategory.withImprovedVisibility(recipe.getOutput())))
-		.addTooltipCallback(CreateRecipeCategory.addFluidTooltip(recipe.getOutput().getAmount()));
+		.addRichTooltipCallback(CreateRecipeCategory.addFluidTooltip(recipe.getOutput().getAmount()));
 
 	}
 }

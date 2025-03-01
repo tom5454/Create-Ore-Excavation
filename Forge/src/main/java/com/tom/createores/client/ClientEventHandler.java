@@ -4,6 +4,8 @@ import static net.minecraft.ChatFormatting.GRAY;
 
 import java.util.List;
 
+import net.createmod.catnip.lang.Lang;
+import net.createmod.catnip.lang.LangBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
@@ -16,8 +18,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import com.simibubi.create.content.equipment.goggles.GogglesItem;
 import com.simibubi.create.content.kinetics.base.IRotate.StressImpact;
 import com.simibubi.create.foundation.item.TooltipHelper;
-import com.simibubi.create.foundation.utility.Lang;
-import com.simibubi.create.foundation.utility.LangBuilder;
+import com.simibubi.create.foundation.utility.CreateLang;
 
 import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.Registration;
@@ -39,20 +40,20 @@ public class ClientEventHandler {
 	public static void appendVariableStress(List<Component> tooltip) {
 		boolean hasGoggles = GogglesItem.isWearingGoggles(Minecraft.getInstance().player);
 		boolean hasStressImpact = StressImpact.isEnabled();
-		LangBuilder rpmUnit = Lang.translate("generic.unit.rpm");
+		LangBuilder rpmUnit = CreateLang.translate("generic.unit.rpm");
 
 		if (hasStressImpact) {
-			Lang.translate("tooltip.stressImpact")
+			CreateLang.translate("tooltip.stressImpact")
 			.style(GRAY)
 			.addTo(tooltip);
 
 			StressImpact impactId = StressImpact.HIGH;
-			LangBuilder builder = Lang.builder()
-					.add(Lang.text(TooltipHelper.makeProgressBar(3, impactId.ordinal() + 1))
+			LangBuilder builder = CreateLang.builder()
+					.add(CreateLang.text(TooltipHelper.makeProgressBar(3, impactId.ordinal() + 1))
 							.style(impactId.getAbsoluteColor()));
 
 			if (hasGoggles) {
-				builder.add(Lang.text("1-?"))
+				builder.add(CreateLang.text("1-?"))
 				.text("x ")
 				.add(rpmUnit)
 				.add(Component.literal(" ").append(Component.translatable("tooltip.coe.variableImpact")))

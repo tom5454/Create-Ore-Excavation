@@ -1,12 +1,16 @@
 package com.tom.createores.data;
 
+import java.util.function.BiConsumer;
+
+import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraft.data.DataGenerator;
 
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import com.simibubi.create.foundation.ponder.PonderLocalization;
+import com.simibubi.create.Create;
+import com.tterrag.registrate.providers.ProviderType;
 
 import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.cc.TurtleUpgradeData;
@@ -22,7 +26,10 @@ public class DataGenerators {
 		generator.addProvider(event.includeServer(), new TurtleUpgradeData(generator.getPackOutput()));
 		if(event.includeClient()) {
 			ClientRegistration.register();
-			PonderLocalization.provideRegistrateLang(CreateOreExcavation.registrate());
+			CreateOreExcavation.registrate().addDataGenerator(ProviderType.LANG, provider -> {
+				BiConsumer<String, String> langConsumer = provider::add;
+				PonderIndex.getLangAccess().provideLang(Create.ID, langConsumer);
+			});
 		}
 	}
 }

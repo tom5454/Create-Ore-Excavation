@@ -15,6 +15,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.chunk.LevelChunk;
 
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -31,15 +32,15 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import com.mojang.logging.LogUtils;
-import com.simibubi.create.content.kinetics.BlockStressValues;
 import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.simibubi.create.infrastructure.config.AllConfigs;
 
+import com.tom.createores.client.CCClientInit;
 import com.tom.createores.client.ClientRegistration;
 import com.tom.createores.jm.JMEventListener;
 import com.tom.createores.network.NetworkHandler;
@@ -83,6 +84,10 @@ public class CreateOreExcavation {
 		FMLJavaModLoadingContext.get().getModEventBus().register(ForgeConfig.class);
 
 		journeyMap = ModList.get().isLoaded("journeymap");
+
+		if (CreateOreExcavation.isModLoaded("computercraft") && FMLEnvironment.dist == Dist.CLIENT) {
+			CCClientInit.init(FMLJavaModLoadingContext.get().getModEventBus());
+		}
 
 		// Register ourselves for server and other game events we are interested in
 		MinecraftForge.EVENT_BUS.register(this);
@@ -138,7 +143,7 @@ public class CreateOreExcavation {
 	private void setup(final FMLCommonSetupEvent event) {
 		LOGGER.info("Create Ore Excavation starting");
 		Registration.postRegister();
-		BlockStressValues.registerProvider(MODID, AllConfigs.server().kinetics.stressValues);
+		//BlockStressValues.IMPACTS.register(Registration.KINETIC_INPUT.get(), AllConfigs.server().kinetics.stressValues.getImpact(null));
 		COECommand.init();
 		NetworkHandler.init();
 	}

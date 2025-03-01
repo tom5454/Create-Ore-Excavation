@@ -6,7 +6,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
@@ -31,10 +30,9 @@ import com.tom.createores.block.entity.DrillBlockEntity;
 import com.tom.createores.block.entity.ExtractorBlockEntity;
 import com.tom.createores.block.entity.IOBlockEntity;
 import com.tom.createores.block.entity.KineticInputBlockEntity;
-import com.tom.createores.block.entity.KineticInputInstance;
+import com.tom.createores.block.entity.KineticInputVisual;
 import com.tom.createores.block.entity.MultiblockBlockEntity;
 import com.tom.createores.block.entity.SampleDrillBlockEntity;
-import com.tom.createores.cc.CCRegistration;
 import com.tom.createores.client.DrillRenderer;
 import com.tom.createores.client.KineticInputBlockEntityRenderer;
 import com.tom.createores.item.MultiBlockItem;
@@ -75,7 +73,7 @@ public class Registration {
 	public static final BlockEntry<KineticInputBlock> KINETIC_INPUT = REGISTRATE.block("kinetic_input", KineticInputBlock::new)
 			.initialProperties(SharedProperties::copperMetal)
 			.properties(MultiblockPart.propsGhost())
-			.transform(BlockStressDefaults.setImpact(16))
+			//.transform(BlockStressDefaults.setImpact(16))
 			.tag(BlockTags.NEEDS_IRON_TOOL)
 			.transform(TagGen.pickaxeOnly())
 			.blockstate((ctx, prov) -> prov.simpleBlock(ctx.getEntry(), prov.models().getBuilder("kinetic_in").texture("particle", new ResourceLocation("create:block/brass_casing"))))
@@ -84,7 +82,7 @@ public class Registration {
 
 	public static final BlockEntityEntry<KineticInputBlockEntity> KINETIC_INPUT_TILE = REGISTRATE
 			.blockEntity("kinetic_input", KineticInputBlockEntity::new)
-			.instance(() -> KineticInputInstance::new)
+			.visual(() -> KineticInputVisual::new)
 			.validBlocks(KINETIC_INPUT)
 			.renderer(() -> KineticInputBlockEntityRenderer::new)
 			.register();
@@ -296,7 +294,7 @@ public class Registration {
 		add("upgrade.createoreexcavation.vein_finder.adjective", "Vein Surveyor");
 
 		if (CreateOreExcavation.isModLoaded("computercraft")) {
-			CCRegistration.init();
+			//CCRegistration.init();
 		}
 	}
 
