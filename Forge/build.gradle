@@ -60,6 +60,11 @@ minecraft {
             property 'forge.enabledGameTestNamespaces', 'createoreexcavation'
             
             property 'production', 'true'
+            
+            property("mixin.env.remapRefMap", "true")
+			property("mixin.env.refMapRemappingFile", "${projectDir}/build/createSrgToMcp/output.srg")
+
+			arg("-mixin.config=create.mixins.json")
 
             mods {
                 createoreexcavation {
@@ -216,17 +221,18 @@ dependencies {
   	
   	implementation fg.deobf("curse.maven:the-one-probe-245211:4579432")
   	
-  	implementation(fg.deobf("com.simibubi.create:create-${minecraft_version}:${create_version}") { transitive = false })
+  	implementation(fg.deobf("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false })
     implementation(fg.deobf("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}"))
-    compileOnly(fg.deobf("dev.engine-room.flywheel:flywheel-forge-api-${flywheel_minecraft_version}:${flywheel_version}"))
-    runtimeOnly(fg.deobf("dev.engine-room.flywheel:flywheel-forge-${flywheel_minecraft_version}:${flywheel_version}"))
+    compileOnly(fg.deobf("dev.engine-room.flywheel:flywheel-forge-api-${minecraft_version}:${flywheel_version}"))
+    runtimeOnly(fg.deobf("dev.engine-room.flywheel:flywheel-forge-${minecraft_version}:${flywheel_version}"))
     implementation(fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}"))
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
   	
   	implementation fg.deobf("dev.latvian.mods:kubejs-forge:2001.6.3-build.45")
 	implementation fg.deobf("dev.latvian.mods:rhino-forge:2001.2.2-build.6")
 	implementation fg.deobf("dev.architectury:architectury-forge:9.1.12")
 	
-	compileOnly fg.deobf('maven.modrinth:cc-tweaked:rMtScs9u')
+	compileOnly fg.deobf('maven.modrinth:cc-tweaked:GYnSPc0b')
 	
 	implementation fg.deobf('curse.maven:journeymap-32274:5208416')
 	

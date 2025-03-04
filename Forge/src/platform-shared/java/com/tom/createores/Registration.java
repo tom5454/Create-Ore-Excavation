@@ -33,6 +33,7 @@ import com.tom.createores.block.entity.KineticInputBlockEntity;
 import com.tom.createores.block.entity.KineticInputVisual;
 import com.tom.createores.block.entity.MultiblockBlockEntity;
 import com.tom.createores.block.entity.SampleDrillBlockEntity;
+import com.tom.createores.cc.CCRegistration;
 import com.tom.createores.client.DrillRenderer;
 import com.tom.createores.client.KineticInputBlockEntityRenderer;
 import com.tom.createores.item.MultiBlockItem;
@@ -294,7 +295,7 @@ public class Registration {
 		add("upgrade.createoreexcavation.vein_finder.adjective", "Vein Surveyor");
 
 		if (CreateOreExcavation.isModLoaded("computercraft")) {
-			//CCRegistration.init();
+			CCRegistration.init();
 		}
 	}
 

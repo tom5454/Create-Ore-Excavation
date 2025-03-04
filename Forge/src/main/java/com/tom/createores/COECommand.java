@@ -34,7 +34,6 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.google.common.base.Stopwatch;
 
 import com.tom.createores.OreDataCapability.OreData;
-import com.tom.createores.recipe.ExcavatingRecipe;
 import com.tom.createores.recipe.VeinRecipe;
 import com.tom.createores.util.RandomSpreadGenerator;
 
@@ -65,7 +64,7 @@ public class COECommand {
 											float mul = FloatArgumentType.getFloat(c, "multiplier");
 											BlockPos p = BlockPosArgument.getLoadedBlockPos(c, "pos");
 											Recipe<?> rl = ResourceLocationArgument.getRecipe(c, "recipe");
-											if(rl.getType() instanceof ExcavatingRecipe) {
+											if(rl instanceof VeinRecipe) {
 												setVein(c.getSource(), p, rl.getId(), mul);
 												c.getSource().sendSuccess(() -> Component.translatable("command.coe.setvein.success", rl.getId()), true);
 												return 1;
