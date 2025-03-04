@@ -3,28 +3,28 @@ package com.tom.createores.util;
 import java.util.Locale;
 import java.util.function.Supplier;
 
+import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
-
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.neoforged.neoforge.capabilities.BlockCapability;
+import net.neoforged.neoforge.capabilities.Capabilities;
 
 public enum IOBlockType implements StringRepresentable {
-	ITEM_IN   (() -> ForgeCapabilities.ITEM_HANDLER),
-	ITEM_OUT  (() -> ForgeCapabilities.ITEM_HANDLER),
-	FLUID_IN  (() -> ForgeCapabilities.FLUID_HANDLER),
-	FLUID_OUT (() -> ForgeCapabilities.FLUID_HANDLER),
-	ENERGY_IN (() -> ForgeCapabilities.ENERGY),
-	ENERGY_OUT(() -> ForgeCapabilities.ENERGY),
+	ITEM_IN   (() -> Capabilities.ItemHandler.BLOCK),
+	ITEM_OUT  (() -> Capabilities.ItemHandler.BLOCK),
+	FLUID_IN  (() -> Capabilities.FluidHandler.BLOCK),
+	FLUID_OUT (() -> Capabilities.FluidHandler.BLOCK),
+	ENERGY_IN (() -> Capabilities.EnergyStorage.BLOCK),
+	ENERGY_OUT(() -> Capabilities.EnergyStorage.BLOCK),
 	;
 	private final String name;
-	private final Supplier<Capability<?>> cap;
+	private final Supplier<BlockCapability<?, Direction>> cap;
 
-	private IOBlockType(Supplier<Capability<?>> cap) {
+	private IOBlockType(Supplier<BlockCapability<?, Direction>> cap) {
 		name = name().toLowerCase(Locale.ROOT);
 		this.cap = cap;
 	}
 
-	public Capability<?> getCap() {
+	public BlockCapability<?, Direction> getCap() {
 		return cap.get();
 	}
 

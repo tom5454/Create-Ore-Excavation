@@ -1,12 +1,12 @@
 {
   "type": "forge",
-  "name": "createoreexcavation-1.20",
-  "mcVer": "1.20",
-  "verId": "1.20.1",
-  "display": "[Forge] Create Ore Excavation 1.20",
+  "name": "createoreexcavation-1.21",
+  "mcVer": "1.21",
+  "verId": "1.21.1",
+  "display": "[Forge] Create Ore Excavation 1.21",
   "onGit": true,
   "subver": [
-	"1.20.1"
+	"1.21.1"
   ],
   "j17": true,
   "depProjects": [
@@ -16,6 +16,10 @@
     },
     {
       "slug": "jei",
+      "type": "optionalDependency"
+    },
+    {
+      "slug": "cc-tweaked",
       "type": "optionalDependency"
     }
   ]

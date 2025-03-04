@@ -10,14 +10,17 @@ import net.createmod.catnip.lang.FontHelper.Palette;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.ChunkPos;
@@ -32,8 +35,8 @@ import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
 
 import com.tom.createores.CreateOreExcavation;
-import com.tom.createores.OreDataCapability;
-import com.tom.createores.OreDataCapability.OreData;
+import com.tom.createores.OreData;
+import com.tom.createores.OreDataAttachment;
 import com.tom.createores.Registration;
 import com.tom.createores.client.ClientUtil;
 import com.tom.createores.recipe.ExcavatingRecipe;
@@ -49,8 +52,8 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 	protected long resourceRemClient;
 	protected boolean hasRotation;
 	protected ItemStack drillStack;
-	protected R current;
-	protected VeinRecipe vein;
+	protected RecipeHolder<R> current;
+	protected RecipeHolder<VeinRecipe> vein;
 	protected OreData data;
 	protected ExcavatorState state = ExcavatorState.NO_VEIN;
 	protected boolean completedOneCycle;
@@ -64,9 +67,9 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 	@SuppressWarnings({ "unchecked" })
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-		VeinRecipe veinR = veinClient != null ? level.getRecipeManager().byKey(veinClient).filter(e -> e instanceof VeinRecipe).map(r -> (VeinRecipe) r).orElse(null) : null;
+		VeinRecipe veinR = veinClient != null ? level.getRecipeManager().byKey(veinClient).filter(e -> e.value() instanceof VeinRecipe).map(r -> (VeinRecipe) r.value()).orElse(null) : null;
 		Component vein = veinR != null ? veinR.getName() : Component.translatable("chat.coe.veinFinder.nothing");
-		R rec = recipeClient != null ? level.getRecipeManager().byKey(recipeClient).filter(r -> r.getType() == getRecipeType()).map(r -> (R) r).orElse(null) : null;
+		R rec = recipeClient != null ? level.getRecipeManager().byKey(recipeClient).filter(r -> r.value().getType() == getRecipeType()).map(r -> (R) r.value()).orElse(null) : null;
 		TooltipUtil.forGoggles(tooltip, Component.translatable("chat.coe.veinFinder.found", vein));
 		if(!hasRotation) {
 			TooltipUtil.forGoggles(tooltip, CreateLang.translateDirect("tooltip.speedRequirement")
@@ -109,16 +112,16 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 		current = null;
 
 		ChunkPos p = new ChunkPos(worldPosition);
-		data = OreDataCapability.getData(level.getChunk(p.x, p.z));
+		data = OreDataAttachment.getData(level.getChunk(p.x, p.z));
 		RecipeManager m = level.getRecipeManager();
 		if(data != null) {
 			vein = data.getRecipe(m);
 			if(vein != null) {
-				List<R> rec = m.getAllRecipesFor(getRecipeType()).stream().filter(r -> r.veinId.equals(vein.getId())).sorted(Comparator.comparingInt(r -> r.priority)).toList();
+				List<RecipeHolder<R>> rec = m.getAllRecipesFor(getRecipeType()).stream().filter(r -> r.value().veinId.equals(vein.id())).sorted(Comparator.comparingInt(r -> r.value().priority)).toList();
 				if(rec.size() == 1)current = rec.get(0);
 				else if(rec.size() > 1) {
-					for (R r : rec) {
-						if(validateRecipe(r)) {
+					for (RecipeHolder<R> r : rec) {
+						if(validateRecipe(r.value())) {
 							current = r;
 						}
 					}
@@ -141,12 +144,12 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 		super.tick();
 		if(!level.isClientSide) {
 			if(current != null && state == ExcavatorState.NO_ERROR) {
-				if(kinetic != null)kinetic.setStress(current.getStress());
+				if(kinetic != null)kinetic.setStress(current.value().getStress());
 				if(canExtract() && kinetic != null && kinetic.getRotationSpeed() >= SpeedLevel.MEDIUM.getSpeedValue() &&
-						current.getDrill().test(drillStack) && level.getBlockState(getBelow()).isCollisionShapeFullBlock(level, getBelow())) {
+						current.value().getDrill().test(drillStack) && level.getBlockState(getBelow()).isCollisionShapeFullBlock(level, getBelow())) {
 					float prg = kinetic.getRotationSpeed() / SpeedLevel.MEDIUM.getSpeedValue();
 					progress += prg;
-					if(progress >= current.getTicks()) {
+					if(progress >= current.value().getTicks()) {
 						updateState();
 						if(state == ExcavatorState.NO_ERROR) {
 							onFinished();
@@ -155,8 +158,8 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 						}
 						progress = 0;
 					}
-				} else if(!current.getDrill().test(drillStack)) {
-					R old = current;
+				} else if(!current.value().getDrill().test(drillStack)) {
+					RecipeHolder<R> old = current;
 					updateRecipe();
 					if (old != current)
 						progress = 0;
@@ -176,7 +179,7 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 			state = ExcavatorState.NO_VEIN;
 		} else if(!data.canExtract(level, worldPosition)) {
 			state = ExcavatorState.TOO_MANY_EXCAVATORS;
-		} else if(data.getResourcesRemaining(vein) == -1) {
+		} else if(data.getResourcesRemaining(vein.value()) == -1) {
 			state = ExcavatorState.VEIN_EMPTY;
 		} else if(current == null) {
 			state = ExcavatorState.NO_RECIPE;
@@ -192,21 +195,21 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 	}
 
 	@Override
-	protected void read(CompoundTag tag, boolean clientPacket) {
-		super.read(tag, clientPacket);
+	protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+		super.read(tag, registries, clientPacket);
 		progress = tag.getInt("progress");
-		drillStack = ItemStack.of(tag.getCompound("drill"));
+		drillStack = ItemStack.parseOptional(registries, tag.getCompound("drill"));
 		completedOneCycle = tag.getBoolean("finishedOnce");
 		if(clientPacket) {
 			state = ExcavatorState.VALUES[tag.getByte("state")];
 			if(tag.contains("veinId")) {
-				veinClient = new ResourceLocation(tag.getString("veinId"));
+				veinClient = ResourceLocation.tryParse(tag.getString("veinId"));
 				resourceRemClient = tag.getLong("resRem");
 			} else
 				veinClient = null;
 
 			if(tag.contains("currentRecipeId")) {
-				recipeClient = new ResourceLocation(tag.getString("currentRecipeId"));
+				recipeClient = ResourceLocation.tryParse(tag.getString("currentRecipeId"));
 			} else
 				recipeClient = null;
 
@@ -215,19 +218,19 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 	}
 
 	@Override
-	protected void write(CompoundTag tag, boolean clientPacket) {
-		super.write(tag, clientPacket);
+	public void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+		super.write(tag, registries, clientPacket);
 		tag.putInt("progress", progress);
-		tag.put("drill", drillStack.save(new CompoundTag()));
+		if (!drillStack.isEmpty())tag.put("drill", drillStack.save(registries));
 		tag.putBoolean("finishedOnce", completedOneCycle);
 		if(clientPacket) {
 			tag.putByte("state", (byte) state.ordinal());
 			if(vein != null) {
-				tag.putString("veinId", vein.getId().toString());
-				tag.putLong("resRem", data.getResourcesRemaining(vein));
+				tag.putString("veinId", vein.id().toString());
+				tag.putLong("resRem", data.getResourcesRemaining(vein.value()));
 			}
 			if(current != null) {
-				tag.putString("currentRecipeId", current.getId().toString());
+				tag.putString("currentRecipeId", current.id().toString());
 			}
 			tag.putBoolean("hasRot", kinetic != null && kinetic.getRotationSpeed() >= SpeedLevel.MEDIUM.getSpeedValue());
 		}
@@ -263,7 +266,7 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 		dropItemStack(drillStack);
 	}
 
-	public InteractionResult onClick(Player player, InteractionHand hand) {
+	public ItemInteractionResult onClick(Player player, InteractionHand hand) {
 		ItemStack item = player.getItemInHand(hand);
 		if (item.getItem() == Registration.VEIN_ATLAS_ITEM.get()) {
 			if(!level.isClientSide) {
@@ -273,25 +276,27 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 					player.displayClientMessage(Component.translatable("chat.coe.sampleDrill.notDone"), true);
 				}
 			}
-			return InteractionResult.SUCCESS;
-		}
-		if(!item.isEmpty() && item.is(CreateOreExcavation.DRILL_TAG)) {
-			if(drillStack.isEmpty()) {
+			return ItemInteractionResult.SUCCESS;
+		} else if(item.is(CreateOreExcavation.DRILL_TAG)) {
+			if (drillStack.isEmpty()) {
 				if(!level.isClientSide)drillStack = item.split(1);
 				notifyUpdate();
+				return ItemInteractionResult.SUCCESS;
+			}
+		}
+		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+	}
+
+	public InteractionResult onClick(Player player) {
+		if(!drillStack.isEmpty()) {
+			if(!level.isClientSide) {
+				if(player.addItem(drillStack)) {
+					drillStack = ItemStack.EMPTY;
+					notifyUpdate();
+					return InteractionResult.CONSUME;
+				}
 				return InteractionResult.SUCCESS;
-			}
-		} else if(item.isEmpty()) {
-			if(!drillStack.isEmpty()) {
-				if(!level.isClientSide) {
-					if(player.addItem(drillStack)) {
-						drillStack = ItemStack.EMPTY;
-						notifyUpdate();
-						return InteractionResult.CONSUME;
-					}
-					return InteractionResult.SUCCESS;
-				} else return InteractionResult.SUCCESS;
-			}
+			} else return InteractionResult.SUCCESS;
 		}
 		return InteractionResult.PASS;
 	}
@@ -306,7 +311,7 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 
 	@Override
 	protected AABB createRenderBoundingBox() {
-		return new AABB(worldPosition.offset(-1, -1, -1), worldPosition.offset(1, 0, 1));
+		return AABB.encapsulatingFullBlocks(worldPosition.offset(-1, -1, -1), worldPosition.offset(1, 0, 1));
 	}
 
 	@Override

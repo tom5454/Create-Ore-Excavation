@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "create",
+  "key": {
+    "a": {
+      "tag": "c:gems/amethyst"
+    },
+    "e": {
+      "item": "minecraft:ender_eye"
+    },
+    "r": {
+      "tag": "c:ores/redstone"
+    },
+    "s": {
+      "tag": "c:rods/wooden"
+    }
+  },
+  "pattern": [
+    "ea ",
+    "rs ",
+    "  s"
+  ],
+  "result": {
+    "count": 1,
+    "id": "createoreexcavation:vein_finder"
+  }
+}

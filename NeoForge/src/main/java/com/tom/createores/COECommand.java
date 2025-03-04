@@ -19,12 +19,11 @@ import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.ChunkPos;
-
-import net.minecraftforge.client.ClientCommandSourceStack;
-import net.minecraftforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.client.ClientCommandSourceStack;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -33,8 +32,6 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 
 import com.google.common.base.Stopwatch;
 
-import com.tom.createores.OreDataCapability.OreData;
-import com.tom.createores.recipe.ExcavatingRecipe;
 import com.tom.createores.recipe.VeinRecipe;
 import com.tom.createores.util.RandomSpreadGenerator;
 
@@ -52,10 +49,10 @@ public class COECommand {
 						then(Commands.argument("recipe", ResourceLocationArgument.id()).suggests(ALL_RECIPES).
 								executes(c -> {
 									BlockPos p = BlockPosArgument.getLoadedBlockPos(c, "pos");
-									Recipe<?> rl = ResourceLocationArgument.getRecipe(c, "recipe");
-									if(rl instanceof VeinRecipe) {
-										setVein(c.getSource(), p, rl.getId(), 0.8F);
-										c.getSource().sendSuccess(() -> Component.translatable("command.coe.setvein.success", rl.getId()), true);
+									RecipeHolder<?> rl = ResourceLocationArgument.getRecipe(c, "recipe");
+									if(rl.value() instanceof VeinRecipe) {
+										setVein(c.getSource(), p, rl.id(), 0.8F);
+										c.getSource().sendSuccess(() -> Component.translatable("command.coe.setvein.success", rl.id()), true);
 										return 1;
 									}
 									return 0;
@@ -64,10 +61,10 @@ public class COECommand {
 										executes(c -> {
 											float mul = FloatArgumentType.getFloat(c, "multiplier");
 											BlockPos p = BlockPosArgument.getLoadedBlockPos(c, "pos");
-											Recipe<?> rl = ResourceLocationArgument.getRecipe(c, "recipe");
-											if(rl.getType() instanceof ExcavatingRecipe) {
-												setVein(c.getSource(), p, rl.getId(), mul);
-												c.getSource().sendSuccess(() -> Component.translatable("command.coe.setvein.success", rl.getId()), true);
+											RecipeHolder<?> rl = ResourceLocationArgument.getRecipe(c, "recipe");
+											if(rl.value() instanceof VeinRecipe) {
+												setVein(c.getSource(), p, rl.id(), mul);
+												c.getSource().sendSuccess(() -> Component.translatable("command.coe.setvein.success", rl.id()), true);
 												return 1;
 											}
 											return 0;
@@ -89,11 +86,11 @@ public class COECommand {
 		l.then(Commands.literal("locate").requires(s -> s.hasPermission(2)).
 				then(Commands.argument("recipe", ResourceLocationArgument.id()).suggests(ALL_RECIPES).
 						executes(c -> {
-							Recipe<?> rl = ResourceLocationArgument.getRecipe(c, "recipe");
-							if(rl instanceof VeinRecipe) {
+							RecipeHolder<?> rl = ResourceLocationArgument.getRecipe(c, "recipe");
+							if(rl.value() instanceof VeinRecipe) {
 								BlockPos blockpos = BlockPos.containing(c.getSource().getPosition());
 								Stopwatch stopwatch = Stopwatch.createStarted(Util.TICKER);
-								BlockPos at = OreVeinGenerator.getPicker(c.getSource().getLevel()).locate(rl.getId(), blockpos, c.getSource().getLevel(), 100);
+								BlockPos at = OreVeinGenerator.getPicker(c.getSource().getLevel()).locate(rl.id(), blockpos, c.getSource().getLevel(), 100);
 								stopwatch.stop();
 								if(at != null) {
 									int i = Mth.floor(RandomSpreadGenerator.distance2d(at, blockpos));
@@ -101,15 +98,15 @@ public class COECommand {
 										return p_214489_.withColor(ChatFormatting.GREEN).withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tp @s " + at.getX() + " ~ " + at.getZ())).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.translatable("chat.coordinates.tooltip")));
 									});
 									c.getSource().sendSuccess(() -> {
-										return Component.translatable("command.coe.locate.success", rl.getId().toString(), component, i);
+										return Component.translatable("command.coe.locate.success", rl.id().toString(), component, i);
 									}, false);
-									CreateOreExcavation.LOGGER.info("Locating element " + rl.getId() + " took " + stopwatch.elapsed().toMillis() + " ms");
+									CreateOreExcavation.LOGGER.info("Locating element " + rl.id() + " took " + stopwatch.elapsed().toMillis() + " ms");
 									return i;
 								} else {
-									throw ERROR_VEIN_NOT_FOUND.create(rl.getId().toString());
+									throw ERROR_VEIN_NOT_FOUND.create(rl.id().toString());
 								}
 							} else {
-								throw ERROR_VEIN_NOT_FOUND.create(rl.getId().toString());
+								throw ERROR_VEIN_NOT_FOUND.create(rl.id().toString());
 							}
 						})
 						)
@@ -119,14 +116,14 @@ public class COECommand {
 
 	private static void setVein(CommandSourceStack css, BlockPos pos, ResourceLocation rl, float mul) {
 		ChunkPos p = new ChunkPos(pos);
-		OreData data = OreDataCapability.getData(css.getLevel().getChunk(p.x, p.z));
+		OreData data = OreDataAttachment.getData(css.getLevel().getChunk(p.x, p.z));
 		data.setRecipe(rl);
 		data.setLoaded(true);
 		data.setRandomMul(mul);
 		data.setExtractedAmount(0);
 	}
 
-	public static final SuggestionProvider<CommandSourceStack> ALL_RECIPES = SuggestionProviders.register(new ResourceLocation(CreateOreExcavation.MODID, "all_recipes"), (ctx, builder) -> {
+	public static final SuggestionProvider<CommandSourceStack> ALL_RECIPES = SuggestionProviders.register(ResourceLocation.tryBuild(CreateOreExcavation.MODID, "all_recipes"), (ctx, builder) -> {
 		Stream<ResourceLocation> rl;
 		RecipeManager rm;
 		if(ctx.getSource() instanceof ClientCommandSourceStack || ctx.getSource() instanceof ClientSuggestionProvider) {
@@ -137,7 +134,7 @@ public class COECommand {
 			rm = null;
 		}
 		if(rm != null) {
-			rl = rm.getAllRecipesFor(CreateOreExcavation.VEIN_RECIPES.getRecipeType()).stream().map(VeinRecipe::getId);
+			rl = rm.getAllRecipesFor(CreateOreExcavation.VEIN_RECIPES.getRecipeType()).stream().map(RecipeHolder::id);
 		} else rl = Stream.empty();
 
 		return SharedSuggestionProvider.suggestResource(rl, builder);

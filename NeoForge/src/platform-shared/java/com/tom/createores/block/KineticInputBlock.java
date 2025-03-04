@@ -7,6 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -21,10 +22,12 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import com.mojang.serialization.MapCodec;
 import com.simibubi.create.content.kinetics.base.KineticBlock;
 import com.simibubi.create.foundation.block.IBE;
 
@@ -34,6 +37,12 @@ import com.tom.createores.block.entity.KineticInputBlockEntity;
 
 public class KineticInputBlock extends KineticBlock implements MultiblockGhostPart, IBE<KineticInputBlockEntity> {
 	public static final DirectionProperty SHAFT_FACING = DirectionProperty.create("shaft");
+	public static final MapCodec<KineticInputBlock> CODEC = simpleCodec(KineticInputBlock::new);
+
+	@Override
+	protected MapCodec<? extends Block> codec() {
+		return CODEC;
+	}
 
 	public KineticInputBlock(Properties pr) {
 		super(pr);
@@ -82,15 +91,22 @@ public class KineticInputBlock extends KineticBlock implements MultiblockGhostPa
 	}
 
 	@Override
-	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player pPlayer) {
-		super.playerWillDestroy(level, pos, state, pPlayer);
+	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player pPlayer) {
+		var st = super.playerWillDestroy(level, pos, state, pPlayer);
 		destroyParent(level, pos, state, pPlayer);
+		return st;
 	}
 
 	@Override
-	public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand,
-			BlockHitResult pHit) {
-		return onActivate(pState, pLevel, pPos, pPlayer, pHand, pHit);
+	protected ItemInteractionResult useItemOn(ItemStack item, BlockState state, Level level,
+			BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		return onActivate(state, level, pos, player, hand, hit);
+	}
+
+	@Override
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player,
+			BlockHitResult hit) {
+		return onActivate(state, level, pos, player, hit);
 	}
 
 	@Override
@@ -114,7 +130,8 @@ public class KineticInputBlock extends KineticBlock implements MultiblockGhostPa
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos,
+			Player player) {
 		return pickBlock(level, pos, state);
 	}
 }

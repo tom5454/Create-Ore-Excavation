@@ -1,0 +1,45 @@
+{
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": true,
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "c:storage_blocks/brass"
+    },
+    "C": {
+      "item": "create:brass_casing"
+    },
+    "D": {
+      "item": "create:mechanical_drill"
+    },
+    "H": {
+      "item": "create:hose_pulley"
+    },
+    "P": {
+      "item": "create:mechanical_pump"
+    },
+    "b": {
+      "tag": "c:plates/brass"
+    },
+    "e": {
+      "item": "create:electron_tube"
+    },
+    "m": {
+      "item": "create:precision_mechanism"
+    },
+    "s": {
+      "item": "create:sturdy_sheet"
+    }
+  },
+  "pattern": [
+    "BbPbB",
+    "beHeb",
+    "CmDmb",
+    "bsssb",
+    "BbbbB"
+  ],
+  "result": {
+    "count": 1,
+    "id": "createoreexcavation:extractor"
+  }
+}

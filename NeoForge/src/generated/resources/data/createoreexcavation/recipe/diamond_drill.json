@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "create",
+  "key": {
+    "b": {
+      "tag": "c:storage_blocks/diamond"
+    },
+    "d": {
+      "item": "createoreexcavation:drill"
+    },
+    "i": {
+      "tag": "c:gems/diamond"
+    }
+  },
+  "pattern": [
+    "bi ",
+    "idi",
+    " ii"
+  ],
+  "result": {
+    "count": 1,
+    "id": "createoreexcavation:diamond_drill"
+  }
+}

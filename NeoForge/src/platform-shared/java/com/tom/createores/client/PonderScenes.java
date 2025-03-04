@@ -198,7 +198,7 @@ public class PonderScenes {
 		.placeNearTarget();
 		scene.idle(10);
 
-		scene.overlay().showControls(util.vector().topOf(ground.above()), Pointing.DOWN, 30);
+		scene.overlay().showControls(util.vector().topOf(ground.above()), Pointing.DOWN, 30).rightClick();
 		scene.world().modifyBlockEntity(drillAt, SampleDrillBlockEntity.class, be -> {
 			be.setDrilling(true);
 			be.setAirTankLevel(1f);

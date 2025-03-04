@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "create",
+  "key": {
+    "b": {
+      "tag": "c:storage_blocks/iron"
+    },
+    "i": {
+      "tag": "c:ingots/iron"
+    }
+  },
+  "pattern": [
+    "bi ",
+    "ibi",
+    " ii"
+  ],
+  "result": {
+    "count": 1,
+    "id": "createoreexcavation:drill"
+  }
+}

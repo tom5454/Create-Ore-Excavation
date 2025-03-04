@@ -1,0 +1,18 @@
+{
+  "type": "createoreexcavation:vein",
+  "amountMultiplierMax": 12.0,
+  "amountMultiplierMin": 5.0,
+  "biomeWhitelist": "minecraft:is_nether",
+  "finite": "default",
+  "icon": {
+    "count": 1,
+    "id": "minecraft:glowstone_dust"
+  },
+  "name": "{\"translate\":\"item.minecraft.glowstone_dust\"}",
+  "placement": {
+    "salt": 642680510,
+    "separation": 8,
+    "spacing": 128
+  },
+  "priority": 0
+}

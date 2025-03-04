@@ -1,0 +1,17 @@
+{
+  "type": "createoreexcavation:drilling",
+  "drill": {
+    "tag": "createoreexcavation:drills"
+  },
+  "output": [
+    {
+      "item": {
+        "id": "minecraft:raw_iron"
+      }
+    }
+  ],
+  "priority": 0,
+  "stress": 256,
+  "ticks": 600,
+  "veinId": "createoreexcavation:ore_vein_type/iron"
+}

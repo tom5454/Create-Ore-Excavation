@@ -1,9 +1,11 @@
 package com.tom.createores.recipe;
 
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.FriendlyByteBuf;
+import java.util.function.Supplier;
+
+import net.minecraft.core.HolderLookup;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -11,27 +13,30 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.simibubi.create.foundation.item.SmartInventory;
 
-import com.google.gson.JsonObject;
-
-import com.tom.createores.CreateOreExcavation.RecipeTypeGroup;
-
 public abstract class ExcavatingRecipe implements Recipe<SmartInventory> {
-	public ResourceLocation id;
-	public RecipeType<?> type;
-	public RecipeSerializer<?> serializer;
 	public ResourceLocation veinId;
 	public Ingredient drill;
 	public int priority, ticks, stressMul;
 	public FluidIngredient drillingFluid;
 	protected boolean isNet;
 
-	public ExcavatingRecipe(ResourceLocation id, RecipeType<?> type, RecipeSerializer<?> serializer) {
-		this.id = id;
-		this.type = type;
-		this.serializer = serializer;
+	protected void setFromCommon(ExcavatingRecipeCommon c) {
+		veinId = c.veinId();
+		drill = c.drill();
+		priority = c.priority();
+		ticks = c.ticks();
+		stressMul = c.stressMul();
+		drillingFluid = c.drillingFluid();
+	}
+
+	protected ExcavatingRecipeCommon getCommon() {
+		return new ExcavatingRecipeCommon(veinId, drill, priority, ticks, stressMul, drillingFluid);
 	}
 
 	@Override
@@ -40,7 +45,7 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory> {
 	}
 
 	@Override
-	public ItemStack assemble(SmartInventory p_44001_, RegistryAccess p_267165_) {
+	public ItemStack assemble(SmartInventory p_44001_, HolderLookup.Provider p_267165_) {
 		return getResultItem(p_267165_);
 	}
 
@@ -50,23 +55,8 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory> {
 	}
 
 	@Override
-	public ItemStack getResultItem(RegistryAccess p_267052_) {
+	public ItemStack getResultItem(HolderLookup.Provider p_267052_) {
 		return ItemStack.EMPTY;
-	}
-
-	@Override
-	public ResourceLocation getId() {
-		return id;
-	}
-
-	@Override
-	public RecipeSerializer<?> getSerializer() {
-		return serializer;
-	}
-
-	@Override
-	public RecipeType<?> getType() {
-		return type;
 	}
 
 	public Ingredient getDrill() {
@@ -88,50 +78,22 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory> {
 		return drillingFluid;
 	}
 
-	protected abstract void fromJson(JsonObject json);
-	protected abstract void toJson(JsonObject json);
-	protected abstract void fromNetwork(FriendlyByteBuf buffer);
-	protected abstract void toNetwork(FriendlyByteBuf buffer);
+	protected abstract void fromNetwork(RegistryFriendlyByteBuf buffer);
+	protected abstract void toNetwork(RegistryFriendlyByteBuf buffer);
 
-	public static class Serializer<T extends ExcavatingRecipe> implements RecipeSerializer<T> {
-		private final RecipeTypeGroup<?> type;
-		private final RecipeFactory<T> create;
+	public static record ExcavatingRecipeCommon(ResourceLocation veinId, Ingredient drill, int priority, int ticks, int stressMul, FluidIngredient drillingFluid) {
+	}
 
-		public Serializer(RecipeTypeGroup<?> type, RecipeFactory<T> create) {
-			this.type = type;
+	public static abstract class Serializer<T extends ExcavatingRecipe> implements RecipeSerializer<T> {
+		private final Supplier<T> create;
+
+		public Serializer(Supplier<T> create) {
 			this.create = create;
 		}
 
-		@Override
-		public T fromJson(ResourceLocation pRecipeId, JsonObject json) {
-			T r = create.create(pRecipeId, type.getRecipeType(), this);
-			r.drill = Ingredient.fromJson(json.get("drill"));
-			r.ticks = GsonHelper.getAsInt(json, "ticks");
-			r.priority = GsonHelper.getAsInt(json, "priority", 0);
-			r.stressMul = GsonHelper.getAsInt(json, "stress", 256);
-			r.veinId = new ResourceLocation(GsonHelper.getAsString(json, "vein_id"));
-			r.drillingFluid = FluidIngredient.EMPTY;
-			if (GsonHelper.isValidNode(json, "fluid"))
-				r.drillingFluid = FluidIngredient.deserialize(json.get("fluid"));
-			r.fromJson(json);
-			return r;
-		}
-
-		public void toJson(T recipe, JsonObject json) {
-			json.add("drill", recipe.drill.toJson());
-			json.addProperty("ticks", recipe.ticks);
-			json.addProperty("stress", recipe.stressMul);
-			json.addProperty("priority", recipe.priority);
-			json.addProperty("vein_id", recipe.veinId.toString());
-			if(recipe.drillingFluid != FluidIngredient.EMPTY)
-				json.add("fluid", recipe.drillingFluid.serialize());
-			recipe.toJson(json);
-		}
-
-		@Override
-		public T fromNetwork(ResourceLocation pRecipeId, FriendlyByteBuf buffer) {
-			T r = create.create(pRecipeId, type.getRecipeType(), this);
-			r.drill = Ingredient.fromNetwork(buffer);
+		private T fromNetwork(RegistryFriendlyByteBuf buffer) {
+			T r = create.get();
+			r.drill = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
 			r.ticks = buffer.readVarInt();
 			r.stressMul = buffer.readVarInt();
 			r.priority = buffer.readVarInt();
@@ -145,9 +107,8 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory> {
 			return r;
 		}
 
-		@Override
-		public void toNetwork(FriendlyByteBuf buffer, T recipe) {
-			recipe.drill.toNetwork(buffer);
+		private void toNetwork(RegistryFriendlyByteBuf buffer, T recipe) {
+			Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.drill);
 			buffer.writeVarInt(recipe.ticks);
 			buffer.writeVarInt(recipe.stressMul);
 			buffer.writeVarInt(recipe.priority);
@@ -157,13 +118,34 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory> {
 				buffer.writeBoolean(false);
 			} else {
 				buffer.writeBoolean(true);
-				recipe.drillingFluid.write(buffer);
+				FluidIngredient.write(buffer, recipe.drillingFluid);
 			}
+		}
+
+		public static final MapCodec<ExcavatingRecipeCommon> CODEC = RecordCodecBuilder.mapCodec(
+				b -> b.group(
+						ResourceLocation.CODEC.fieldOf("veinId").forGetter(ExcavatingRecipeCommon::veinId),
+						Ingredient.CODEC.optionalFieldOf("drill", Ingredient.EMPTY).forGetter(ExcavatingRecipeCommon::drill),
+						Codec.INT.fieldOf("priority").forGetter(ExcavatingRecipeCommon::priority),
+						Codec.INT.fieldOf("ticks").forGetter(ExcavatingRecipeCommon::ticks),
+						Codec.INT.fieldOf("stress").forGetter(ExcavatingRecipeCommon::stressMul),
+						FluidIngredient.CODEC.optionalFieldOf("fluid", FluidIngredient.EMPTY).forGetter(ExcavatingRecipeCommon::drillingFluid)
+						)
+				.apply(b, ExcavatingRecipeCommon::new)
+				);
+
+		public final StreamCodec<RegistryFriendlyByteBuf, T> STREAM_CODEC = StreamCodec.of(
+				this::toNetwork, this::fromNetwork
+				);
+
+		@Override
+		public StreamCodec<RegistryFriendlyByteBuf, T> streamCodec() {
+			return STREAM_CODEC;
 		}
 	}
 
 	@FunctionalInterface
 	public static interface RecipeFactory<T extends ExcavatingRecipe> {
-		T create(ResourceLocation id, RecipeType<?> type, RecipeSerializer<?> serializer);
+		T create(RecipeType<?> type, RecipeSerializer<?> serializer);
 	}
 }

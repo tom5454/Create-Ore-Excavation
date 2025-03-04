@@ -1,0 +1,18 @@
+{
+  "type": "createoreexcavation:vein",
+  "amountMultiplierMax": 3.0,
+  "amountMultiplierMin": 1.0,
+  "biomeWhitelist": "minecraft:is_overworld",
+  "finite": "default",
+  "icon": {
+    "count": 1,
+    "id": "createoreexcavation:raw_diamond"
+  },
+  "name": "{\"translate\":\"ore.coe.hardenedDiamond\"}",
+  "placement": {
+    "salt": 244884670,
+    "separation": 128,
+    "spacing": 512
+  },
+  "priority": 0
+}

@@ -33,8 +33,8 @@ import com.tom.createores.block.entity.IDrill;
 
 public class DrillRenderer<T extends BlockEntity & IDrill> extends SafeBlockEntityRenderer<T> {
 	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(CreateOreExcavation.MODID, "drill"), "main");
-	private static final ResourceLocation SHAFT = new ResourceLocation(CreateOreExcavation.MODID, "textures/entity/shaft.png");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.tryBuild(CreateOreExcavation.MODID, "drill"), "main");
+	private static final ResourceLocation SHAFT = ResourceLocation.tryBuild(CreateOreExcavation.MODID, "textures/entity/shaft.png");
 	private final ModelPart head;
 	private final ModelPart shaft;
 	private final ModelPart rubble;
@@ -97,7 +97,7 @@ public class DrillRenderer<T extends BlockEntity & IDrill> extends SafeBlockEnti
 		ItemStack drill = pBlockEntity.getDrill();
 		if (!drill.isEmpty()) {
 			ResourceLocation rl = BuiltInRegistries.ITEM.getKey(drill.getItem());
-			ResourceLocation tex = new ResourceLocation(rl.getNamespace(), "textures/entity/drill/" + rl.getPath() + ".png");
+			ResourceLocation tex = ResourceLocation.tryBuild(rl.getNamespace(), "textures/entity/drill/" + rl.getPath() + ".png");
 			head.render(pPoseStack, pBufferSource.getBuffer(RenderType.entityCutoutNoCull(tex)), pPackedLight, pPackedOverlay);
 		}
 

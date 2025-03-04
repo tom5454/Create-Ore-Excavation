@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.ChunkPos;
 
 import com.tom.createores.Config;
-import com.tom.createores.OreDataCapability;
-import com.tom.createores.OreDataCapability.OreData;
+import com.tom.createores.OreData;
+import com.tom.createores.OreDataAttachment;
+import com.tom.createores.Registration;
 import com.tom.createores.recipe.VeinRecipe;
 import com.tom.createores.util.ThreeState;
 
@@ -21,20 +20,27 @@ import dan200.computercraft.api.lua.MethodResult;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import dan200.computercraft.api.turtle.AbstractTurtleUpgrade;
 import dan200.computercraft.api.turtle.ITurtleAccess;
+import dan200.computercraft.api.turtle.ITurtleUpgrade;
 import dan200.computercraft.api.turtle.TurtleCommand;
 import dan200.computercraft.api.turtle.TurtleCommandResult;
 import dan200.computercraft.api.turtle.TurtleSide;
 import dan200.computercraft.api.turtle.TurtleUpgradeType;
+import dan200.computercraft.api.upgrades.UpgradeType;
 
 public class OreVeinFinderTurtle extends AbstractTurtleUpgrade {
 
-	protected OreVeinFinderTurtle(ResourceLocation id, ItemStack item) {
-		super(id, TurtleUpgradeType.PERIPHERAL, item);
+	protected OreVeinFinderTurtle() {
+		super(TurtleUpgradeType.PERIPHERAL, "upgrade.createoreexcavation.vein_finder.adjective", Registration.VEIN_FINDER_ITEM.asStack());
 	}
 
 	@Override
 	public IPeripheral createPeripheral(ITurtleAccess turtle, TurtleSide side) {
 		return new Peripheral(turtle);
+	}
+
+	@Override
+	public UpgradeType<? extends ITurtleUpgrade> getType() {
+		return CCRegistration.VEIN_FINDER_TYPE.get();
 	}
 
 	public static class Peripheral implements IPeripheral {
@@ -100,15 +106,15 @@ public class OreVeinFinderTurtle extends AbstractTurtleUpgrade {
 				return TurtleCommandResult.failure("Ouf of fuel");
 			}
 			ChunkPos center = new ChunkPos(turtle.getPosition());
-			OreData d = OreDataCapability.getData(turtle.getLevel().getChunk(center.x, center.z));
+			OreData d = OreDataAttachment.getData(turtle.getLevel().getChunk(center.x, center.z));
 			List<Object> result = new ArrayList<>();
 			RecipeManager m = turtle.getLevel().getRecipeManager();
 			if (d != null) {
 				var rec = d.getRecipe(m);
 				result.add(rec != null);
 				if (rec != null) {
-					result.add(rec.id.toString());
-					result.add(Double.valueOf(getVeinSize(d, rec)));
+					result.add(rec.id().toString());
+					result.add(Double.valueOf(getVeinSize(d, rec.value())));
 				}
 			} else {
 				result.add(false);

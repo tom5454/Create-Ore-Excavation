@@ -9,6 +9,7 @@ import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -37,8 +38,9 @@ public interface MultiblockPart extends IWrenchable {
 		return props().andThen(p -> p.noLootTable().pushReaction(PushReaction.BLOCK));
 	}
 
-	InteractionResult onActivate(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand,
+	ItemInteractionResult onActivate(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand,
 			BlockHitResult pHit);
+	InteractionResult onActivate(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit);
 
 	ItemStack pickBlock(BlockGetter level, BlockPos pos, BlockState state);
 
@@ -106,7 +108,26 @@ public interface MultiblockPart extends IWrenchable {
 		}
 
 		@Override
-		public default InteractionResult onActivate(BlockState state, Level level, BlockPos pos, Player pPlayer, InteractionHand pHand,
+		public default ItemInteractionResult onActivate(BlockState state, Level level, BlockPos pos, Player pPlayer, InteractionHand pHand,
+				BlockHitResult pHit) {
+			for (int i = 0;i<5 && state.getBlock() instanceof MultiblockGhostPart;i++) {
+				Direction d = ((MultiblockGhostPart)state.getBlock()).getParentDir(state);
+				pos = pos.relative(d, 1);
+				state = level.getBlockState(pos);
+			}
+			if (state.getBlock() != this && state.getBlock() instanceof MultiblockPart) {
+				MultiblockPart d = (MultiblockPart) state.getBlock();
+				if (d instanceof MultiblockGhostPart)return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+				else return d.onActivate(state, level, pos, pPlayer, pHand, new BlockHitResult(
+						new Vec3(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5),
+						pHit.getDirection(), pos, false
+						));
+			}
+			return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+		}
+
+		@Override
+		default InteractionResult onActivate(BlockState state, Level level, BlockPos pos, Player pPlayer,
 				BlockHitResult pHit) {
 			for (int i = 0;i<5 && state.getBlock() instanceof MultiblockGhostPart;i++) {
 				Direction d = ((MultiblockGhostPart)state.getBlock()).getParentDir(state);
@@ -116,7 +137,7 @@ public interface MultiblockPart extends IWrenchable {
 			if (state.getBlock() != this && state.getBlock() instanceof MultiblockPart) {
 				MultiblockPart d = (MultiblockPart) state.getBlock();
 				if (d instanceof MultiblockGhostPart)return InteractionResult.PASS;
-				else return d.onActivate(state, level, pos, pPlayer, pHand, new BlockHitResult(
+				else return d.onActivate(state, level, pos, pPlayer, new BlockHitResult(
 						new Vec3(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5),
 						pHit.getDirection(), pos, false
 						));

@@ -1,6 +1,6 @@
 package com.tom.createores.client;
 
-import net.minecraftforge.eventbus.api.IEventBus;
+import net.neoforged.bus.api.IEventBus;
 
 import com.tom.createores.cc.CCRegistration;
 
@@ -14,6 +14,6 @@ public class CCClientInit {
 	}
 
 	private static void registerTurtleUpgradeModels(RegisterTurtleModellersEvent evt) {
-		evt.register(CCRegistration.VEIN_FINDER.get(), TurtleUpgradeModeller.flatItem());
+		evt.register(CCRegistration.VEIN_FINDER_TYPE.get(), TurtleUpgradeModeller.flatItem());
 	}
 }

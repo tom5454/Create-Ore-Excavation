@@ -22,7 +22,7 @@ public class COEPonderPlugin implements PonderPlugin {
 
 	@Override
 	public void registerScenes(PonderSceneRegistrationHelper<ResourceLocation> helper) {
-		PonderSceneRegistrationHelper<ItemProviderEntry<?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
+		PonderSceneRegistrationHelper<ItemProviderEntry<?, ?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
 
 		HELPER.forComponents(Registration.DRILL_BLOCK, Registration.EXTRACTOR_BLOCK)
 		.addStoryBoard("drilling_machine", PonderScenes::drillingMachine, AllCreatePonderTags.KINETIC_SOURCES, DRILLING);
@@ -41,7 +41,7 @@ public class COEPonderPlugin implements PonderPlugin {
 		.description("Extract various resources from underground")
 		.register();
 
-		PonderTagRegistrationHelper<RegistryEntry<?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
+		PonderTagRegistrationHelper<RegistryEntry<?, ?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
 
 		HELPER.addToTag(AllCreatePonderTags.KINETIC_APPLIANCES).
 		add(Registration.DRILL_BLOCK).

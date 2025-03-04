@@ -1,37 +1,26 @@
 package com.tom.createores.kubejs;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
+import com.mojang.serialization.Codec;
 
-import dev.latvian.mods.kubejs.bindings.TextWrapper;
-import dev.latvian.mods.kubejs.recipe.RecipeJS;
 import dev.latvian.mods.kubejs.recipe.component.RecipeComponent;
+import dev.latvian.mods.rhino.type.TypeInfo;
 
 public enum ComponentComponent implements RecipeComponent<Component> {
 	INSTANCE
 	;
 
+	public static final TypeInfo COMPONENT = TypeInfo.of(Component.class);
+
 	@Override
-	public Class<?> componentClass() {
-		return Component.class;
+	public Codec<Component> codec() {
+		return ComponentSerialization.CODEC;
 	}
 
 	@Override
-	public JsonElement write(RecipeJS recipe, Component value) {
-		return new JsonPrimitive(Component.Serializer.toJson(value));
+	public TypeInfo typeInfo() {
+		return COMPONENT;
 	}
-
-	@Override
-	public Component read(RecipeJS recipe, Object comp) {
-		if(comp instanceof String) {
-			try {
-				return Component.Serializer.fromJson((String) comp);
-			} catch (Exception e) {
-			}
-		}
-		return TextWrapper.of(comp);
-	}
-
 }

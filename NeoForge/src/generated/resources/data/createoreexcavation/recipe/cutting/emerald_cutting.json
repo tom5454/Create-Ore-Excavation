@@ -1,0 +1,16 @@
+{
+  "type": "create:cutting",
+  "ingredients": [
+    {
+      "item": "createoreexcavation:raw_emerald"
+    }
+  ],
+  "processing_time": 250,
+  "results": [
+    {
+      "item": {
+        "id": "minecraft:emerald"
+      }
+    }
+  ]
+}

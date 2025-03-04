@@ -3,18 +3,18 @@ package com.tom.createores.block.entity;
 import java.util.List;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.capabilities.BlockCapability;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
 import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.recipe.ExtractorRecipe;
@@ -23,57 +23,50 @@ import com.tom.createores.util.TooltipUtil;
 
 public class ExtractorBlockEntity extends ExcavatingBlockEntityImpl<ExtractorRecipe> {
 	private Tank fluidTankOut;
-	private LazyOptional<FluidTank> tankCapOut;
 
 	public ExtractorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 		fluidTankOut = new Tank();
-		tankCapOut = LazyOptional.of(() -> fluidTankOut);
 	}
 
+
 	@Override
-	public <T> LazyOptional<T> getCaps(Capability<T> cap, IOBlockType type) {
-		if(type == IOBlockType.FLUID_OUT && cap == ForgeCapabilities.FLUID_HANDLER) {
-			return tankCapOut.cast();
+	public <T> T getCaps(BlockCapability<T, Direction> cap, IOBlockType type) {
+		if(type == IOBlockType.FLUID_OUT && cap == Capabilities.FluidHandler.BLOCK) {
+			return (T) fluidTankOut;
 		}
 		return super.getCaps(cap, type);
 	}
 
 	@Override
 	protected boolean canExtract() {
-		return super.canExtract() && fluidTankOut.fillInternal(current.getOutput(), FluidAction.SIMULATE) == current.getOutput().getAmount();
+		return super.canExtract() && fluidTankOut.fillInternal(current.value().getOutput(), FluidAction.SIMULATE) == current.value().getOutput().getAmount();
 	}
 
 	@Override
 	protected void onFinished() {
-		fluidTankOut.fillInternal(current.getOutput(), FluidAction.EXECUTE);
+		fluidTankOut.fillInternal(current.value().getOutput(), FluidAction.EXECUTE);
 		super.onFinished();
 	}
 
 	@Override
-	protected void read(CompoundTag tag, boolean clientPacket) {
-		super.read(tag, clientPacket);
-		fluidTankOut.readFromNBT(tag.getCompound("tank"));
+	protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+		super.read(tag, registries, clientPacket);
+		fluidTankOut.readFromNBT(registries, tag.getCompound("tank"));
 	}
 
 	@Override
-	protected void write(CompoundTag tag, boolean clientPacket) {
-		super.write(tag, clientPacket);
-		tag.put("tank", fluidTankOut.writeToNBT(new CompoundTag()));
+	public void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+		super.write(tag, registries, clientPacket);
+		tag.put("tank", fluidTankOut.writeToNBT(registries, new CompoundTag()));
 	}
 
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 		TooltipUtil.forGoggles(tooltip, Component.translatable("info.coe.extractor.output"));
-		containedFluidTooltip(tooltip, isPlayerSneaking, tankCapOut.cast());
+		containedFluidTooltip(tooltip, isPlayerSneaking, fluidTankOut);
 		return true;
-	}
-
-	@Override
-	public void invalidate() {
-		super.invalidate();
-		tankCapOut.invalidate();
 	}
 
 	private class Tank extends FluidTank {

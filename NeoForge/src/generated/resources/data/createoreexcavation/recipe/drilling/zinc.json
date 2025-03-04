@@ -1,0 +1,17 @@
+{
+  "type": "createoreexcavation:drilling",
+  "drill": {
+    "tag": "createoreexcavation:drills"
+  },
+  "output": [
+    {
+      "item": {
+        "id": "create:raw_zinc"
+      }
+    }
+  ],
+  "priority": 0,
+  "stress": 256,
+  "ticks": 600,
+  "veinId": "createoreexcavation:ore_vein_type/zinc"
+}

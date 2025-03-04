@@ -3,6 +3,7 @@ package com.tom.createores.jei;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeHolder;
 
 import com.simibubi.create.compat.jei.DoubleItemIcon;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
@@ -28,22 +29,22 @@ public class ExtractingCategory extends ExcavatingCategory<ExtractorRecipe> {
 	}
 
 	@Override
-	public RecipeType<ExtractorRecipe> getRecipeType() {
-		return JEIHandler.EXTRACTING;
+	public RecipeType<RecipeHolder<ExtractorRecipe>> getRecipeType() {
+		return JEIRecipes.EXTRACTING;
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayoutBuilder builder, ExtractorRecipe recipe, IFocusGroup focuses) {
+	public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<ExtractorRecipe> recipe, IFocusGroup focuses) {
 		super.setRecipe(builder, recipe, focuses);
 
-		int xOffset = getBackground().getWidth() / 2;
+		int xOffset = getWidth() / 2;
 		int yOffset = 86;
 
 		builder
 		.addSlot(RecipeIngredientRole.OUTPUT, xOffset - 8, yOffset - 8)
 		.setBackground(CreateRecipeCategory.getRenderedSlot(), -1, -1)
-		.addIngredient(JeiPlatform.FLUID_STACK, JeiPlatform.wrapFluid(CreateRecipeCategory.withImprovedVisibility(recipe.getOutput())))
-		.addRichTooltipCallback(CreateRecipeCategory.addFluidTooltip(recipe.getOutput().getAmount()));
+		.addIngredient(JeiPlatform.FLUID_STACK, JeiPlatform.wrapFluid(CreateRecipeCategory.withImprovedVisibility(recipe.value().getOutput())))
+		.addRichTooltipCallback(CreateRecipeCategory.addFluidTooltip(recipe.value().getOutput().getAmount()));
 
 	}
 }

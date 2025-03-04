@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.chunk.LevelChunk;
 
 import com.tom.createores.recipe.VeinRecipe;
@@ -29,7 +30,7 @@ public class OreVeinGenerator {
 		}
 	}
 
-	public static VeinRecipe pick(LevelChunk chunk) {
+	public static RecipeHolder<VeinRecipe> pick(LevelChunk chunk) {
 		return getPicker((ServerLevel) chunk.getLevel()).pick(chunk);
 	}
 

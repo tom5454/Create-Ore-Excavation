@@ -1,6 +1,6 @@
 package com.tom.createores.jei;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
@@ -18,31 +18,31 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.Registration;
-import com.tom.createores.recipe.VeinRecipe;
 import com.tom.createores.util.NumberFormatter;
 
+import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.ingredients.IIngredientHelper;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import mezz.jei.api.registration.IModIngredientRegistration;
 
-public class VeinIngredient implements IIngredientHelper<VeinRecipe>, IIngredientRenderer<VeinRecipe> {
-	public static final IIngredientType<VeinRecipe> VEIN = () -> VeinRecipe.class;
+public class VeinIngredient implements IIngredientHelper<Vein>, IIngredientRenderer<Vein> {
+	public static final IIngredientType<Vein> VEIN = () -> Vein.class;
 	private ItemStack drill;
 
 	public VeinIngredient(IModIngredientRegistration registration) {
 		RecipeManager mngr = Minecraft.getInstance().getConnection().getRecipeManager();
-		registration.register(VEIN, mngr.getAllRecipesFor(CreateOreExcavation.VEIN_RECIPES.getRecipeType()), this, this);
+		registration.register(VEIN, mngr.getAllRecipesFor(CreateOreExcavation.VEIN_RECIPES.getRecipeType()).stream().map(Vein::new).toList(), this, this, Vein.CODEC);
 		drill = new ItemStack(Registration.NORMAL_DRILL_ITEM.get());
 	}
 
 	@Override
-	public void render(GuiGraphics guiGraphics, VeinRecipe ingredient) {
+	public void render(GuiGraphics guiGraphics, Vein ingredient) {
 		RenderSystem.enableDepthTest();
 		guiGraphics.pose().pushPose();
 
-		GuiGameElement.of(ingredient.icon)
+		GuiGameElement.of(ingredient.recipe0().icon)
 		.render(guiGraphics);
 
 		guiGraphics.pose().pushPose();
@@ -57,41 +57,51 @@ public class VeinIngredient implements IIngredientHelper<VeinRecipe>, IIngredien
 	}
 
 	@Override
-	public List<Component> getTooltip(VeinRecipe ingredient, TooltipFlag tooltipFlag) {
-		List<Component> tooltip = new ArrayList<>();
-		tooltip.add(ingredient.veinName);
-		if(ingredient.isInfiniteClient())tooltip.add(Component.translatable("tooltip.coe.infiniteVeins"));
-		else tooltip.add(Component.translatable("tooltip.coe.finiteVeins", NumberFormatter.formatNumber(ingredient.getMinAmountClient()), NumberFormatter.formatNumber(ingredient.getMaxAmountClient())));
-		return tooltip;
+	@Deprecated
+	public List<Component> getTooltip(Vein ingredient, TooltipFlag tooltipFlag) {
+		return Collections.emptyList();
 	}
 
 	@Override
-	public IIngredientType<VeinRecipe> getIngredientType() {
+	public void getTooltip(ITooltipBuilder tooltip, Vein ingredient, TooltipFlag tooltipFlag) {
+		tooltip.add(ingredient.recipe0().veinName);
+		if(ingredient.recipe0().isInfiniteClient())tooltip.add(Component.translatable("tooltip.coe.infiniteVeins"));
+		else tooltip.add(Component.translatable("tooltip.coe.finiteVeins", NumberFormatter.formatNumber(ingredient.recipe0().getMinAmountClient()), NumberFormatter.formatNumber(ingredient.recipe0().getMaxAmountClient())));
+	}
+
+	@Override
+	public IIngredientType<Vein> getIngredientType() {
 		return VEIN;
 	}
 
 	@Override
-	public String getDisplayName(VeinRecipe ingredient) {
-		return ingredient.veinName.getString();
+	public String getDisplayName(Vein ingredient) {
+		return ingredient.recipe0().veinName.getString();
 	}
 
 	@Override
-	public String getUniqueId(VeinRecipe ingredient, UidContext context) {
-		return ingredient.getId().toString();
+	public String getUid(Vein ingredient, UidContext context) {
+		return ingredient.id().toString();
 	}
 
 	@Override
-	public ResourceLocation getResourceLocation(VeinRecipe ingredient) {
-		return ingredient.getId();
+	@Deprecated
+	public String getUniqueId(Vein ingredient, UidContext context) {
+		return getUid(ingredient, context);
 	}
 
 	@Override
-	public VeinRecipe copyIngredient(VeinRecipe ingredient) {
+	public ResourceLocation getResourceLocation(Vein ingredient) {
+		return ingredient.id();
+	}
+
+	@Override
+	public Vein copyIngredient(Vein ingredient) {
 		return ingredient;
 	}
 
 	@Override
-	public String getErrorInfo(@Nullable VeinRecipe ingredient) {
-		return ingredient != null && ingredient.id != null ? ingredient.id.toString() : "null";
+	public String getErrorInfo(@Nullable Vein ingredient) {
+		return ingredient != null && ingredient.id() != null ? ingredient.id().toString() : "null";
 	}
 }

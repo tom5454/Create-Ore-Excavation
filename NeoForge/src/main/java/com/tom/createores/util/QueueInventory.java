@@ -1,15 +1,13 @@
 package com.tom.createores.util;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.item.ItemStack;
-
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 
 public class QueueInventory implements IItemHandler {
 	private NonNullList<ItemStack> content = NonNullList.create();
-	private LazyOptional<IItemHandler> opt = LazyOptional.of(() -> this);
 
 	@Override
 	public int getSlots() {
@@ -54,25 +52,21 @@ public class QueueInventory implements IItemHandler {
 		content.add(is);
 	}
 
-	public ListTag toTag() {
+	public ListTag toTag(HolderLookup.Provider registries) {
 		ListTag tag = new ListTag();
-		content.stream().filter(s -> !s.isEmpty()).map(ItemStack::serializeNBT).forEach(tag::add);
+		content.stream().filter(s -> !s.isEmpty()).map(s -> s.save(registries)).forEach(tag::add);
 		return tag;
 	}
 
-	public void load(ListTag tag) {
+	public void load(ListTag tag, HolderLookup.Provider registries) {
 		content.clear();
 		for (int i = 0; i < tag.size(); i++) {
-			content.add(ItemStack.of(tag.getCompound(i)));
+			content.add(ItemStack.parseOptional(registries, tag.getCompound(i)));
 		}
 	}
 
-	public <T> LazyOptional<T> asCap() {
-		return opt.cast();
-	}
-
-	public void invalidate() {
-		opt.invalidate();
+	public <T> T asCap() {
+		return (T) this;
 	}
 
 	public boolean hasSpace() {

@@ -1,7 +1,7 @@
 package com.tom.createores;
 
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.event.config.ModConfigEvent;
 
 public class ForgeConfig {
 	@SubscribeEvent

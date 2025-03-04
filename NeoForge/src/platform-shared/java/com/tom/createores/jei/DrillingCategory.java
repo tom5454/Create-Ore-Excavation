@@ -6,6 +6,7 @@ import java.util.List;
 import net.createmod.catnip.layout.LayoutHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 
 import com.simibubi.create.compat.jei.DoubleItemIcon;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
@@ -32,18 +33,18 @@ public class DrillingCategory extends ExcavatingCategory<DrillingRecipe> {
 	}
 
 	@Override
-	public RecipeType<DrillingRecipe> getRecipeType() {
-		return JEIHandler.DRILLING;
+	public RecipeType<RecipeHolder<DrillingRecipe>> getRecipeType() {
+		return JEIRecipes.DRILLING;
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayoutBuilder builder, DrillingRecipe recipe, IFocusGroup focuses) {
+	public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<DrillingRecipe> recipe, IFocusGroup focuses) {
 		super.setRecipe(builder, recipe, focuses);
 
-		int xOffset = getBackground().getWidth() / 2;
+		int xOffset = getWidth() / 2;
 		int yOffset = 86;
 
-		layoutOutput(recipe).forEach(layoutEntry -> builder
+		layoutOutput(recipe.value()).forEach(layoutEntry -> builder
 				.addSlot(RecipeIngredientRole.OUTPUT, (xOffset) + layoutEntry.posX() + 1, yOffset + layoutEntry.posY() + 1)
 				.setBackground(CreateRecipeCategory.getRenderedSlot(layoutEntry.output()), -1, -1)
 				.addItemStack(layoutEntry.output().getStack())

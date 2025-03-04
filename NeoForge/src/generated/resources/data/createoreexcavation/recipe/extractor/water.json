@@ -1,0 +1,14 @@
+{
+  "type": "createoreexcavation:extracting",
+  "drill": {
+    "tag": "createoreexcavation:drills"
+  },
+  "output": {
+    "amount": 500,
+    "id": "minecraft:water"
+  },
+  "priority": 0,
+  "stress": 256,
+  "ticks": 20,
+  "veinId": "createoreexcavation:ore_vein_type/water"
+}

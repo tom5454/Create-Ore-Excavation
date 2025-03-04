@@ -1,0 +1,34 @@
+{
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": true,
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "create:brass_casing"
+    },
+    "D": {
+      "item": "create:mechanical_drill"
+    },
+    "b": {
+      "tag": "c:plates/brass"
+    },
+    "e": {
+      "item": "create:electron_tube"
+    },
+    "m": {
+      "item": "create:precision_mechanism"
+    },
+    "s": {
+      "item": "create:sturdy_sheet"
+    }
+  },
+  "pattern": [
+    "beb",
+    "mCb",
+    "sDs"
+  ],
+  "result": {
+    "count": 1,
+    "id": "createoreexcavation:sample_drill"
+  }
+}

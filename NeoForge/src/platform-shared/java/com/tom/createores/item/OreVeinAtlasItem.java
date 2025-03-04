@@ -1,9 +1,5 @@
 package com.tom.createores.item;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -13,12 +9,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 
+import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.Registration;
+import com.tom.createores.components.OreVeinAtlasDataComponent.OreVeinAtlasData;
+import com.tom.createores.components.OreVeinAtlasDataComponent.OreVeinData;
 import com.tom.createores.menu.OreVeinAtlasMenu;
 import com.tom.createores.network.OreVeinAtlasClickPacket.Option;
-import com.tom.createores.network.OreVeinAtlasClickPacket2;
 import com.tom.createores.recipe.VeinRecipe;
 import com.tom.createores.util.DimChunkPos;
 import com.tom.createores.util.PlatformMenuProvider;
@@ -39,50 +38,21 @@ public class OreVeinAtlasItem extends Item implements PlatformMenuProvider {
 		super(p_41383_);
 	}
 
-	public void addVein(Player player, ItemStack is, VeinRecipe vein, DimChunkPos pos, float randomMul) {
+	public void addVein(Player player, ItemStack is, RecipeHolder<VeinRecipe> vein, DimChunkPos pos, float randomMul) {
 		player.displayClientMessage(Component.translatable("chat.coe.sampleDrill.addedToAtlas"), false);
 
-		var tag = is.getOrCreateTag();
-		ListTag disc = tag.getList(DISCOVERED, Tag.TAG_STRING);
-		tag.put(DISCOVERED, disc);
-		String id = vein.getId().toString();
-		boolean found = false;
-		for (int i = 0;i < disc.size(); i++) {
-			var v = disc.getString(i);
-			if (id.equals(v)) {
-				found = true;
-				break;
-			}
-		}
-		if (!found) {
-			disc.add(StringTag.valueOf(id));
+		OreVeinAtlasData comp = new OreVeinAtlasData(is.get(CreateOreExcavation.ORE_VEIN_ATLAS_DATA_COMPONENT));
+		if (!comp.discovered().contains(vein.id())) {
+			comp.addDiscovered(vein.id());
 		}
 
-		ListTag veins = tag.getList(VEINS, Tag.TAG_COMPOUND);
-		tag.put(VEINS, veins);
-		String dimId = pos.dimension.location().toString();
-		found = false;
-		for (int i = 0;i < veins.size(); i++) {
-			var v = veins.getCompound(i);
-			int x = v.getInt(POS_X);
-			int z = v.getInt(POS_Z);
-			var vid = v.getString(VEIN_ID);
-			var dim = v.getString(DIMENSION);
-			if (dimId.equals(dim) && x == pos.x && z == pos.z) {
-				if(!vid.equals(id))
-					v.putString(VEIN_ID, id);
-				v.putFloat(SIZE, randomMul);
-				found = true;
-				break;
-			}
+		var vn = comp.veins().get(pos);
+		if (vn == null || !vn.id().equals(vein.id())) {
+			comp.addVein(pos, new OreVeinData(vein.id(), randomMul, false));
 		}
-		if (!found) {
-			var t = new CompoundTag();
-			t.putInt(POS_X, pos.x);
-			t.putInt(POS_Z, pos.z);
-			t.putString(DIMENSION, dimId);
-			t.putString(VEIN_ID, id);
-			veins.add(t);
+
+		if (comp.isEdited()) {
+			is.set(CreateOreExcavation.ORE_VEIN_ATLAS_DATA_COMPONENT, comp.finish());
 		}
 	}
 
@@ -106,59 +76,49 @@ public class OreVeinAtlasItem extends Item implements PlatformMenuProvider {
 	}
 
 	public void menuClicked(ItemStack is, Option opt, ResourceLocation id) {
-		var tag = is.getOrCreateTag();
+		OreVeinAtlasData comp = new OreVeinAtlasData(is.get(CreateOreExcavation.ORE_VEIN_ATLAS_DATA_COMPONENT));
 
 		switch (opt) {
 		case ADD_EXCLUDE:
-		{
-			ListTag ex = tag.getList(EXCLUDE, Tag.TAG_STRING);
-			tag.put(EXCLUDE, ex);
-			ex.add(StringTag.valueOf(id.toString()));
-		}
-		break;
+			comp.addExclude(id);
+			break;
 
 		case REMOVE_EXCLUDE:
-		{
-			ListTag ex = tag.getList(EXCLUDE, Tag.TAG_STRING);
-			tag.put(EXCLUDE, ex);
-			String st = id.toString();
-			ex.removeIf(t -> t instanceof StringTag s && s.getAsString().equals(st));
-		}
-		break;
-
-		case REMOVE_TARGET:
-			tag.remove(TARGET);
+			comp.removeExclude(id);
 			break;
 
 		case SET_TARGET:
-			tag.putString(TARGET, id.toString());
-			ListTag ex = tag.getList(EXCLUDE, Tag.TAG_STRING);
-			tag.put(EXCLUDE, ex);
-			String st = id.toString();
-			ex.removeIf(t -> t instanceof StringTag s && s.getAsString().equals(st));
+			comp.setTarget(id);
+			comp.removeExclude(id);
 			break;
 
 		default:
 			break;
+		}
+
+		if (comp.isEdited()) {
+			is.set(CreateOreExcavation.ORE_VEIN_ATLAS_DATA_COMPONENT, comp.finish());
 		}
 	}
 
-	public void menuClicked2(ItemStack is, OreVeinAtlasClickPacket2.Option opt, int id) {
-		var tag = is.getOrCreateTag();
+	public void menuClicked2(ItemStack is, Option opt, int id) {
+		OreVeinAtlasData comp = new OreVeinAtlasData(is.get(CreateOreExcavation.ORE_VEIN_ATLAS_DATA_COMPONENT));
 
 		switch (opt) {
 		case TOGGLE_HIDE:
-		{
-			ListTag veins = tag.getList(VEINS, Tag.TAG_COMPOUND);
-			if (veins.size() > id) {
-				var v = veins.getCompound(id);
-				v.putBoolean(HIDE, !v.getBoolean(HIDE));
-			}
-		}
-		break;
+			comp.toggleHide(id);
+			break;
+
+		case REMOVE_TARGET:
+			comp.setTarget(null);
+			break;
 
 		default:
 			break;
+		}
+
+		if (comp.isEdited()) {
+			is.set(CreateOreExcavation.ORE_VEIN_ATLAS_DATA_COMPONENT, comp.finish());
 		}
 	}
 }

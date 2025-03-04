@@ -1,17 +1,17 @@
 package com.tom.createores.data;
 
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
-
-import javax.annotation.Nullable;
 
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.network.chat.Component;
@@ -21,16 +21,14 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 import net.minecraft.world.level.material.Fluids;
-
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
@@ -41,8 +39,6 @@ import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeSerializer;
 import com.simibubi.create.foundation.data.recipe.MechanicalCraftingRecipeBuilder;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
-
-import com.google.gson.JsonObject;
 
 import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.Registration;
@@ -55,12 +51,12 @@ import com.tom.createores.util.ThreeState;
 public class COERecipes extends RecipeProvider {
 	private static Random seedRandom;
 
-	public COERecipes(PackOutput p_248933_) {
-		super(p_248933_);
+	public COERecipes(PackOutput output, CompletableFuture<Provider> registries) {
+		super(output, registries);
 	}
 
 	@Override
-	protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
+	protected void buildRecipes(RecipeOutput consumer) {
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.NORMAL_DRILL_ITEM.get())
 		.pattern("bi ")
 		.pattern("ibi")
@@ -102,8 +98,8 @@ public class COERecipes extends RecipeProvider {
 		.patternLine("CmDmF")
 		.patternLine("bsssb")
 		.patternLine("BbbbB")
-		.key('B', TagKey.create(Registries.ITEM, new ResourceLocation("forge:storage_blocks/brass")))
-		.key('b', TagKey.create(Registries.ITEM, new ResourceLocation("forge:plates/brass")))
+		.key('B', TagKey.create(Registries.ITEM, ResourceLocation.parse("c:storage_blocks/brass")))
+		.key('b', TagKey.create(Registries.ITEM, ResourceLocation.parse("c:plates/brass")))
 		.key('e', AllItems.ELECTRON_TUBE.get())
 		.key('S', AllBlocks.SPOUT.get())
 		.key('C', AllBlocks.BRASS_CASING.get())
@@ -120,8 +116,8 @@ public class COERecipes extends RecipeProvider {
 		.patternLine("CmDmb")
 		.patternLine("bsssb")
 		.patternLine("BbbbB")
-		.key('B', TagKey.create(Registries.ITEM, new ResourceLocation("forge:storage_blocks/brass")))
-		.key('b', TagKey.create(Registries.ITEM, new ResourceLocation("forge:plates/brass")))
+		.key('B', TagKey.create(Registries.ITEM, ResourceLocation.parse("c:storage_blocks/brass")))
+		.key('b', TagKey.create(Registries.ITEM, ResourceLocation.parse("c:plates/brass")))
 		.key('e', AllItems.ELECTRON_TUBE.get())
 		.key('H', AllBlocks.HOSE_PULLEY.get())
 		.key('C', AllBlocks.BRASS_CASING.get())
@@ -172,7 +168,7 @@ public class COERecipes extends RecipeProvider {
 		.patternLine("beb")
 		.patternLine("mCb")
 		.patternLine("sDs")
-		.key('b', TagKey.create(Registries.ITEM, new ResourceLocation("forge:plates/brass")))
+		.key('b', TagKey.create(Registries.ITEM, ResourceLocation.parse("c:plates/brass")))
 		.key('e', AllItems.ELECTRON_TUBE.get())
 		.key('C', AllBlocks.BRASS_CASING.get())
 		.key('m', AllItems.PRECISION_MECHANISM.get())
@@ -182,7 +178,7 @@ public class COERecipes extends RecipeProvider {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static <T extends ProcessingRecipe<?>> void processing(String name, AllRecipeTypes type, Consumer<FinishedRecipe> consumer, Consumer<ProcessingRecipeBuilder<?>> f) {
+	private static <T extends ProcessingRecipe<?>> void processing(String name, AllRecipeTypes type, RecipeOutput consumer, Consumer<ProcessingRecipeBuilder<?>> f) {
 		ResourceLocation id = i(name);
 		ProcessingRecipeBuilder<T> b = new ProcessingRecipeBuilder<>(((ProcessingRecipeSerializer<T>) type.getSerializer()).getFactory(), id);
 		f.accept(b);
@@ -196,7 +192,7 @@ public class COERecipes extends RecipeProvider {
 	}*/
 
 	private static ResourceLocation i(String name) {
-		return new ResourceLocation(CreateOreExcavation.MODID, name);
+		return ResourceLocation.tryBuild(CreateOreExcavation.MODID, name);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -260,15 +256,11 @@ public class COERecipes extends RecipeProvider {
 			return (T) this;
 		}
 
-		public default void save(String name, Consumer<FinishedRecipe> consumer) {
+		public default void save(String name, RecipeOutput consumer) {
 			ResourceLocation vein = i(vein().getGroup() + "/" + name);
 			self().veinId = vein;
-			consumer.accept(new Result(i(self().getGroup() + "/" + name), self().serializer, json -> {
-				new ExcavatingRecipe.Serializer<>(null, null).toJson(self(), json);
-			}));
-			consumer.accept(new Result(vein, vein().serializer, json -> {
-				new VeinRecipe.Serializer<>(null, null).toJson(vein(), json);
-			}));
+			consumer.accept(vein, vein(), null);
+			consumer.accept(i(self().getGroup() + "/" + name), self(), null);
 		}
 	}
 
@@ -276,7 +268,6 @@ public class COERecipes extends RecipeProvider {
 		private VeinRecipe vein;
 
 		public DrillingBuilder(ProcessingOutput output, int ticks, Component name, int spacing, int separation) {
-			super(null, null, CreateOreExcavation.DRILLING_RECIPES.getSerializer());
 			init(ticks, name, spacing, separation);
 			this.output = NonNullList.create();
 			this.output.add(output);
@@ -332,7 +323,7 @@ public class COERecipes extends RecipeProvider {
 
 		@Override
 		public void initVein(int ticks, Component name, int spacing, int separation) {
-			vein = new VeinRecipe(null, null, CreateOreExcavation.VEIN_RECIPES.getSerializer());
+			vein = new VeinRecipe();
 			AbstractExcavatingBuilder.super.initVein(ticks, name, spacing, separation);
 		}
 	}
@@ -345,7 +336,6 @@ public class COERecipes extends RecipeProvider {
 		}
 
 		public ExtractorBuilder(FluidStack output, int ticks, Component name, int spacing, int separation) {
-			super(null, null, CreateOreExcavation.EXTRACTING_RECIPES.getSerializer());
 			init(ticks, name, spacing, separation);
 			this.output = output;
 			vein.icon = new ItemStack(output.getFluid().getBucket());
@@ -353,52 +343,13 @@ public class COERecipes extends RecipeProvider {
 
 		@Override
 		public void initVein(int ticks, Component name, int spacing, int separation) {
-			vein = new VeinRecipe(null, null, CreateOreExcavation.VEIN_RECIPES.getSerializer());
+			vein = new VeinRecipe();
 			AbstractExcavatingBuilder.super.initVein(ticks, name, spacing, separation);
 		}
 
 		@Override
 		public VeinRecipe vein() {
 			return vein;
-		}
-	}
-
-	public static class Result implements FinishedRecipe {
-		private final ResourceLocation id;
-		private final Consumer<JsonObject> writer;
-		private final RecipeSerializer<?> type;
-
-		public Result(ResourceLocation pId, RecipeSerializer<?> pType, Consumer<JsonObject> writer) {
-			this.id = pId;
-			this.type = pType;
-			this.writer = writer;
-		}
-
-		@Override
-		public void serializeRecipeData(JsonObject pJson) {
-			writer.accept(pJson);
-		}
-
-		@Override
-		public ResourceLocation getId() {
-			return this.id;
-		}
-
-		@Override
-		public RecipeSerializer<?> getType() {
-			return this.type;
-		}
-
-		@Override
-		@Nullable
-		public JsonObject serializeAdvancement() {
-			return null;
-		}
-
-		@Override
-		@Nullable
-		public ResourceLocation getAdvancementId() {
-			return null;
 		}
 	}
 }

@@ -1,14 +1,14 @@
 package com.tom.createores.block.entity;
 
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
+import net.minecraft.core.Direction;
+import net.neoforged.neoforge.capabilities.BlockCapability;
 
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 
 import com.tom.createores.util.IOBlockType;
 
 public interface MultiblockCapHandler extends IHaveGoggleInformation {
-	<T> LazyOptional<T> getCaps(Capability<T> cap, IOBlockType type);
+	<T> T getCaps(BlockCapability<T, Direction> cap, IOBlockType type);
 	void addKinetic(Kinetic k);
 
 	public static interface Kinetic {

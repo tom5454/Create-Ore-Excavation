@@ -15,11 +15,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 
+import mezz.jei.api.gui.builder.ITooltipBuilder;
+
 public class BiomeTooltip {
 	private static long lastBiomeChangeTime;
 	private static int biomePage;
 
-	public static void listBiomes(TagKey<Biome> tag, List<Component> tooltip) {
+	public static void listBiomes(TagKey<Biome> tag, ITooltipBuilder tooltip) {
 		boolean isShift = Screen.hasShiftDown();
 		Registry<Biome> biomeReg = Minecraft.getInstance().getConnection().registryAccess().registryOrThrow(Registries.BIOME);
 		biomeReg.getTag(tag).
@@ -54,7 +56,7 @@ public class BiomeTooltip {
 				return ((Holder.Reference<Biome>)h).key().location();
 			}
 		} catch (Exception e) {
-			return new ResourceLocation("null");
+			return ResourceLocation.parse("null");
 		}
 	}
 

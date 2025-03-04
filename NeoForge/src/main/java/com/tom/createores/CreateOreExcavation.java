@@ -1,51 +1,50 @@
 package com.tom.createores;
 
+import java.util.function.Supplier;
+
 import org.slf4j.Logger;
 
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.flag.FeatureFlags;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.inventory.MenuType.MenuSupplier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.chunk.LevelChunk;
-
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.TagsUpdatedEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
+import net.neoforged.fml.event.lifecycle.InterModProcessEvent;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.attachment.AttachmentType;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.TagsUpdatedEvent;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import com.mojang.logging.LogUtils;
+import com.mojang.serialization.Codec;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 
 import com.tom.createores.client.CCClientInit;
 import com.tom.createores.client.ClientRegistration;
+import com.tom.createores.components.OreVeinAtlasDataComponent;
 import com.tom.createores.jm.JMEventListener;
 import com.tom.createores.network.NetworkHandler;
 import com.tom.createores.recipe.DrillingRecipe;
-import com.tom.createores.recipe.ExcavatingRecipe;
 import com.tom.createores.recipe.ExtractorRecipe;
 import com.tom.createores.recipe.VeinRecipe;
 
@@ -57,66 +56,64 @@ public class CreateOreExcavation {
 	private static CreateRegistrate registrate;
 	public static boolean journeyMap;
 
-	private static final DeferredRegister<MenuType<?>> MENU_TYPE = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MODID);
-	private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZER = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, MODID);
+	private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZER = DeferredRegister.create(Registries.RECIPE_SERIALIZER, MODID);
 	private static final DeferredRegister<RecipeType<?>> TYPE_REGISTER = DeferredRegister.create(Registries.RECIPE_TYPE, MODID);
+	private static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, MODID);
+	private static final DeferredRegister.DataComponents DATA_COMPONENTS = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, MODID);
 
-	public static final RecipeTypeGroup<DrillingRecipe> DRILLING_RECIPES = recipe("drilling", DrillingRecipe::new);
-	public static final RecipeTypeGroup<ExtractorRecipe> EXTRACTING_RECIPES = recipe("extracting", ExtractorRecipe::new);
-	public static final RecipeTypeGroup<VeinRecipe> VEIN_RECIPES = recipe("vein", VeinRecipe::new);
+	public static final RecipeTypeGroup<DrillingRecipe> DRILLING_RECIPES = recipe("drilling", DrillingRecipe.Serializer::new);
+	public static final RecipeTypeGroup<ExtractorRecipe> EXTRACTING_RECIPES = recipe("extracting", ExtractorRecipe.Serializer::new);
+	public static final RecipeTypeGroup<VeinRecipe> VEIN_RECIPES = recipe("vein", VeinRecipe.Serializer::new);
 
-	public static final TagKey<Item> DRILL_TAG = TagKey.create(Registries.ITEM, new ResourceLocation(MODID, "drills"));
+	public static final TagKey<Item> DRILL_TAG = TagKey.create(Registries.ITEM, ResourceLocation.tryBuild(MODID, "drills"));
 
-	public CreateOreExcavation() {
-		// Register the setup method for modloading
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-		// Register the doClientStuff method for modloading
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
-		// Register the enqueueIMC method for modloading
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
-		// Register the processIMC method for modloading
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<OreVeinAtlasDataComponent>> ORE_VEIN_ATLAS_DATA_COMPONENT = DATA_COMPONENTS.register("ore_vein_altas_data", () -> DataComponentType.<OreVeinAtlasDataComponent>builder().persistent(OreVeinAtlasDataComponent.CODEC).build());
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> ORE_VEIN_FINDER_FILTERED_COMPONENT = DATA_COMPONENTS.register("ore_vein_finder_filtered", () -> DataComponentType.<Boolean>builder().persistent(Codec.BOOL).build());
 
-		registrate = CreateRegistrate.create(MODID).registerEventListeners(FMLJavaModLoadingContext.get().getModEventBus());
+	public static final Supplier<AttachmentType<OreDataAttachment>> ORE_DATA = ATTACHMENT_TYPES.register(
+			"ore_vein", () -> AttachmentType.serializable(OreDataAttachment::new).build());
 
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.commonSpec);
-		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.serverSpec);
-		FMLJavaModLoadingContext.get().getModEventBus().register(ForgeConfig.class);
+	public CreateOreExcavation(ModContainer mc, IEventBus bus) {
+		bus.addListener(this::setup);
+		bus.addListener(this::doClientStuff);
+		bus.addListener(this::enqueueIMC);
+		bus.addListener(this::processIMC);
+		bus.addListener(this::registerCapabilities);
+
+		registrate = CreateRegistrate.create(MODID).registerEventListeners(bus);
+
+		mc.registerConfig(ModConfig.Type.COMMON, Config.commonSpec);
+		mc.registerConfig(ModConfig.Type.SERVER, Config.serverSpec);
+		bus.register(ForgeConfig.class);
+		bus.register(NetworkHandler.class);
 
 		journeyMap = ModList.get().isLoaded("journeymap");
 
 		if (CreateOreExcavation.isModLoaded("computercraft") && FMLEnvironment.dist == Dist.CLIENT) {
-			CCClientInit.init(FMLJavaModLoadingContext.get().getModEventBus());
+			CCClientInit.init(bus);
 		}
 
 		// Register ourselves for server and other game events we are interested in
-		MinecraftForge.EVENT_BUS.register(this);
+		NeoForge.EVENT_BUS.register(this);
 
 		Registration.register();
 
-		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-		MENU_TYPE.register(bus);
 		RECIPE_SERIALIZER.register(bus);
 		TYPE_REGISTER.register(bus);
+		ATTACHMENT_TYPES.register(bus);
+		DATA_COMPONENTS.register(bus);
 	}
 
-	private static <T extends ExcavatingRecipe> RecipeTypeGroup<T> recipe(String name, ExcavatingRecipe.RecipeFactory<T> factory) {
-		RecipeTypeGroup<T> rg = new RecipeTypeGroup<>(new ResourceLocation(MODID, name));
-		rg.recipeType = TYPE_REGISTER.register(name, () -> RecipeType.simple(new ResourceLocation(MODID, name)));
-		rg.serializer = RECIPE_SERIALIZER.register(name, () -> new ExcavatingRecipe.Serializer<>(rg, factory));
-		return rg;
-	}
-
-	private static <T extends VeinRecipe> RecipeTypeGroup<T> recipe(String name, VeinRecipe.RecipeFactory<T> factory) {
-		RecipeTypeGroup<T> rg = new RecipeTypeGroup<>(new ResourceLocation(MODID, name));
-		rg.recipeType = TYPE_REGISTER.register(name, () -> RecipeType.simple(new ResourceLocation(MODID, name)));
-		rg.serializer = RECIPE_SERIALIZER.register(name, () -> new VeinRecipe.Serializer<>(rg, factory));
+	private static <T extends Recipe<?>> RecipeTypeGroup<T> recipe(String name, Supplier<RecipeSerializer<T>> serializer) {
+		RecipeTypeGroup<T> rg = new RecipeTypeGroup<>(ResourceLocation.tryBuild(MODID, name));
+		rg.recipeType = TYPE_REGISTER.register(name, () -> RecipeType.simple(ResourceLocation.tryBuild(MODID, name)));
+		rg.serializer = RECIPE_SERIALIZER.register(name, serializer);
 		return rg;
 	}
 
 	public static class RecipeTypeGroup<T extends Recipe<?>> {
-		private RegistryObject<RecipeSerializer<T>> serializer;
-		private RegistryObject<RecipeType<T>> recipeType;
+		private DeferredHolder<RecipeSerializer<?>, RecipeSerializer<T>> serializer;
+		private DeferredHolder<RecipeType<?>, RecipeType<T>> recipeType;
 		private ResourceLocation id;
 
 		public RecipeTypeGroup(ResourceLocation id) {
@@ -136,16 +133,11 @@ public class CreateOreExcavation {
 		}
 	}
 
-	private static <M extends AbstractContainerMenu> RegistryObject<MenuType<M>> menu(String name, MenuSupplier<M> create) {
-		return MENU_TYPE.register(name, () -> new MenuType<>(create, FeatureFlags.VANILLA_SET));
-	}
-
 	private void setup(final FMLCommonSetupEvent event) {
 		LOGGER.info("Create Ore Excavation starting");
 		Registration.postRegister();
 		//BlockStressValues.IMPACTS.register(Registration.KINETIC_INPUT.get(), AllConfigs.server().kinetics.stressValues.getImpact(null));
 		COECommand.init();
-		NetworkHandler.init();
 	}
 
 	private void doClientStuff(final FMLClientSetupEvent event) {
@@ -170,13 +162,6 @@ public class CreateOreExcavation {
 	}
 
 	@SubscribeEvent
-	public void onAttachCapabilitiesChunk(AttachCapabilitiesEvent<LevelChunk> event){
-		if (!event.getObject().getCapability(OreDataCapability.ORE_CAP).isPresent()) {
-			event.addCapability(new ResourceLocation(MODID, "ore_data"), new OreDataCapability());
-		}
-	}
-
-	@SubscribeEvent
 	public void reloadEvent(TagsUpdatedEvent evt) {
 		OreVeinGenerator.invalidate();
 	}
@@ -187,5 +172,11 @@ public class CreateOreExcavation {
 
 	public static boolean isModLoaded(String id) {
 		return ModList.get().isLoaded(id);
+	}
+
+	private void registerCapabilities(RegisterCapabilitiesEvent event) {
+		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, Registration.IO_TILE.get(), (be, side) -> be.getCapability(Capabilities.ItemHandler.BLOCK, side));
+		event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, Registration.IO_TILE.get(), (be, side) -> be.getCapability(Capabilities.FluidHandler.BLOCK, side));
+		event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, Registration.IO_TILE.get(), (be, side) -> be.getCapability(Capabilities.EnergyStorage.BLOCK, side));
 	}
 }

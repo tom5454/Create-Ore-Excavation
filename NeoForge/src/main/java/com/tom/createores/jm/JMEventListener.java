@@ -1,24 +1,15 @@
 package com.tom.createores.jm;
 
-import net.minecraft.client.resources.language.I18n;
-
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent;
-
-import journeymap.client.api.event.forge.FullscreenDisplayEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.common.NeoForge;
 
 public class JMEventListener {
 
 	public static void register() {
-		MinecraftForge.EVENT_BUS.addListener(JMEventListener::onAddonButtonDisplayEvent);
-		MinecraftForge.EVENT_BUS.addListener(JMEventListener::onClientTickEvent);
+		NeoForge.EVENT_BUS.addListener(JMEventListener::onClientTickEvent);
 	}
 
-	private static void onAddonButtonDisplayEvent(FullscreenDisplayEvent.AddonButtonDisplayEvent event) {
-		event.getThemeButtonDisplay().addThemeToggleButton(I18n.get("jm.coe.veinsOverlayToggle"), "coe_veins", OreVeinsOverlay.INSTANCE.isActivated(), OreVeinsOverlay.INSTANCE::toggle);
-	}
-
-	private static void onClientTickEvent(TickEvent.ClientTickEvent event) {
+	private static void onClientTickEvent(ClientTickEvent.Post event) {
 		OreVeinsOverlay.INSTANCE.tick();
 	}
 }

@@ -33,6 +33,7 @@ import com.tom.createores.block.entity.KineticInputBlockEntity;
 import com.tom.createores.block.entity.KineticInputVisual;
 import com.tom.createores.block.entity.MultiblockBlockEntity;
 import com.tom.createores.block.entity.SampleDrillBlockEntity;
+import com.tom.createores.cc.CCRegistration;
 import com.tom.createores.client.DrillRenderer;
 import com.tom.createores.client.KineticInputBlockEntityRenderer;
 import com.tom.createores.item.MultiBlockItem;
@@ -44,7 +45,7 @@ import com.tom.createores.menu.OreVeinAtlasScreen;
 public class Registration {
 	private static final CreateRegistrate REGISTRATE = CreateOreExcavation.registrate();
 
-	public static final RegistryEntry<CreativeModeTab> TAB = REGISTRATE.defaultCreativeTab("create_ore_excavation",
+	public static final RegistryEntry<CreativeModeTab, CreativeModeTab> TAB = REGISTRATE.defaultCreativeTab("create_ore_excavation",
 			c -> c.icon(() -> new ItemStack(Registration.DIAMOND_DRILL_ITEM.get()))
 			).register();
 
@@ -76,7 +77,7 @@ public class Registration {
 			//.transform(BlockStressDefaults.setImpact(16))
 			.tag(BlockTags.NEEDS_IRON_TOOL)
 			.transform(TagGen.pickaxeOnly())
-			.blockstate((ctx, prov) -> prov.simpleBlock(ctx.getEntry(), prov.models().getBuilder("kinetic_in").texture("particle", new ResourceLocation("create:block/brass_casing"))))
+			.blockstate((ctx, prov) -> prov.simpleBlock(ctx.getEntry(), prov.models().getBuilder("kinetic_in").texture("particle", ResourceLocation.tryParse("create:block/brass_casing"))))
 			.lang("Multiblock Rotational Input")
 			.register();
 
@@ -92,7 +93,7 @@ public class Registration {
 			.properties(MultiblockPart.propsGhost())
 			.tag(BlockTags.NEEDS_IRON_TOOL)
 			.transform(TagGen.pickaxeOnly())
-			.blockstate((ctx, prov) -> prov.simpleBlock(ctx.getEntry(), prov.models().getBuilder("multiblock_ghost").texture("particle", new ResourceLocation("create:block/brass_casing"))))
+			.blockstate((ctx, prov) -> prov.simpleBlock(ctx.getEntry(), prov.models().getBuilder("multiblock_ghost").texture("particle", ResourceLocation.tryParse("create:block/brass_casing"))))
 			.lang("Multiblock")
 			.register();
 
@@ -106,7 +107,7 @@ public class Registration {
 			.properties(MultiblockPart.propsGhost())
 			.tag(BlockTags.NEEDS_IRON_TOOL)
 			.transform(TagGen.pickaxeOnly())
-			.blockstate((ctx, prov) -> prov.simpleBlock(ctx.getEntry(), prov.models().getBuilder("io_block").texture("particle", new ResourceLocation("create:block/brass_casing"))))
+			.blockstate((ctx, prov) -> prov.simpleBlock(ctx.getEntry(), prov.models().getBuilder("io_block").texture("particle", ResourceLocation.tryParse("create:block/brass_casing"))))
 			.lang("Multiblock IO")
 			.register();
 
@@ -294,7 +295,7 @@ public class Registration {
 		add("upgrade.createoreexcavation.vein_finder.adjective", "Vein Surveyor");
 
 		if (CreateOreExcavation.isModLoaded("computercraft")) {
-			//CCRegistration.init();
+			CCRegistration.init();
 		}
 	}
 

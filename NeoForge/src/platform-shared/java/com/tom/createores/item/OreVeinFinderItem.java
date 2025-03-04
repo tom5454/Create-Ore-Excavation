@@ -8,8 +8,6 @@ import java.util.function.Predicate;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -23,6 +21,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -30,10 +29,12 @@ import net.minecraft.world.level.Level;
 import com.mojang.datafixers.util.Pair;
 
 import com.tom.createores.Config;
-import com.tom.createores.OreDataCapability;
-import com.tom.createores.OreDataCapability.OreData;
+import com.tom.createores.CreateOreExcavation;
+import com.tom.createores.OreData;
+import com.tom.createores.OreDataAttachment;
 import com.tom.createores.OreVeinGenerator;
 import com.tom.createores.Registration;
+import com.tom.createores.components.OreVeinAtlasDataComponent;
 import com.tom.createores.network.NetworkHandler;
 import com.tom.createores.network.OreVeinInfoPacket;
 import com.tom.createores.recipe.VeinRecipe;
@@ -63,9 +64,9 @@ public class OreVeinFinderItem extends Item {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack pStack, Level pLevel, List<Component> pTooltipComponents,
-			TooltipFlag pIsAdvanced) {
-		if (pStack.hasTag() && pStack.getTag().getBoolean("isFiltered")) {
+	public void appendHoverText(ItemStack pStack, TooltipContext p_339594_, List<Component> pTooltipComponents,
+			TooltipFlag p_41424_) {
+		if (pStack.get(CreateOreExcavation.ORE_VEIN_FINDER_FILTERED_COMPONENT) == Boolean.TRUE) {
 			pTooltipComponents.add(Component.translatable("tooltip.coe.vein_finder.filtered"));
 		}
 	}
@@ -81,13 +82,13 @@ public class OreVeinFinderItem extends Item {
 					break;
 				}
 			}
-			pStack.getOrCreateTag().putBoolean("isFiltered", hasAtlas);
+			pStack.set(CreateOreExcavation.ORE_VEIN_FINDER_FILTERED_COMPONENT, hasAtlas);
 		}
 	}
 
 	@Override
 	public boolean isFoil(ItemStack pStack) {
-		return (pStack.hasTag() && pStack.getTag().getBoolean("isFiltered")) || super.isFoil(pStack);
+		return (pStack.get(CreateOreExcavation.ORE_VEIN_FINDER_FILTERED_COMPONENT) == Boolean.TRUE) || super.isFoil(pStack);
 	}
 
 	private void detect(Level level, BlockPos pos, Player player) {
@@ -99,8 +100,8 @@ public class OreVeinFinderItem extends Item {
 				break;
 			}
 		}
-		CompoundTag atlasTag = atlas.getTag();
-		Predicate<VeinRecipe> filter = atlasTag != null ? makeFilter(atlasTag) : a -> true;
+		var atlasData = atlas.get(CreateOreExcavation.ORE_VEIN_ATLAS_DATA_COMPONENT);
+		Predicate<RecipeHolder<VeinRecipe>> filter = atlasData != null ? makeFilter(atlasData) : a -> true;
 
 		ChunkPos center = new ChunkPos(pos);
 		OreData found = null;
@@ -108,7 +109,7 @@ public class OreVeinFinderItem extends Item {
 		int near = Config.veinFinderNear;
 		for(int x = -near;x <= near;x++) {
 			for(int z = -near;z <= near;z++) {
-				OreData d = OreDataCapability.getData(level.getChunk(center.x + x, center.z + z));
+				OreData d = OreDataAttachment.getData(level.getChunk(center.x + x, center.z + z));
 				if(x == 0 && z == 0)found = d;
 				else nearby.add(d);
 			}
@@ -119,7 +120,7 @@ public class OreVeinFinderItem extends Item {
 		Component f;
 		Component nothing = Component.translatable("chat.coe.veinFinder.nothing");
 		Component comma = Component.literal(", ");
-		if(found != null && found.getRecipe(m) != null)f = found.getRecipe(m).getName();
+		if(found != null && found.getRecipe(m) != null)f = found.getRecipe(m).value().getName();
 		else f = nothing;
 		player.displayClientMessage(Component.translatable("chat.coe.veinFinder.found", f), false);
 
@@ -129,20 +130,20 @@ public class OreVeinFinderItem extends Item {
 		infoTag.putInt("x", pos.getX());
 		infoTag.putInt("z", pos.getZ());
 
-		ResourceLocation rl = nearby.stream().map(d -> d.getRecipe(m)).filter(r -> r != null).map(VeinRecipe::getId).findFirst().orElse(null);
+		ResourceLocation rl = nearby.stream().map(d -> d.getRecipe(m)).filter(r -> r != null).map(RecipeHolder::id).findFirst().orElse(null);
 		if (rl != null) {
 			infoTag.putString("nearby", rl.toString());
 		}
 
-		f = nearby.stream().map(d -> d.getRecipe(m)).filter(r -> r != null).map(r -> r.getName()).collect(ComponentJoiner.joining(nothing, comma));
+		f = nearby.stream().map(d -> d.getRecipe(m)).filter(r -> r != null).map(r -> r.value().getName()).collect(ComponentJoiner.joining(nothing, comma));
 		player.displayClientMessage(Component.translatable("chat.coe.veinFinder.nearby", f), false);
 
-		Pair<BlockPos, VeinRecipe> nearest = OreVeinGenerator.getPicker((ServerLevel) level).locate(pos, (ServerLevel) level, 16, filter);
+		Pair<BlockPos, RecipeHolder<VeinRecipe>> nearest = OreVeinGenerator.getPicker((ServerLevel) level).locate(pos, (ServerLevel) level, 16, filter);
 		if(nearest != null) {
 			BlockPos at = nearest.getFirst();
 			int i = Math.round(RandomSpreadGenerator.distance2d(at, pos) / Config.veinFinderFar) * Config.veinFinderFar;
-			player.displayClientMessage(Component.translatable("chat.coe.veinFinder.far", Component.translatable("chat.coe.veinFinder.distance", nearest.getSecond().getName(), i)), false);
-			infoTag.putString("far", nearest.getSecond().getId().toString());
+			player.displayClientMessage(Component.translatable("chat.coe.veinFinder.far", Component.translatable("chat.coe.veinFinder.distance", nearest.getSecond().value().getName(), i)), false);
+			infoTag.putString("far", nearest.getSecond().id().toString());
 			infoTag.putInt("dist", i);
 		} else {
 			player.displayClientMessage(Component.translatable("chat.coe.veinFinder.far", nothing), false);
@@ -151,21 +152,15 @@ public class OreVeinFinderItem extends Item {
 		player.getCooldowns().addCooldown(this, Config.veinFinderCd);
 	}
 
-	private Predicate<VeinRecipe> makeFilter(CompoundTag atlasTag) {
-		String vt = atlasTag.getString(OreVeinAtlasItem.TARGET);
-		ResourceLocation target = ResourceLocation.tryParse(vt);
-		if (!vt.isEmpty() && target != null) {
-			return v -> target.equals(v.getId());
+	private Predicate<RecipeHolder<VeinRecipe>> makeFilter(OreVeinAtlasDataComponent atlasTag) {
+		if (atlasTag.target().isPresent()) {
+			var t = atlasTag.target().get();
+			return v -> t.equals(v.id());
 		}
-		Set<ResourceLocation> exclude = new HashSet<>();
-		ListTag ex = atlasTag.getList(OreVeinAtlasItem.EXCLUDE, Tag.TAG_STRING);
-		for (int i = 0;i < ex.size(); i++) {
-			ResourceLocation v = ResourceLocation.tryParse(ex.getString(i));
-			if (v != null)exclude.add(v);
-		}
+		Set<ResourceLocation> exclude = new HashSet<>(atlasTag.exclude());
 		if (exclude.isEmpty())return a -> true;
 		return v -> {
-			return !exclude.contains(v.getId());
+			return !exclude.contains(v.id());
 		};
 	}
 }

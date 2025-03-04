@@ -2,11 +2,10 @@ package com.tom.createores;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
-import net.minecraftforge.common.ForgeConfigSpec.IntValue;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.config.ModConfig.Type;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
+import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
 public class Config {
 	public static class Server {
@@ -15,7 +14,7 @@ public class Config {
 		public IntValue maxExtractorsPerVein;
 		public IntValue veinFinderNear, veinFinderFar, veinFinderCd;
 
-		private Server(ForgeConfigSpec.Builder builder) {
+		private Server(ModConfigSpec.Builder builder) {
 			builder.comment("IMPORTANT NOTICE:",
 					"You can add more entries using KubeJS",
 					"https://github.com/tom5454/Create-Ore-Excavation#kubejs").
@@ -42,7 +41,7 @@ public class Config {
 
 	public static class Common {
 
-		public Common(ForgeConfigSpec.Builder builder) {
+		public Common(ModConfigSpec.Builder builder) {
 			builder.comment("IMPORTANT NOTICE:",
 					"THIS IS ONLY THE COMMON CONFIG. It does not contain all the values adjustable for Create Ore Excavation",
 					"The settings have been moved to createoreexcavation-server.toml",
@@ -53,18 +52,18 @@ public class Config {
 		}
 	}
 
-	static final ForgeConfigSpec commonSpec;
+	static final ModConfigSpec commonSpec;
 	public static final Common COMMON;
 	static {
-		final Pair<Common, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(Common::new);
+		final Pair<Common, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(Common::new);
 		commonSpec = specPair.getRight();
 		COMMON = specPair.getLeft();
 	}
 
-	static final ForgeConfigSpec serverSpec;
+	static final ModConfigSpec serverSpec;
 	public static final Server SERVER;
 	static {
-		final Pair<Server, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(Server::new);
+		final Pair<Server, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(Server::new);
 		serverSpec = specPair.getRight();
 		SERVER = specPair.getLeft();
 	}
@@ -73,7 +72,7 @@ public class Config {
 	public static boolean defaultInfinite;
 
 	public static void load(ModConfig modConfig) {
-		if(modConfig.getType() == Type.SERVER) {
+		if(modConfig.getType() == ModConfig.Type.SERVER) {
 			finiteAmountBase = SERVER.finiteAmountBase.get();
 			defaultInfinite = SERVER.defaultInfinite.get();
 			maxExtractorsPerVein = SERVER.maxExtractorsPerVein.get();

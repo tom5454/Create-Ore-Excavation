@@ -3,16 +3,16 @@ package com.tom.createores.block.entity;
 import java.util.List;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.capabilities.BlockCapability;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
 import com.tom.createores.recipe.ExcavatingRecipe;
 import com.tom.createores.util.IOBlockType;
@@ -20,7 +20,6 @@ import com.tom.createores.util.TooltipUtil;
 
 public abstract class ExcavatingBlockEntityImpl<R extends ExcavatingRecipe> extends ExcavatingBlockEntity<R> {
 	protected FluidTank fluidTank;
-	protected LazyOptional<FluidTank> tankCap;
 
 	protected ExcavatingBlockEntityImpl(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -31,34 +30,33 @@ public abstract class ExcavatingBlockEntityImpl<R extends ExcavatingRecipe> exte
 				notifyUpdate();
 			}
 		};
-		tankCap = LazyOptional.of(() -> fluidTank);
 	}
 
 	@Override
-	public <T> LazyOptional<T> getCaps(Capability<T> cap, IOBlockType type) {
-		if(type == IOBlockType.FLUID_IN && cap == ForgeCapabilities.FLUID_HANDLER) {
-			return tankCap.cast();
+	public <T> T getCaps(BlockCapability<T, Direction> cap, IOBlockType type) {
+		if(type == IOBlockType.FLUID_IN && cap == Capabilities.FluidHandler.BLOCK) {
+			return (T) fluidTank;
 		}
-		return LazyOptional.empty();
+		return null;
 	}
 
 	@Override
-	protected void read(CompoundTag tag, boolean clientPacket) {
-		super.read(tag, clientPacket);
-		fluidTank.readFromNBT(tag.getCompound(getTankInName()));
+	protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+		super.read(tag, registries, clientPacket);
+		fluidTank.readFromNBT(registries, tag.getCompound(getTankInName()));
 	}
 
 	@Override
-	protected void write(CompoundTag tag, boolean clientPacket) {
-		super.write(tag, clientPacket);
-		tag.put(getTankInName(), fluidTank.writeToNBT(new CompoundTag()));
+	public void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+		super.write(tag, registries, clientPacket);
+		tag.put(getTankInName(), fluidTank.writeToNBT(registries, new CompoundTag()));
 	}
 
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 		TooltipUtil.forGoggles(tooltip, Component.translatable("info.coe.drill.fluidInfo"));
-		containedFluidTooltip(tooltip, isPlayerSneaking, tankCap.cast());
+		containedFluidTooltip(tooltip, isPlayerSneaking, fluidTank);
 		return true;
 	}
 
@@ -75,22 +73,15 @@ public abstract class ExcavatingBlockEntityImpl<R extends ExcavatingRecipe> exte
 	}
 
 	@Override
-	public void invalidate() {
-		super.invalidate();
-		tankCap.invalidate();
-	}
-
-
-	@Override
 	protected boolean canExtract() {
-		return current.getDrillingFluid().getRequiredAmount() == 0 ||
-				(current.getDrillingFluid().test(fluidTank.getFluid()) &&
-						fluidTank.getFluidAmount() >= current.getDrillingFluid().getRequiredAmount());
+		return current.value().getDrillingFluid().getRequiredAmount() == 0 ||
+				(current.value().getDrillingFluid().test(fluidTank.getFluid()) &&
+						fluidTank.getFluidAmount() >= current.value().getDrillingFluid().getRequiredAmount());
 	}
 
 	@Override
 	protected void onFinished() {
-		fluidTank.drain(current.getDrillingFluid().getRequiredAmount(), FluidAction.EXECUTE);
+		fluidTank.drain(current.value().getDrillingFluid().getRequiredAmount(), FluidAction.EXECUTE);
 	}
 
 	protected String getTankInName() {

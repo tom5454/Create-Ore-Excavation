@@ -1,15 +1,15 @@
 package com.tom.createores.block.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
+import net.neoforged.neoforge.capabilities.BlockCapability;
+import net.neoforged.neoforge.capabilities.Capabilities;
 
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 
@@ -27,33 +27,27 @@ public class DrillBlockEntity extends ExcavatingBlockEntityImpl<DrillingRecipe> 
 	}
 
 	@Override
-	public <T> LazyOptional<T> getCaps(Capability<T> cap, IOBlockType type) {
-		if(type == IOBlockType.ITEM_OUT && cap == ForgeCapabilities.ITEM_HANDLER) {
+	public <T> T getCaps(BlockCapability<T, Direction> cap, IOBlockType type) {
+		if(type == IOBlockType.ITEM_OUT && cap == Capabilities.ItemHandler.BLOCK) {
 			return inventory.asCap();
 		}
 		return super.getCaps(cap, type);
 	}
 
 	@Override
-	protected void read(CompoundTag tag, boolean clientPacket) {
-		super.read(tag, clientPacket);
+	protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+		super.read(tag, registries, clientPacket);
 		if(!clientPacket) {
-			inventory.load(tag.getList("inv", Tag.TAG_COMPOUND));
+			inventory.load(tag.getList("inv", Tag.TAG_COMPOUND), registries);
 		}
 	}
 
 	@Override
-	protected void write(CompoundTag tag, boolean clientPacket) {
-		super.write(tag, clientPacket);
+	public void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+		super.write(tag, registries, clientPacket);
 		if(!clientPacket) {
-			tag.put("inv", inventory.toTag());
+			tag.put("inv", inventory.toTag(registries));
 		}
-	}
-
-	@Override
-	public void invalidate() {
-		super.invalidate();
-		inventory.invalidate();
 	}
 
 	@Override
@@ -71,7 +65,7 @@ public class DrillBlockEntity extends ExcavatingBlockEntityImpl<DrillingRecipe> 
 
 	@Override
 	protected void onFinished() {
-		current.getOutput().stream().map(ProcessingOutput::rollOutput).filter(i -> !i.isEmpty()).forEach(inventory::add);
+		current.value().getOutput().stream().map(ProcessingOutput::rollOutput).filter(i -> !i.isEmpty()).forEach(inventory::add);
 		super.onFinished();
 	}
 

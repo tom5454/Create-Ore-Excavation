@@ -1,0 +1,28 @@
+{
+  "type": "createoreexcavation:drilling",
+  "drill": {
+    "item": "createoreexcavation:netherite_drill"
+  },
+  "fluid": {
+    "type": "fluid_stack",
+    "amount": 500,
+    "fluid": "minecraft:lava"
+  },
+  "output": [
+    {
+      "item": {
+        "id": "createoreexcavation:raw_diamond"
+      }
+    },
+    {
+      "chance": 0.1,
+      "item": {
+        "id": "minecraft:diamond"
+      }
+    }
+  ],
+  "priority": 0,
+  "stress": 1024,
+  "ticks": 400,
+  "veinId": "createoreexcavation:ore_vein_type/hardened_diamond"
+}

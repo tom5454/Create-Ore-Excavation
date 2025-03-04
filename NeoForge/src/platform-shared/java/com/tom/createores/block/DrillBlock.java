@@ -7,18 +7,27 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
+import com.mojang.serialization.MapCodec;
 import com.simibubi.create.foundation.block.IBE;
 
 import com.tom.createores.Registration;
 import com.tom.createores.block.entity.DrillBlockEntity;
 
 public class DrillBlock extends MultiblockController implements IBE<DrillBlockEntity> {
+	public static final MapCodec<DrillBlock> CODEC = simpleCodec(DrillBlock::new);
+
+	@Override
+	protected MapCodec<? extends Block> codec() {
+		return CODEC;
+	}
 
 	private static final MultiblockPartType[][][] LAYOUT = new MultiblockPartType[][][] {
 		{
@@ -64,8 +73,14 @@ public class DrillBlock extends MultiblockController implements IBE<DrillBlockEn
 	}
 
 	@Override
-	public InteractionResult onActivate(BlockState state, Level level, BlockPos pos, Player player,
+	public ItemInteractionResult onActivate(BlockState state, Level level, BlockPos pos, Player player,
 			InteractionHand hand, BlockHitResult pHit) {
-		return level.getBlockEntity(pos, Registration.DRILL_TILE.get()).map(te -> te.onClick(player, hand)).orElse(InteractionResult.PASS);
+		return level.getBlockEntity(pos, Registration.DRILL_TILE.get()).map(te -> te.onClick(player, hand)).orElse(ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION);
+	}
+
+	@Override
+	public InteractionResult onActivate(BlockState state, Level level, BlockPos pos, Player player,
+			BlockHitResult pHit) {
+		return level.getBlockEntity(pos, Registration.DRILL_TILE.get()).map(te -> te.onClick(player)).orElse(InteractionResult.PASS);
 	}
 }

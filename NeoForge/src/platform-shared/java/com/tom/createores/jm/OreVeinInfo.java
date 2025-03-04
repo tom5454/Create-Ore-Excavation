@@ -1,23 +1,23 @@
 package com.tom.createores.jm;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeHolder;
 
 import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.recipe.VeinRecipe;
 import com.tom.createores.util.DimChunkPos;
 
-import journeymap.client.api.display.PolygonOverlay;
-import journeymap.client.api.model.ShapeProperties;
-import journeymap.client.api.model.TextProperties;
-import journeymap.client.api.util.PolygonHelper;
+import journeymap.api.v2.client.display.PolygonOverlay;
+import journeymap.api.v2.client.model.ShapeProperties;
+import journeymap.api.v2.client.model.TextProperties;
+import journeymap.api.v2.client.util.PolygonHelper;
 
 public class OreVeinInfo {
 	private PolygonOverlay overlay;
 	public final ResourceLocation id;
 
-	public OreVeinInfo(DimChunkPos pos, VeinRecipe vein, boolean legacy) {
+	public OreVeinInfo(DimChunkPos pos, RecipeHolder<VeinRecipe> vein, boolean legacy) {
 		int color = legacy ? 0xFF777777 : 0xFFFFFF00;
-		var displayId = "coe_vein_" + pos.x + ',' + pos.z;
 		var shapeProps = new ShapeProperties()
 				.setStrokeWidth(1)
 				.setStrokeColor(color)
@@ -29,15 +29,15 @@ public class OreVeinInfo {
 				.setOpacity(1f)
 				.setFontShadow(true);
 
-		var polygon = PolygonHelper.createChunkPolygon(pos.x, 1, pos.z);
+		var polygon = PolygonHelper.createChunkPolygon(pos.x(), 1, pos.z());
 
-		overlay = new PolygonOverlay(CreateOreExcavation.MODID, displayId, pos.dimension, shapeProps, polygon);
+		overlay = new PolygonOverlay(CreateOreExcavation.MODID, pos.dimension(), shapeProps, polygon);
 
 		overlay.setOverlayGroupName("COE Veins")
-		.setLabel(vein.getName().getString())
+		.setLabel(vein.value().getName().getString())
 		.setTextProperties(textProps);
 
-		this.id = vein.id;
+		this.id = vein.id();
 	}
 
 	public PolygonOverlay getOverlay() {
