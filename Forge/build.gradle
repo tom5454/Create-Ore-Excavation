@@ -64,8 +64,6 @@ minecraft {
             property("mixin.env.remapRefMap", "true")
 			property("mixin.env.refMapRemappingFile", "${projectDir}/build/createSrgToMcp/output.srg")
 
-			arg("-mixin.config=create.mixins.json")
-
             mods {
                 createoreexcavation {
                     source sourceSets.main

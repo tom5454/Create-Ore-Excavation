@@ -17,6 +17,14 @@
     {
       "slug": "jei",
       "type": "optionalDependency"
+    },
+    {
+      "slug": "cc-tweaked",
+      "type": "optionalDependency"
+    },
+    {
+      "slug": "kubejs",
+      "type": "optionalDependency"
     }
   ]
 }

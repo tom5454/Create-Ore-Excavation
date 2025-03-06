@@ -61,8 +61,9 @@ public abstract class ExcavatingCategory<T extends ExcavatingRecipe> implements 
 			builder
 			.addSlot(RecipeIngredientRole.INPUT, 51 + 18, 3)
 			.setBackground(CreateRecipeCategory.getRenderedSlot(), -1, -1)
-			.addIngredients(JeiPlatform.FLUID_STACK, JeiPlatform.wrapFluid(CreateRecipeCategory.withImprovedVisibility(recipe.getDrillingFluid().getMatchingFluidStacks())))
-			.addRichTooltipCallback(CreateRecipeCategory.addFluidTooltip(recipe.getDrillingFluid().getRequiredAmount()));
+			.addIngredients(JeiPlatform.FLUID_STACK, JeiPlatform.wrapFluid(recipe.getDrillingFluid().getMatchingFluidStacks()))
+			.setFluidRenderer(recipe.getDrillingFluid().getRequiredAmount(), false, 16, 16);
+			//.addRichTooltipCallback(CreateRecipeCategory.addFluidTooltip(recipe.getDrillingFluid().getRequiredAmount()));
 		}
 	}
 
