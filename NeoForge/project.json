@@ -1,9 +1,9 @@
 {
-  "type": "forge",
+  "type": "neoforge",
   "name": "createoreexcavation-1.21",
   "mcVer": "1.21",
   "verId": "1.21.1",
-  "display": "[Forge] Create Ore Excavation 1.21",
+  "display": "[NeoForge] Create Ore Excavation 1.21",
   "onGit": true,
   "subver": [
 	"1.21.1"

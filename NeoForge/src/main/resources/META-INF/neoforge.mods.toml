@@ -41,7 +41,7 @@ Extract resources using machines powered by Rotational Force
     # the modid of the dependency
     modId="neoforge" #mandatory
     # Does this dependency have to exist - if not, ordering below must be specified
-    mandatory=true #mandatory
+    type="required"
     # The version range of the dependency
     versionRange="[21.1,)" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
@@ -50,14 +50,14 @@ Extract resources using machines powered by Rotational Force
     side="BOTH"
 [[dependencies.createoreexcavation]]
     modId="create"
-    mandatory=true
-    versionRange="[6.0.0,)"
+    type="required"
+    versionRange="[6.0.2,)"
     ordering="NONE"
     side="BOTH"
 # Here's another dependency
 [[dependencies.createoreexcavation]]
     modId="minecraft"
-    mandatory=true
+    type="required"
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
     versionRange="[1.21,1.21.1]"
     ordering="NONE"

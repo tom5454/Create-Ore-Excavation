@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.ChunkPos;
 
@@ -41,6 +42,11 @@ public class OreVeinFinderTurtle extends AbstractTurtleUpgrade {
 	@Override
 	public UpgradeType<? extends ITurtleUpgrade> getType() {
 		return CCRegistration.VEIN_FINDER_TYPE.get();
+	}
+
+	@Override
+	public boolean isItemSuitable(ItemStack stack) {
+		return stack.getItem() == Registration.VEIN_FINDER_ITEM.asItem();
 	}
 
 	public static class Peripheral implements IPeripheral {

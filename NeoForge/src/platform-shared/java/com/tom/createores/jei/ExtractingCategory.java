@@ -13,7 +13,6 @@ import com.tom.createores.recipe.ExtractorRecipe;
 
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.recipe.IFocusGroup;
-import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 
 public class ExtractingCategory extends ExcavatingCategory<ExtractorRecipe> {
@@ -40,11 +39,6 @@ public class ExtractingCategory extends ExcavatingCategory<ExtractorRecipe> {
 		int xOffset = getWidth() / 2;
 		int yOffset = 86;
 
-		builder
-		.addSlot(RecipeIngredientRole.OUTPUT, xOffset - 8, yOffset - 8)
-		.setBackground(CreateRecipeCategory.getRenderedSlot(), -1, -1)
-		.addIngredient(JeiPlatform.FLUID_STACK, JeiPlatform.wrapFluid(CreateRecipeCategory.withImprovedVisibility(recipe.value().getOutput())))
-		.addRichTooltipCallback(CreateRecipeCategory.addFluidTooltip(recipe.value().getOutput().getAmount()));
-
+		CreateRecipeCategory.addFluidSlot(builder, xOffset - 8, yOffset - 8, recipe.value().getOutput());
 	}
 }
