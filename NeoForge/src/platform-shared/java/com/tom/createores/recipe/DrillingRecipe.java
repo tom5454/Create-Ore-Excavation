@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 
@@ -25,16 +26,12 @@ public class DrillingRecipe extends ExcavatingRecipe {
 
 	@Override
 	protected void fromNetwork(RegistryFriendlyByteBuf buffer) {
-		output = NonNullList.create();
-		int size = buffer.readVarInt();
-		for (int i = 0; i < size; i++)
-			output.add(ProcessingOutput.read(buffer));
+		output = NonNullList.copyOf(ProcessingOutput.STREAM_CODEC.apply(ByteBufCodecs.list()).decode(buffer));
 	}
 
 	@Override
 	protected void toNetwork(RegistryFriendlyByteBuf buffer) {
-		buffer.writeVarInt(output.size());
-		output.forEach(o -> o.write(buffer));
+		ProcessingOutput.STREAM_CODEC.apply(ByteBufCodecs.list()).encode(buffer, output);
 	}
 
 	public NonNullList<ProcessingOutput> getOutput() {
