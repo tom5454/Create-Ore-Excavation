@@ -155,6 +155,7 @@ public abstract class ExcavatingBlockEntity<R extends ExcavatingRecipe> extends 
 							onFinished();
 							data.extract(1);
 							completedOneCycle = true;
+							setChanged();
 						}
 						progress = 0;
 					}

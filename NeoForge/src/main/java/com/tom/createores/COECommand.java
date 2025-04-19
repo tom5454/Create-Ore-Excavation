@@ -52,7 +52,7 @@ public class COECommand {
 									RecipeHolder<?> rl = ResourceLocationArgument.getRecipe(c, "recipe");
 									if(rl.value() instanceof VeinRecipe) {
 										setVein(c.getSource(), p, rl.id(), 0.8F);
-										c.getSource().sendSuccess(() -> Component.translatable("command.coe.setvein.success", rl.id()), true);
+										c.getSource().sendSuccess(() -> Component.translatable("command.coe.setvein.success", rl.id().toString()), true);
 										return 1;
 									}
 									return 0;
@@ -64,7 +64,7 @@ public class COECommand {
 											RecipeHolder<?> rl = ResourceLocationArgument.getRecipe(c, "recipe");
 											if(rl.value() instanceof VeinRecipe) {
 												setVein(c.getSource(), p, rl.id(), mul);
-												c.getSource().sendSuccess(() -> Component.translatable("command.coe.setvein.success", rl.id()), true);
+												c.getSource().sendSuccess(() -> Component.translatable("command.coe.setvein.success", rl.id().toString()), true);
 												return 1;
 											}
 											return 0;
@@ -94,8 +94,10 @@ public class COECommand {
 								stopwatch.stop();
 								if(at != null) {
 									int i = Mth.floor(RandomSpreadGenerator.distance2d(at, blockpos));
-									Component component = ComponentUtils.wrapInSquareBrackets(Component.translatable("chat.coordinates", at.getX(), "~", at.getZ())).withStyle((p_214489_) -> {
-										return p_214489_.withColor(ChatFormatting.GREEN).withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tp @s " + at.getX() + " ~ " + at.getZ())).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.translatable("chat.coordinates.tooltip")));
+									Component component = ComponentUtils.wrapInSquareBrackets(Component.translatable("chat.coordinates", at.getX(), "~", at.getZ())).withStyle(tc -> {
+										return tc.withColor(ChatFormatting.GREEN).
+												withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tp @s " + at.getX() + " ~ " + at.getZ())).
+												withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.translatable("chat.coordinates.tooltip")));
 									});
 									c.getSource().sendSuccess(() -> {
 										return Component.translatable("command.coe.locate.success", rl.id().toString(), component, i);
@@ -116,11 +118,13 @@ public class COECommand {
 
 	private static void setVein(CommandSourceStack css, BlockPos pos, ResourceLocation rl, float mul) {
 		ChunkPos p = new ChunkPos(pos);
-		OreData data = OreDataAttachment.getData(css.getLevel().getChunk(p.x, p.z));
+		var chunk = css.getLevel().getChunk(p.x, p.z);
+		OreData data = OreDataAttachment.getData(chunk);
 		data.setRecipe(rl);
 		data.setLoaded(true);
 		data.setRandomMul(mul);
 		data.setExtractedAmount(0);
+		chunk.setUnsaved(true);
 	}
 
 	public static final SuggestionProvider<CommandSourceStack> ALL_RECIPES = SuggestionProviders.register(ResourceLocation.tryBuild(CreateOreExcavation.MODID, "all_recipes"), (ctx, builder) -> {
