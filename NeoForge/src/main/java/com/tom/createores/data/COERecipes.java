@@ -33,11 +33,9 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllRecipeTypes;
+import com.simibubi.create.api.data.recipe.MechanicalCraftingRecipeBuilder;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
-import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
-import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
-import com.simibubi.create.content.processing.recipe.ProcessingRecipeSerializer;
-import com.simibubi.create.foundation.data.recipe.MechanicalCraftingRecipeBuilder;
+import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 
 import com.tom.createores.CreateOreExcavation;
@@ -178,9 +176,9 @@ public class COERecipes extends RecipeProvider {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static <T extends ProcessingRecipe<?>> void processing(String name, AllRecipeTypes type, RecipeOutput consumer, Consumer<ProcessingRecipeBuilder<?>> f) {
+	private static <T extends StandardProcessingRecipe<?>> void processing(String name, AllRecipeTypes type, RecipeOutput consumer, Consumer<StandardProcessingRecipe.Builder<?>> f) {
 		ResourceLocation id = i(name);
-		ProcessingRecipeBuilder<T> b = new ProcessingRecipeBuilder<>(((ProcessingRecipeSerializer<T>) type.getSerializer()).getFactory(), id);
+		StandardProcessingRecipe.Builder<T> b = new StandardProcessingRecipe.Builder<>(((StandardProcessingRecipe.Serializer<T>) type.getSerializer()).factory(), id);
 		f.accept(b);
 		b.build(consumer);
 	}

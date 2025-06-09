@@ -130,7 +130,7 @@ sourceSets {
 		java {
 			srcDir "src/platform-shared/java"
 			//if(!useLib)exclude "com/tom/createores/rei/**"
-			exclude "com/tom/createores/kubejs/**"
+			//exclude "com/tom/createores/kubejs/**"
 		}
 		resources {
 			srcDir "src/platform-shared/resources"
@@ -184,7 +184,7 @@ dependencies {
   	
   	implementation "curse.maven:the-one-probe-245211:5836106"
   	implementation "curse.maven:jade-324717:6011258"
-  	implementation 'curse.maven:journeymap-32274:5972765'
+  	implementation 'curse.maven:journeymap-32274:6550378'
   	compileOnly "info.journeymap:journeymap-api-neoforge:2.0.0-1.21.4-SNAPSHOT"
   	
   	implementation "dev.latvian.mods:kubejs-neoforge:2101.7.1-build.181"

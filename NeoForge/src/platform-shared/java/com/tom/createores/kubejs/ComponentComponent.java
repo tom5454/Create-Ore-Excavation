@@ -23,4 +23,9 @@ public enum ComponentComponent implements RecipeComponent<Component> {
 	public TypeInfo typeInfo() {
 		return COMPONENT;
 	}
+
+	@Override
+	public String toString() {
+		return "component";
+	}
 }

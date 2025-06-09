@@ -12,7 +12,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import com.tterrag.registrate.providers.ProviderType;
-import com.tterrag.registrate.providers.RegistrateDataProvider;
 
 import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.client.ClientRegistration;
@@ -35,7 +34,5 @@ public class DataGenerators {
 				PonderIndex.getLangAccess().provideLang(CreateOreExcavation.MODID, langConsumer);
 			});
 		}
-
-		event.getGenerator().addProvider(true, CreateOreExcavation.registrate().setDataProvider(new RegistrateDataProvider(CreateOreExcavation.registrate(), CreateOreExcavation.MODID, event)));
 	}
 }

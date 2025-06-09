@@ -8,8 +8,9 @@ The ore vein finder can be attached to a turtle and has one method:
 `local useSuccess, veinFound, veinId, veinSize = finder.search()`
 
 ## KubeJS
-1.20:
+1.21:
 ```js
+//Output with chance has changed to coeutil.processingOutput(<item>, <chance 0-1>) from 1.20
 
 ServerEvents.recipes(event => {
 	
@@ -37,7 +38,7 @@ ServerEvents.recipes(event => {
 	event.recipes.createoreexcavation.drilling(
 		[
 			Item.of('minecraft:coal_block'),
-			Item.of('minecraft:diamond').withChance(0.05)
+			coeutil.processingOutput('minecraft:diamond', 0.05)
 		], 'kubejs:my_coal_vein', 500)
 		.drill('createoreexcavation:diamond_drill').fluid('minecraft:lava').priority(1)
 		.id("kubejs:my_coal2");
@@ -67,6 +68,10 @@ ServerEvents.recipes(event => {
 //See assets/createoreexcavation/textures/entity/drill/drill.png
 
 ```
+
+## 1.20.1
+
+https://github.com/tom5454/Create-Ore-Excavation/tree/1.20?tab=readme-ov-file#kubejs
 
 ## 1.19.2 or older
 [https://github.com/tom5454/Create-Ore-Excavation/blob/1.19/README.md](https://github.com/tom5454/Create-Ore-Excavation/blob/1.19/README.md#kubejs)

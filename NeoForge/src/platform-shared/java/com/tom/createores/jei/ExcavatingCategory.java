@@ -1,5 +1,8 @@
 package com.tom.createores.jei;
 
+import static net.minecraft.ChatFormatting.GRAY;
+
+import net.createmod.catnip.lang.LangBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -7,7 +10,11 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
+import com.simibubi.create.content.equipment.goggles.GogglesItem;
+import com.simibubi.create.content.kinetics.base.IRotate.StressImpact;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
+import com.simibubi.create.foundation.item.TooltipHelper;
+import com.simibubi.create.foundation.utility.CreateLang;
 
 import com.tom.createores.recipe.ExcavatingRecipe;
 import com.tom.createores.recipe.VeinRecipe;
@@ -79,6 +86,23 @@ public abstract class ExcavatingCategory<T extends ExcavatingRecipe> implements 
 			double mouseX, double mouseY) {
 		if (mouseX > 40 && mouseX < 80 && mouseY > 25 && mouseY < 60) {
 			tooltip.add(Component.translatable("tooltip.coe.processTime", recipe.value().getTicks()));
+			boolean hasGoggles = GogglesItem.isWearingGoggles(Minecraft.getInstance().player);
+			if (hasGoggles) {
+				LangBuilder rpmUnit = CreateLang.translate("generic.unit.rpm");
+				tooltip.add(CreateLang.translate("tooltip.stressImpact")
+						.style(GRAY)
+						.component());
+
+				int impact = recipe.value().getStress();
+				StressImpact impactId = StressImpact.HIGH;
+				LangBuilder builder = CreateLang.builder()
+						.add(CreateLang.text(TooltipHelper.makeProgressBar(3, impactId.ordinal() + 1))
+								.style(impactId.getAbsoluteColor()));
+				tooltip.add(builder.add(CreateLang.number(impact))
+						.text("x ")
+						.add(rpmUnit)
+						.component());
+			}
 		}
 	}
 }
