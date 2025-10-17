@@ -1,20 +1,25 @@
 package com.tom.createores.kubejs;
 
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.crafting.TagFluidIngredient;
 
 import com.mojang.serialization.Codec;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 
+import com.tom.createores.CreateOreExcavation;
+
 import dev.latvian.mods.kubejs.fluid.FluidWrapper;
 import dev.latvian.mods.kubejs.recipe.component.RecipeComponent;
+import dev.latvian.mods.kubejs.recipe.component.RecipeComponentType;
 import dev.latvian.mods.kubejs.util.RegistryAccessContainer;
 import dev.latvian.mods.rhino.type.TypeInfo;
 
 public enum FluidIngredientJS implements RecipeComponent<FluidIngredient> {
 	INSTANCE;
 
-	public static final TypeInfo TYPE = TypeInfo.of(FluidIngredient.class);
+	public static final TypeInfo TYPE_INFO = TypeInfo.of(FluidIngredient.class);
+	public static final RecipeComponentType<?> TYPE = RecipeComponentType.unit(ResourceLocation.tryBuild(CreateOreExcavation.MODID, "fluid_ingredient"), INSTANCE);
 
 	@Override
 	public Codec<FluidIngredient> codec() {
@@ -23,7 +28,7 @@ public enum FluidIngredientJS implements RecipeComponent<FluidIngredient> {
 
 	@Override
 	public TypeInfo typeInfo() {
-		return TYPE;
+		return TYPE_INFO;
 	}
 
 	static FluidIngredient wrap(RegistryAccessContainer registries, Object o) {
@@ -37,5 +42,10 @@ public enum FluidIngredientJS implements RecipeComponent<FluidIngredient> {
 		} else {
 			throw new RuntimeException("Can't use multiple fluids in fluid ingredient");
 		}
+	}
+
+	@Override
+	public RecipeComponentType<?> type() {
+		return TYPE;
 	}
 }

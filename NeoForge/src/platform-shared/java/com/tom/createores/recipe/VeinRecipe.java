@@ -20,6 +20,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
+import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -170,6 +171,7 @@ public class VeinRecipe implements Recipe<SmartInventory> {
 			r.amountMultiplierMax = buffer.readFloat();
 			r.icon = ItemStack.STREAM_CODEC.decode(buffer);
 			r.isNet = true;
+			r.placement = new RandomSpreadStructurePlacement(2, 1, RandomSpreadType.LINEAR, 0);
 			return r;
 		}
 

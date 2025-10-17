@@ -62,3 +62,9 @@ Extract resources using machines powered by Rotational Force
     versionRange="[1.21,1.21.1]"
     ordering="NONE"
     side="BOTH"
+[[dependencies.createoreexcavation]]
+    modId="kubejs"
+    type="optional"
+    versionRange="[2101.7.2,)"
+    ordering="NONE"
+    side="BOTH"

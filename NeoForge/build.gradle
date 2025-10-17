@@ -169,10 +169,10 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
     
     // compile against the JEI API but do not include it at runtime
-    compileOnly "mezz.jei:jei-1.21.1-neoforge-api:19.21.0.247"
-    compileOnly "mezz.jei:jei-1.21.1-common-api:19.21.0.247"
+    compileOnly "mezz.jei:jei-1.21.1-neoforge-api:19.25.0.322"
+    compileOnly "mezz.jei:jei-1.21.1-common-api:19.25.0.322"
     // at runtime, use the full JEI jar
-  	runtimeOnly "mezz.jei:jei-1.21.1-neoforge:19.21.0.247"
+  	runtimeOnly "mezz.jei:jei-1.21.1-neoforge:19.25.0.322"
   	
   	implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
     implementation("net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}")
@@ -187,11 +187,11 @@ dependencies {
   	implementation 'curse.maven:journeymap-32274:6550378'
   	compileOnly "info.journeymap:journeymap-api-neoforge:2.0.0-1.21.4-SNAPSHOT"
   	
-  	implementation "dev.latvian.mods:kubejs-neoforge:2101.7.1-build.181"
+  	implementation "dev.latvian.mods:kubejs-neoforge:2101.7.2-build.277"
 	implementation "dev.latvian.mods:rhino:2101.2.7-build.74"
 	implementation "dev.architectury:architectury-neoforge:13.0.8"
 	
-	compileOnly 'maven.modrinth:cc-tweaked:h6qYZ1UT'
+	compileOnly 'maven.modrinth:cc-tweaked:SQI2qmh5'
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
@@ -209,7 +209,7 @@ tasks.withType(ProcessResources).configureEach {
     ]
     inputs.properties replaceProperties
 
-    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+    filesMatching(['META-INF/neoforge.mods.toml', 'pack.mcmeta']) {
         expand replaceProperties + [project: project]
     }
 }

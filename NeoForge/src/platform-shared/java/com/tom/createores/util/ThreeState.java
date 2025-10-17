@@ -1,5 +1,7 @@
 package com.tom.createores.util;
 
+import java.util.Locale;
+
 import net.minecraft.util.StringRepresentable;
 
 import com.mojang.serialization.Codec;
@@ -11,6 +13,6 @@ public enum ThreeState implements StringRepresentable {
 
 	@Override
 	public String getSerializedName() {
-		return name().toLowerCase();
+		return name().toLowerCase(Locale.ROOT);
 	}
 }
