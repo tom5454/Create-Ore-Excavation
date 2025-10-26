@@ -3,6 +3,7 @@ package com.tom.createores.emi;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.createmod.catnip.gui.element.GuiGameElement;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -14,7 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.simibubi.create.foundation.gui.element.GuiGameElement;
 
 import com.google.common.collect.Lists;
 import com.google.gson.JsonElement;

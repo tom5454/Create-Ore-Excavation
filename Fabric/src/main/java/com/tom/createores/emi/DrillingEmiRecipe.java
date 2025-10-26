@@ -3,11 +3,11 @@ package com.tom.createores.emi;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.createmod.catnip.layout.LayoutHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
-import com.simibubi.create.foundation.ponder.ui.LayoutHelper;
 
 import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.Registration;

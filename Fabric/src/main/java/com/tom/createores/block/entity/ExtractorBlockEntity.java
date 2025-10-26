@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.recipe.ExtractorRecipe;
 import com.tom.createores.util.IOBlockType;
+import com.tom.createores.util.TooltipUtil;
 
 import io.github.fabricators_of_create.porting_lib.fluids.FluidStack;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
@@ -63,7 +64,7 @@ public class ExtractorBlockEntity extends ExcavatingBlockEntityImpl<ExtractorRec
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-		tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.extractor.output")));
+		TooltipUtil.forGoggles(tooltip, Component.translatable("info.coe.extractor.output"));
 		containedFluidTooltip(tooltip, isPlayerSneaking, fluidTankOut);
 		return true;
 	}

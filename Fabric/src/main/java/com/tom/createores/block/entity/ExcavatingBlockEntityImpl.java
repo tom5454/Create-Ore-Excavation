@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import com.tom.createores.recipe.ExcavatingRecipe;
+import com.tom.createores.util.TooltipUtil;
 
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
 
@@ -43,7 +44,7 @@ public abstract class ExcavatingBlockEntityImpl<R extends ExcavatingRecipe> exte
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-		tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.drill.fluidInfo")));
+		TooltipUtil.forGoggles(tooltip, Component.translatable("info.coe.drill.fluidInfo"));
 		containedFluidTooltip(tooltip, isPlayerSneaking, fluidTank);
 		return true;
 	}
@@ -51,7 +52,7 @@ public abstract class ExcavatingBlockEntityImpl<R extends ExcavatingRecipe> exte
 	@Override
 	public void addToGoggleTooltip(List<Component> tooltip, R rec) {
 		if(rec.getDrillingFluid().getRequiredAmount() != 0 && (!rec.getDrillingFluid().test(fluidTank.getFluid()) || fluidTank.getFluidAmount() < rec.getDrillingFluid().getRequiredAmount())) {
-			tooltip.add(Component.literal(spacing).append(Component.translatable("info.coe.drill.noFluid")));
+			TooltipUtil.forGoggles(tooltip, Component.translatable("info.coe.drill.noFluid"));
 		}
 	}
 

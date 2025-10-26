@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.5-SNAPSHOT'
+	id 'fabric-loom' version '1.10-SNAPSHOT'
 	id 'maven-publish'
 	
 }
@@ -25,7 +25,7 @@ repositories {
     maven { url = "https://api.modrinth.com/maven" }
     maven { url = "https://mvn.devos.one/releases/" }
     maven { url = "https://mvn.devos.one/snapshots/" }
-    maven { url = "https://maven.tterrag.com/" }
+    maven { url = "https://maven.createmod.net" } // Create, Ponder, Flywheel
     maven { url = "https://jitpack.io/" }
     maven {
         url 'https://www.cursemaven.com'
@@ -54,13 +54,6 @@ repositories {
         url = 'https://maven.parchmentmc.org'
     }
     maven {
-        // saps.dev Maven (KubeJS and Rhino)
-        url = "https://maven.saps.dev/minecraft"
-        content {
-            includeGroup "dev.latvian.mods"
-        }
-    }
-    maven {
 		name = "tom5454 maven"
 		url = "https://raw.githubusercontent.com/tom5454/maven/main"
 	}
@@ -81,6 +74,12 @@ repositories {
 		content {
 			includeGroup("cc.tweaked")
 			includeModule("org.squiddev", "Cobalt")
+		}
+	}
+	maven {
+		url "https://maven.latvian.dev/releases"
+		content {
+			includeGroup "dev.latvian.mods"
 		}
 	}
 }
@@ -166,13 +165,16 @@ dependencies {
 		exclude(group: "net.fabricmc.fabric")
 	}*/
 	
-	modImplementation("com.simibubi.create:create-fabric-${project.minecraft_version}:${project.create_version}+mc${project.minecraft_version}") {
+	modImplementation("com.simibubi.create:create-fabric-${project.minecraft_version}:${project.create_version}") {
 		exclude(group: "net.fabricmc.fabric")
 	}
 	for (String module in port_lib_modules.split(",")) {
         modApi("io.github.fabricators_of_create.Porting-Lib:$module:$port_lib_version")
     }
-	modImplementation("com.jozufozu.flywheel:flywheel-fabric-$flywheel_minecraft_version:$flywheel_version") {
+	modImplementation("dev.engine-room.flywheel:flywheel-fabric-$flywheel_minecraft_version:$flywheel_version") {
+		exclude(group: "net.fabricmc.fabric")
+	}
+	modImplementation("net.createmod.ponder:Ponder-Fabric-1.20.1:$ponder_version") {
 		exclude(group: "net.fabricmc.fabric")
 	}
 	modImplementation("dev.latvian.mods:kubejs-fabric:2001.6.3-build.45")

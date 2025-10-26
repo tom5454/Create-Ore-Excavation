@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 
 import org.jetbrains.annotations.Nullable;
 
+import net.createmod.catnip.gui.element.GuiGameElement;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -17,7 +18,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.simibubi.create.foundation.gui.element.GuiGameElement;
 
 import com.tom.createores.Registration;
 import com.tom.createores.recipe.VeinRecipe;
