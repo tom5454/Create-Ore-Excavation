@@ -62,26 +62,30 @@ public abstract class ExcavatingBlockEntityImpl<R extends ExcavatingRecipe> exte
 
 	@Override
 	public void addToGoggleTooltip(List<Component> tooltip, R rec) {
-		if(rec.getDrillingFluid().getRequiredAmount() != 0 && (!rec.getDrillingFluid().test(fluidTank.getFluid()) || fluidTank.getFluidAmount() < rec.getDrillingFluid().getRequiredAmount())) {
-			TooltipUtil.forGoggles(tooltip, Component.translatable("info.coe.drill.noFluid"));
-		}
+		rec.getDrillingFluid().ifPresent(fluid -> {
+			if (!fluid.test(fluidTank.getFluid()) || fluidTank.getFluidAmount() < fluid.getRequiredAmount()) {
+				TooltipUtil.forGoggles(tooltip, Component.translatable("info.coe.drill.noFluid"));
+			}
+		});
 	}
 
 	@Override
 	protected boolean validateRecipe(R recipe) {
-		return super.validateRecipe(recipe) && (recipe.getDrillingFluid().getRequiredAmount() == 0 || recipe.getDrillingFluid().test(fluidTank.getFluid()));
+		return super.validateRecipe(recipe) && (recipe.getDrillingFluid().isEmpty() || recipe.getDrillingFluid().get().test(fluidTank.getFluid()));
 	}
 
 	@Override
 	protected boolean canExtract() {
-		return current.value().getDrillingFluid().getRequiredAmount() == 0 ||
-				(current.value().getDrillingFluid().test(fluidTank.getFluid()) &&
-						fluidTank.getFluidAmount() >= current.value().getDrillingFluid().getRequiredAmount());
+		return current.value().getDrillingFluid().isEmpty() ||
+				(current.value().getDrillingFluid().get().test(fluidTank.getFluid()) &&
+						fluidTank.getFluidAmount() >= current.value().getDrillingFluid().get().getRequiredAmount());
 	}
 
 	@Override
 	protected void onFinished() {
-		fluidTank.drain(current.value().getDrillingFluid().getRequiredAmount(), FluidAction.EXECUTE);
+		current.value().getDrillingFluid().ifPresent(fluid -> {
+			fluidTank.drain(fluid.getRequiredAmount(), FluidAction.EXECUTE);
+		});
 	}
 
 	protected String getTankInName() {

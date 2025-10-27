@@ -1,5 +1,6 @@
 package com.tom.createores.data;
 
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
@@ -36,7 +37,6 @@ import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.api.data.recipe.MechanicalCraftingRecipeBuilder;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
-import com.simibubi.create.foundation.fluid.FluidIngredient;
 
 import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.Registration;
@@ -44,6 +44,7 @@ import com.tom.createores.recipe.DrillingRecipe;
 import com.tom.createores.recipe.ExcavatingRecipe;
 import com.tom.createores.recipe.ExtractorRecipe;
 import com.tom.createores.recipe.VeinRecipe;
+import com.tom.createores.util.FluidIngredient;
 import com.tom.createores.util.ThreeState;
 
 public class COERecipes extends RecipeProvider {
@@ -200,7 +201,7 @@ public class COERecipes extends RecipeProvider {
 			self().ticks = ticks;
 			self().drill = Ingredient.of(CreateOreExcavation.DRILL_TAG);
 			self().stressMul = 256;
-			self().drillingFluid = FluidIngredient.EMPTY;
+			self().drillingFluid = Optional.empty();
 			initVein(ticks, name, spacing, separation);
 		}
 
@@ -285,7 +286,7 @@ public class COERecipes extends RecipeProvider {
 		}
 
 		public DrillingBuilder setDrillingFluid(FluidIngredient drillingFluid) {
-			this.drillingFluid = drillingFluid;
+			this.drillingFluid = Optional.of(drillingFluid);
 			return this;
 		}
 

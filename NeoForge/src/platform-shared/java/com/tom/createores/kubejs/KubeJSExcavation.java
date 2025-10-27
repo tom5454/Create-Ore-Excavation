@@ -4,9 +4,9 @@ import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement.FrequencyReductionMethod;
 
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
-import com.simibubi.create.foundation.fluid.FluidIngredient;
 
 import com.tom.createores.CreateOreExcavation;
+import com.tom.createores.util.FluidIngredient;
 import com.tom.createores.util.ThreeState;
 
 import dev.latvian.mods.kubejs.plugin.KubeJSPlugin;

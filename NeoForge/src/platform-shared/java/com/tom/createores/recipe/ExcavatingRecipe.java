@@ -1,5 +1,6 @@
 package com.tom.createores.recipe;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import net.minecraft.core.HolderLookup;
@@ -12,18 +13,19 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.simibubi.create.foundation.fluid.FluidIngredient;
-import com.simibubi.create.foundation.item.SmartInventory;
 
-public abstract class ExcavatingRecipe implements Recipe<SmartInventory> {
+import com.tom.createores.util.FluidIngredient;
+
+public abstract class ExcavatingRecipe implements Recipe<RecipeWrapper> {
 	public ResourceLocation veinId;
 	public Ingredient drill;
 	public int priority, ticks, stressMul;
-	public FluidIngredient drillingFluid;
+	public Optional<FluidIngredient> drillingFluid;
 	protected boolean isNet;
 
 	protected void setFromCommon(ExcavatingRecipeCommon c) {
@@ -40,12 +42,12 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory> {
 	}
 
 	@Override
-	public boolean matches(SmartInventory pContainer, Level pLevel) {
+	public boolean matches(RecipeWrapper pContainer, Level pLevel) {
 		return false;
 	}
 
 	@Override
-	public ItemStack assemble(SmartInventory p_44001_, HolderLookup.Provider p_267165_) {
+	public ItemStack assemble(RecipeWrapper p_44001_, HolderLookup.Provider p_267165_) {
 		return getResultItem(p_267165_);
 	}
 
@@ -74,14 +76,14 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory> {
 		return stressMul;
 	}
 
-	public FluidIngredient getDrillingFluid() {
+	public Optional<FluidIngredient> getDrillingFluid() {
 		return drillingFluid;
 	}
 
 	protected abstract void fromNetwork(RegistryFriendlyByteBuf buffer);
 	protected abstract void toNetwork(RegistryFriendlyByteBuf buffer);
 
-	public static record ExcavatingRecipeCommon(ResourceLocation veinId, Ingredient drill, int priority, int ticks, int stressMul, FluidIngredient drillingFluid) {
+	public static record ExcavatingRecipeCommon(ResourceLocation veinId, Ingredient drill, int priority, int ticks, int stressMul, Optional<FluidIngredient> drillingFluid) {
 	}
 
 	public static abstract class Serializer<T extends ExcavatingRecipe> implements RecipeSerializer<T> {
@@ -99,10 +101,7 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory> {
 			r.priority = buffer.readVarInt();
 			r.veinId = buffer.readResourceLocation();
 			r.fromNetwork(buffer);
-			if(buffer.readBoolean())
-				r.drillingFluid = FluidIngredient.read(buffer);
-			else
-				r.drillingFluid = FluidIngredient.EMPTY;
+			r.drillingFluid = FluidIngredient.read(buffer);
 			r.isNet = true;
 			return r;
 		}
@@ -114,12 +113,7 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory> {
 			buffer.writeVarInt(recipe.priority);
 			buffer.writeResourceLocation(recipe.veinId);
 			recipe.toNetwork(buffer);
-			if(recipe.drillingFluid.getRequiredAmount() == 0) {
-				buffer.writeBoolean(false);
-			} else {
-				buffer.writeBoolean(true);
-				FluidIngredient.write(buffer, recipe.drillingFluid);
-			}
+			FluidIngredient.write(buffer, recipe.drillingFluid);
 		}
 
 		public static final MapCodec<ExcavatingRecipeCommon> CODEC = RecordCodecBuilder.mapCodec(
@@ -129,7 +123,7 @@ public abstract class ExcavatingRecipe implements Recipe<SmartInventory> {
 						Codec.INT.fieldOf("priority").forGetter(ExcavatingRecipeCommon::priority),
 						Codec.INT.fieldOf("ticks").forGetter(ExcavatingRecipeCommon::ticks),
 						Codec.INT.fieldOf("stress").forGetter(ExcavatingRecipeCommon::stressMul),
-						FluidIngredient.CODEC.optionalFieldOf("fluid", FluidIngredient.EMPTY).forGetter(ExcavatingRecipeCommon::drillingFluid)
+						FluidIngredient.CODEC.optionalFieldOf("fluid").forGetter(ExcavatingRecipeCommon::drillingFluid)
 						)
 				.apply(b, ExcavatingRecipeCommon::new)
 				);

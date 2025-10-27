@@ -11,8 +11,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
 
-import com.simibubi.create.content.processing.recipe.ProcessingOutput;
-
 import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.recipe.DrillingRecipe;
 import com.tom.createores.util.IOBlockType;
@@ -65,7 +63,7 @@ public class DrillBlockEntity extends ExcavatingBlockEntityImpl<DrillingRecipe> 
 
 	@Override
 	protected void onFinished() {
-		current.value().getOutput().stream().map(ProcessingOutput::rollOutput).filter(i -> !i.isEmpty()).forEach(inventory::add);
+		current.value().getOutput().stream().map(o -> o.rollOutput(level.random)).filter(i -> !i.isEmpty()).forEach(inventory::add);
 		super.onFinished();
 	}
 

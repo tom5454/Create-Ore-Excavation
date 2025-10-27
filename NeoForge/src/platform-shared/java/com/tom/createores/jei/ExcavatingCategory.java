@@ -12,7 +12,6 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.content.equipment.goggles.GogglesItem;
 import com.simibubi.create.content.kinetics.base.IRotate.StressImpact;
-import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
 
@@ -65,14 +64,14 @@ public abstract class ExcavatingCategory<T extends ExcavatingRecipe> implements 
 				.addIngredient(VeinIngredient.VEIN, new Vein((RecipeHolder) rec));
 		});
 
-		if(recipe.value().getDrillingFluid() != FluidIngredient.EMPTY) {
+		recipe.value().getDrillingFluid().ifPresent(fluid -> {
 			builder
 			.addSlot(RecipeIngredientRole.INPUT, 51 + 18, 3)
 			.setBackground(CreateRecipeCategory.getRenderedSlot(), -1, -1)
-			.addIngredients(JeiPlatform.FLUID_STACK, JeiPlatform.wrapFluid(recipe.value().getDrillingFluid().getMatchingFluidStacks()))
-			.setFluidRenderer(recipe.value().getDrillingFluid().getRequiredAmount(), false, 16, 16);
+			.addIngredients(JeiPlatform.FLUID_STACK, JeiPlatform.wrapFluid(fluid.getMatchingFluidStacks()))
+			.setFluidRenderer(fluid.getRequiredAmount(), false, 16, 16);
 			//.addRichTooltipCallback(CreateRecipeCategory.addFluidTooltip(recipe.value().getDrillingFluid().getRequiredAmount()));
-		}
+		});
 	}
 
 	@Override

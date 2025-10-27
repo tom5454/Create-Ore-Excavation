@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -25,13 +26,12 @@ import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.simibubi.create.foundation.item.SmartInventory;
 
 import com.tom.createores.Config;
 import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.util.ThreeState;
 
-public class VeinRecipe implements Recipe<SmartInventory> {
+public class VeinRecipe implements Recipe<CraftingInput> {
 	public int priority;
 	public Component veinName;
 	public TagKey<Biome> biomeWhitelist, biomeBlacklist;
@@ -59,12 +59,12 @@ public class VeinRecipe implements Recipe<SmartInventory> {
 	}
 
 	@Override
-	public boolean matches(SmartInventory pContainer, Level pLevel) {
+	public boolean matches(CraftingInput pContainer, Level pLevel) {
 		return false;
 	}
 
 	@Override
-	public ItemStack assemble(SmartInventory p_44001_, HolderLookup.Provider p_267165_) {
+	public ItemStack assemble(CraftingInput p_44001_, HolderLookup.Provider p_267165_) {
 		return getResultItem(p_267165_);
 	}
 

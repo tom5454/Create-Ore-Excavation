@@ -5,9 +5,9 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.crafting.TagFluidIngredient;
 
 import com.mojang.serialization.Codec;
-import com.simibubi.create.foundation.fluid.FluidIngredient;
 
 import com.tom.createores.CreateOreExcavation;
+import com.tom.createores.util.FluidIngredient;
 
 import dev.latvian.mods.kubejs.fluid.FluidWrapper;
 import dev.latvian.mods.kubejs.recipe.component.RecipeComponent;

@@ -224,7 +224,7 @@ public class PonderScenes {
 		.placeNearTarget();
 		scene.idle(10);
 
-		scene.overlay().showControls(util.vector().topOf(ground.above()), Pointing.DOWN, 30).withItem(new ItemStack(Registration.VEIN_ATLAS_ITEM.get()));
+		scene.overlay().showControls(util.vector().topOf(ground.above()), Pointing.DOWN, 30).rightClick().withItem(new ItemStack(Registration.VEIN_ATLAS_ITEM.get()));
 		scene.idle(60);
 
 		scene.overlay().showText(40)

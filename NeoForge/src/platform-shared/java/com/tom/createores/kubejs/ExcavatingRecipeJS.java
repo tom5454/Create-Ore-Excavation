@@ -2,9 +2,8 @@ package com.tom.createores.kubejs;
 
 import net.minecraft.world.item.crafting.Ingredient;
 
-import com.simibubi.create.foundation.fluid.FluidIngredient;
-
 import com.tom.createores.CreateOreExcavation;
+import com.tom.createores.util.FluidIngredient;
 
 import dev.latvian.mods.kubejs.recipe.KubeRecipe;
 import dev.latvian.mods.kubejs.recipe.RecipeKey;
