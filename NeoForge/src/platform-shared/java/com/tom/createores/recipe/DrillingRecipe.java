@@ -49,7 +49,7 @@ public class DrillingRecipe extends ExcavatingRecipe {
 
 		private static final MapCodec<DrillingRecipeData> CODEC2 = RecordCodecBuilder.mapCodec(
 				b -> b.group(
-						Codec.list(ProcessingOutput.CODEC).fieldOf("output").forGetter(DrillingRecipeData::output)
+						Codec.list(ProcessingOutput.CODEC_NEW).fieldOf("output").forGetter(DrillingRecipeData::output)
 						)
 				.apply(b, DrillingRecipeData::new)
 				);

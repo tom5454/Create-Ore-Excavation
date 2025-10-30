@@ -5,9 +5,7 @@
   },
   "output": [
     {
-      "item": {
-        "id": "minecraft:quartz"
-      }
+      "id": "minecraft:quartz"
     }
   ],
   "priority": 0,

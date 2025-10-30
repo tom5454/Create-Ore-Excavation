@@ -331,7 +331,7 @@ public class COERecipes extends RecipeProvider {
 		private VeinRecipe vein;
 
 		public ExtractorBuilder(FluidStack output, int ticks, int spacing, int separation) {
-			this(output, ticks, output.getDisplayName(), spacing, separation);
+			this(output, ticks, output.getHoverName(), spacing, separation);
 		}
 
 		public ExtractorBuilder(FluidStack output, int ticks, Component name, int spacing, int separation) {

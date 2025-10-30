@@ -5,9 +5,7 @@
   },
   "output": [
     {
-      "item": {
-        "id": "createoreexcavation:raw_diamond"
-      }
+      "id": "createoreexcavation:raw_diamond"
     }
   ],
   "priority": 0,

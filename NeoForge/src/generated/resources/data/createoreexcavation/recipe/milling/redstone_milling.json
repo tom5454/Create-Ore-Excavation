@@ -9,9 +9,7 @@
   "results": [
     {
       "count": 3,
-      "item": {
-        "id": "minecraft:redstone"
-      }
+      "id": "minecraft:redstone"
     }
   ]
 }

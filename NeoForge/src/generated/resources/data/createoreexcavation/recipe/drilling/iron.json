@@ -5,9 +5,7 @@
   },
   "output": [
     {
-      "item": {
-        "id": "minecraft:raw_iron"
-      }
+      "id": "minecraft:raw_iron"
     }
   ],
   "priority": 0,

@@ -6,15 +6,11 @@
   "output": [
     {
       "count": 3,
-      "item": {
-        "id": "minecraft:gold_nugget"
-      }
+      "id": "minecraft:gold_nugget"
     },
     {
       "chance": 0.5,
-      "item": {
-        "id": "minecraft:gold_nugget"
-      }
+      "id": "minecraft:gold_nugget"
     }
   ],
   "priority": 0,

@@ -5,9 +5,7 @@
   },
   "output": [
     {
-      "item": {
-        "id": "create:raw_zinc"
-      }
+      "id": "create:raw_zinc"
     }
   ],
   "priority": 0,

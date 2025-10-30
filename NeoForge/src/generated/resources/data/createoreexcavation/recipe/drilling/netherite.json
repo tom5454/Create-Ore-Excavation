@@ -4,34 +4,27 @@
     "item": "createoreexcavation:netherite_drill"
   },
   "fluid": {
-    "type": "fluid_stack",
     "amount": 1000,
-    "fluid": "minecraft:lava"
+    "ingredient": {
+      "fluid": "minecraft:lava"
+    }
   },
   "output": [
     {
       "chance": 0.2,
-      "item": {
-        "id": "minecraft:ancient_debris"
-      }
+      "id": "minecraft:ancient_debris"
     },
     {
       "chance": 0.8,
-      "item": {
-        "id": "minecraft:gold_nugget"
-      }
+      "id": "minecraft:gold_nugget"
     },
     {
       "chance": 0.8,
-      "item": {
-        "id": "minecraft:netherrack"
-      }
+      "id": "minecraft:netherrack"
     },
     {
       "chance": 0.5,
-      "item": {
-        "id": "minecraft:magma_block"
-      }
+      "id": "minecraft:magma_block"
     }
   ],
   "priority": 0,

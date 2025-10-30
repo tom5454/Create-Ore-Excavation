@@ -5,9 +5,7 @@
   },
   "output": [
     {
-      "item": {
-        "id": "minecraft:coal"
-      }
+      "id": "minecraft:coal"
     }
   ],
   "priority": 0,

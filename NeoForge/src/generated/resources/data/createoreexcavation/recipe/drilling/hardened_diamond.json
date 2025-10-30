@@ -4,21 +4,18 @@
     "item": "createoreexcavation:netherite_drill"
   },
   "fluid": {
-    "type": "fluid_stack",
     "amount": 500,
-    "fluid": "minecraft:lava"
+    "ingredient": {
+      "fluid": "minecraft:lava"
+    }
   },
   "output": [
     {
-      "item": {
-        "id": "createoreexcavation:raw_diamond"
-      }
+      "id": "createoreexcavation:raw_diamond"
     },
     {
       "chance": 0.1,
-      "item": {
-        "id": "minecraft:diamond"
-      }
+      "id": "minecraft:diamond"
     }
   ],
   "priority": 0,

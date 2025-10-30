@@ -1,4 +1,4 @@
-// 1.21.1	2025-03-04T19:08:24.4066269	Registrate Provider for createoreexcavation [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (enchantments), Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
+// 1.21.1	2025-10-30T17:59:09.6136312	Registrate Provider for createoreexcavation [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (enchantments), Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
 ab1bbafb4f5b819e8f1742e1ce79d15a4acde589 assets/createoreexcavation/blockstates/drilling_machine.json
 4447c4025e38e242f026b0801fbcf1cb00de9310 assets/createoreexcavation/blockstates/extractor.json
 455904ef454e8e3ad3470132985375d2b5065ac1 assets/createoreexcavation/blockstates/io_block.json

@@ -21,7 +21,7 @@ public enum ProcessingOutputJS implements RecipeComponent<ProcessingOutput> {
 
 	@Override
 	public Codec<ProcessingOutput> codec() {
-		return ProcessingOutput.CODEC;
+		return ProcessingOutput.CODEC_NEW;
 	}
 
 	@Override
