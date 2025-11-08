@@ -16,7 +16,6 @@ import dev.latvian.mods.kubejs.recipe.schema.RecipeSchemaRegistry;
 import dev.latvian.mods.kubejs.script.BindingRegistry;
 import dev.latvian.mods.kubejs.script.TypeWrapperRegistry;
 import dev.latvian.mods.kubejs.script.TypeWrapperRegistry.ContextFromFunction;
-import dev.latvian.mods.kubejs.script.TypeWrapperRegistry.RegistriesFromFunction;
 
 public class KubeJSExcavation implements KubeJSPlugin {
 
@@ -37,15 +36,15 @@ public class KubeJSExcavation implements KubeJSPlugin {
 	@Override
 	public void registerRecipeComponents(RecipeComponentTypeRegistry registry) {
 		registry.register(ComponentComponent.TYPE);
-		registry.register(ProcessingOutputJS.TYPE);
+		if (!CreateOreExcavation.kubeJSCreate)registry.register(ProcessingOutputJS.TYPE);
 		registry.register(PlacementJS.TYPE);
 		registry.register(FluidIngredientJS.TYPE);
 	}
 
 	@Override
 	public void registerTypeWrappers(TypeWrapperRegistry registry) {
-		registry.register(ProcessingOutput.class, (ContextFromFunction<ProcessingOutput>) ProcessingOutputJS::wrap);
-		registry.register(FluidIngredient.class, (RegistriesFromFunction<FluidIngredient>) FluidIngredientJS::wrap);
+		if (!CreateOreExcavation.kubeJSCreate)registry.register(ProcessingOutput.class, (ContextFromFunction<ProcessingOutput>) ProcessingOutputJS::wrap);
+		registry.register(FluidIngredient.class, (ContextFromFunction<FluidIngredient>) FluidIngredientJS::wrap);
 		registry.registerEnumFromStringCodec(ThreeState.class, ThreeState.CODEC);
 		registry.registerEnumFromStringCodec(RandomSpreadType.class, RandomSpreadType.CODEC);
 		registry.registerEnumFromStringCodec(FrequencyReductionMethod.class, FrequencyReductionMethod.CODEC);

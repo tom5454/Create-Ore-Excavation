@@ -1,12 +1,13 @@
 {
 	"homepage": "https://www.curseforge.com/minecraft/mc-mods/create-ore-excavation",
 	"promos": {
-		"1.21.1-latest": "1.6.7",
+		"1.21.1-latest": "1.6.8",
 		"1.20.1-latest": "1.6.5",
 		"1.19.2-latest": "1.2.3",
 		"1.18.2-latest": "1.1.3"
 	},
 	"1.21.1": {
+		"1.6.8": "Fix crash with KubeJS Create",
 		"1.6.7": "Fixed fluid recipes",
 		"1.6.6": "Create 6.0.7 update\nFixed crash with KubeJS Create",
 		"1.6.5": "Updated KubeJS support to 7.2",

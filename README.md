@@ -56,8 +56,8 @@ ServerEvents.recipes(event => {
 	//Lava as drilling fluid
 	event.recipes.createoreexcavation.vein('{"text": "Water well"}', 'minecraft:water_bucket')
 		.placement(1024, 128, 64630185).alwaysInfinite().id("kubejs:my_water_well")
-	event.recipes.createoreexcavation.extracting('minecraft:water 2000', 'kubejs:my_water_well', 10)
-		.fluid('minecraft:lava 10').id("kubejs:test");
+	event.recipes.createoreexcavation.extracting('2Bx minecraft:water', 'kubejs:my_water_well', 10)
+		.fluid('10x minecraft:lava').id("kubejs:test");
 	//The drilling fluid, stress and drill settings are the same as the drilling recipe
 	
 	//Set base value in config for finite veins

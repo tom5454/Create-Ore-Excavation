@@ -54,7 +54,7 @@ public class CreateOreExcavation {
 	public static final Logger LOGGER = LogUtils.getLogger();
 
 	private static CreateRegistrate registrate;
-	public static boolean journeyMap;
+	public static boolean journeyMap, kubeJSCreate;
 
 	private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZER = DeferredRegister.create(Registries.RECIPE_SERIALIZER, MODID);
 	private static final DeferredRegister<RecipeType<?>> TYPE_REGISTER = DeferredRegister.create(Registries.RECIPE_TYPE, MODID);
@@ -88,6 +88,7 @@ public class CreateOreExcavation {
 		bus.register(NetworkHandler.class);
 
 		journeyMap = ModList.get().isLoaded("journeymap");
+		kubeJSCreate = ModList.get().isLoaded("kubejs_create");
 
 		if (CreateOreExcavation.isModLoaded("computercraft") && FMLEnvironment.dist == Dist.CLIENT) {
 			CCClientInit.init(bus);

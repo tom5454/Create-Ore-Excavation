@@ -7,6 +7,7 @@ import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 
 import com.tom.createores.CreateOreExcavation;
 
+import dev.latvian.mods.kubejs.create.recipe.ProcessingOutputRecipeComponent;
 import dev.latvian.mods.kubejs.plugin.builtin.wrapper.ItemWrapper;
 import dev.latvian.mods.kubejs.recipe.component.RecipeComponent;
 import dev.latvian.mods.kubejs.recipe.component.RecipeComponentType;
@@ -41,5 +42,9 @@ public enum ProcessingOutputJS implements RecipeComponent<ProcessingOutput> {
 	@Override
 	public RecipeComponentType<?> type() {
 		return TYPE;
+	}
+
+	public static RecipeComponent<ProcessingOutput> instance() {
+		return CreateOreExcavation.kubeJSCreate ? ProcessingOutputRecipeComponent.TYPE.instance() : INSTANCE;
 	}
 }

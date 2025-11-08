@@ -187,10 +187,10 @@ dependencies {
   	implementation 'curse.maven:journeymap-32274:6550378'
   	compileOnly "info.journeymap:journeymap-api-neoforge:2.0.0-1.21.4-SNAPSHOT"
   	
-  	implementation "dev.latvian.mods:kubejs-neoforge:2101.7.2-build.277"
+  	implementation "dev.latvian.mods:kubejs-neoforge:2101.7.2-build.295"
 	implementation "dev.latvian.mods:rhino:2101.2.7-build.74"
 	implementation "dev.architectury:architectury-neoforge:13.0.8"
-	//implementation "curse.maven:kubejs-create-429371:7106060"
+	implementation "curse.maven:kubejs-create-429371:7171696"
 	
 	compileOnly 'maven.modrinth:cc-tweaked:SQI2qmh5'
 }
