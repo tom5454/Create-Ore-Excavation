@@ -165,7 +165,7 @@ dependencies {
 		exclude(group: "net.fabricmc.fabric")
 	}*/
 	
-	modImplementation("com.simibubi.create:create-fabric-${project.minecraft_version}:${project.create_version}") {
+	modImplementation("com.simibubi.create:create-fabric:${project.create_version}") {
 		exclude(group: "net.fabricmc.fabric")
 	}
 	for (String module in port_lib_modules.split(",")) {
