@@ -14,9 +14,15 @@ The ore vein finder can be attached to a turtle and has one method:
 
 ServerEvents.recipes(event => {
 	
-	//Adding veins
+	//Adding veins 
 	//.placement(spacing, separation, salt)
-	//If all three values match the veins overwrite each other
+	// !!If all three values match the veins overwrite each other!!
+	// spacing: avg. distance (in chunks) between vein generation attempts
+	// seperation: min. distance between vein generation attempts
+	// salt: assists random gen, should be unique (implemented in RandomSpreadStructurePlacementJS.java)
+	// see RandomSpreadStructurePlacement for more info on how this works!
+	
+
 	//Use .priority(<value>) to set the vein generation priority
 	event.recipes.createoreexcavation.vein('{"text": "My redstone vein"}', 'minecraft:redstone')
 		.placement(1024, 128, 64825185)
