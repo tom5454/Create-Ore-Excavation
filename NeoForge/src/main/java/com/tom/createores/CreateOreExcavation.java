@@ -17,6 +17,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
+import net.neoforged.fml.loading.LoadingModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
@@ -87,8 +88,8 @@ public class CreateOreExcavation {
 		bus.register(ForgeConfig.class);
 		bus.register(NetworkHandler.class);
 
-		journeyMap = ModList.get().isLoaded("journeymap");
-		kubeJSCreate = ModList.get().isLoaded("kubejs_create");
+		journeyMap = LoadingModList.get().getModFileById("journeymap") != null;
+		kubeJSCreate = LoadingModList.get().getModFileById("kubejs_create") != null;
 
 		if (CreateOreExcavation.isModLoaded("computercraft") && FMLEnvironment.dist == Dist.CLIENT) {
 			CCClientInit.init(bus);
