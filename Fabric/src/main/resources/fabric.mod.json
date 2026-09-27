@@ -48,6 +48,7 @@
 		"create": ">=0.6.8"
 	},
 	"suggests": {
-		"kubejs": ">=1902.6.1-build.300"
+		"kubejs": ">=1902.6.1-build.300",
+		"journeymap": ">=1.20.1-6.0.0"
 	}
 }

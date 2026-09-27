@@ -8,10 +8,10 @@ import net.minecraft.world.level.Level;
 import com.tom.createores.CreateOreExcavation;
 import com.tom.createores.recipe.VeinRecipe;
 
-import journeymap.client.api.display.PolygonOverlay;
-import journeymap.client.api.model.MapPolygon;
-import journeymap.client.api.model.ShapeProperties;
-import journeymap.client.api.model.TextProperties;
+import journeymap.api.v2.client.display.PolygonOverlay;
+import journeymap.api.v2.client.model.MapPolygon;
+import journeymap.api.v2.client.model.ShapeProperties;
+import journeymap.api.v2.client.model.TextProperties;
 
 public class OreDistanceInfo {
 	private long time;
@@ -29,7 +29,6 @@ public class OreDistanceInfo {
 		var polygon = new MapPolygon(c);
 
 		int color = 0xFFFF0000;
-		var displayId = "coe_vein_dist_" + x + ',' + z + "," + radius;
 		var shapeProps = new ShapeProperties()
 				.setStrokeWidth(radius > 50 ? 4 : 2)
 				.setStrokeColor(color)
@@ -41,7 +40,7 @@ public class OreDistanceInfo {
 				.setOpacity(1f)
 				.setFontShadow(true);
 
-		overlay = new PolygonOverlay(CreateOreExcavation.MODID, displayId, dim, shapeProps, polygon);
+		overlay = new PolygonOverlay(CreateOreExcavation.MODID, dim, shapeProps, polygon);
 
 		overlay.setOverlayGroupName("COE Veins")
 		.setLabel(Component.translatable("chat.coe.veinFinder.distance", vein.getName(), radius).getString())

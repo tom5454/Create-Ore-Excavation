@@ -34,10 +34,10 @@ import com.tom.createores.item.OreVeinAtlasItem;
 import com.tom.createores.recipe.VeinRecipe;
 import com.tom.createores.util.DimChunkPos;
 
-import journeymap.client.api.IClientAPI;
-import journeymap.client.api.display.Displayable;
-import journeymap.client.api.display.IThemeButton;
-import journeymap.client.api.display.PolygonOverlay;
+import journeymap.api.v2.client.IClientAPI;
+import journeymap.api.v2.client.display.Displayable;
+import journeymap.api.v2.client.display.PolygonOverlay;
+import journeymap.api.v2.client.fullscreen.IThemeButton;
 
 public enum OreVeinsOverlay {
 	INSTANCE;
@@ -68,12 +68,12 @@ public enum OreVeinsOverlay {
 			try (FileReader rd = new FileReader(veins)) {
 				Map<String, Object> root = (Map<String, Object>) gson.fromJson(rd, Object.class);
 				((List<Map<String, Object>>) root.getOrDefault("veins", Collections.emptyList())).forEach(dimMap -> {
-					ResourceLocation dimKey = new ResourceLocation((String) dimMap.get("dim"));
+					ResourceLocation dimKey = ResourceLocation.tryParse((String) dimMap.get("dim"));
 					ResourceKey<Level> lvl = ResourceKey.create(Registries.DIMENSION, dimKey);
 					((List<Map<String, Object>>) dimMap.getOrDefault("veins", Collections.emptyList())).forEach(vein -> {
 						int x = ((Number) vein.get("x")).intValue();
 						int z = ((Number) vein.get("z")).intValue();
-						ResourceLocation key = new ResourceLocation((String) vein.get("id"));
+						ResourceLocation key = ResourceLocation.tryParse((String) vein.get("id"));
 						VeinRecipe v = mngr.byKey(key).filter(r -> r instanceof VeinRecipe).map(r -> (VeinRecipe) r).orElse(null);
 						if (v != null) {
 							var p = new DimChunkPos(lvl, x, z);

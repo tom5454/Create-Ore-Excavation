@@ -159,7 +159,7 @@ repositories {
         url "https://maven.k-4u.nl"
     }
     maven { url = "https://maven.createmod.net" } // Create, Ponder, Flywheel
-    maven { url = "https://maven.tterrag.com" } // Registrate
+    maven { url = "https://maven.ithundxr.dev/mirror" } // Registrate
     maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // ForgeConfigAPIPort
     maven {
         // Shedaniel's maven (Architectury API)
@@ -181,10 +181,6 @@ repositories {
         content {
             includeGroup "curse.maven"
         }
-    }
-	maven {
-        name = "JourneyMap (Public)"
-        url = "https://jm.gserv.me/repository/maven-public/"
     }
     maven {
 		name = "Modrinth"
@@ -232,7 +228,8 @@ dependencies {
 	
 	compileOnly fg.deobf('maven.modrinth:cc-tweaked:GYnSPc0b')
 	
-	implementation fg.deobf('curse.maven:journeymap-32274:5208416')
+	compileOnly fg.deobf("info.journeymap:journeymap-api-forge:${project.journeymap_api_version}") { changing = true }
+	implementation fg.deobf('curse.maven:journeymap-32274:8923662')
 	
 	/*if(useLib) {
     	compileOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-api-forge:9.1.587")

@@ -9,6 +9,9 @@
 	"1.20.1"
   ],
   "j17": true,
+  "gradle": {
+	"j21": true
+  },
   "depProjects": [
     {
       "slug": "create-fabric",
